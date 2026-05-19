@@ -52,6 +52,11 @@
 | [den-brackets](./functions/lib/den-brackets.md) | 角度括号语法解析 |
 | [schema-util](./functions/lib/schema-util.md) | schemaEntityKinds |
 | [types](./functions/lib/types.md) | 库类型导出 |
+| [nsTypes](./functions/lib/nsTypes.md) | namespaceType（`den.ful` 选项类型） |
+| [fx](./functions/lib/fx.md) | `den.lib.fx` — nix-effects 代数效果库重导出 |
+| [evalModules](./functions/lib/evalModules.md) | evalModules 使用参考 |
+
+注：`den.lib.parametric` 和 `den.lib.take` 已弃用（排期移除），本文档不再收录。
 
 ### FX 管道
 
@@ -66,6 +71,10 @@
 | [resolve](./functions/lib/aspects/fx/resolve.md) | wrap / provide / route / instantiate |
 | [wrap-classes](./functions/lib/aspects/fx/wrap-classes.md) | 类封装传递 |
 | [assemble-pipes](./functions/lib/aspects/fx/assemble-pipes.md) | 管道数据组装 |
+| [trace](./functions/lib/aspects/fx/trace.md) | 结构化跟踪处理程序 |
+| [content-util](./functions/lib/aspects/fx/content-util.md) | 内容展开工具（`unwrapContentValuesList` 等） |
+| [handlers/README](./functions/lib/aspects/fx/handlers/README.md) | 全部 37 个管道处理程序总览 |
+| [aspect/README](./functions/lib/aspects/fx/aspect/README.md) | 子方面操作（emitIncludes、emitAspectPolicies） |
 
 ### 实体类型
 

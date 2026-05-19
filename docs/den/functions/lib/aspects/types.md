@@ -209,3 +209,18 @@ isMeaningfulName =
 ```
 
 用于去重：匿名节点（由管道生成）获取 `null` 去重键，因此不会被去重。
+
+---
+
+## 关联函数
+
+- `den.lib.aspects` — 方面引擎主模块，types 是方面系统的类型基础
+- `den.lib.aspects.fx.key-classification` — 键分类系统，依赖 aspectType 注册的类/管道注册表
+- `den.lib.aspects.fx.identity` — 身份路径计算，aspectType 通过 meta.provider 累积身份
+- `den.lib.aspects.fx.pipeline` — 管道编排器，使用 aspectType 构建的方面进行解析
+- `den.lib.aspects.normalizeRoot` — 方面规范化，与类型的函数合并策略交互
+
+## 关联文档
+
+- [核心概念](../../02-核心概念.md) — 方面（Aspects）的四种形态和结构说明
+- [方面配置指南](../../04-方面配置指南.md) — 方面类型系统的实际应用

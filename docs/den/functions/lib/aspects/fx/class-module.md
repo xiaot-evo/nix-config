@@ -243,3 +243,19 @@ resolveMarkers = config: values:
 ```
 
 这打破了循环依赖：管道值在模块系统内部被解析，此时 `evalModules` 的定点 `config` 可用。
+
+---
+
+## 关联函数
+
+- `fx.resolve` — 后处理组装，wrapClassModule 在阶段 1（wrapPerScope）中被调用
+- `fx.wrap-classes` — 类封装传递，wrapClassModule 的上层调度入口
+- `fx.assemble-pipes` — 管道数据组装，为 wrapClassModule 提供上下文（含管道值）
+- `fx.pipeline` — 管道编排器，wrapClassModule 处理管道输出的类模块
+- `fx.key-classification` — 键分类决定哪些键被作为类模块发射
+
+## 关联文档
+
+- [核心概念](../../../02-核心概念.md) — 扁平形式的类模块参数说明（含 `host`、`user` 等 Den 参数）
+- [方面配置指南](../../../04-方面配置指南.md) — 类模块编写规范
+- [自定义类](../../../10-自定义类.md) — 碰撞策略在自定义类中的应用

@@ -258,3 +258,18 @@ flatConstraintRegistry = {
 **`constraintRegistryHandler`**（来自 `handlers/constraint.nix`）处理：
 - `register-constraint`：在注册表中注册约束
 - `check-constraint`：检查约束，返回决策
+
+---
+
+## 关联函数
+
+- `fx.pipeline` — 管道编排器，约束在管道的 gate 阶段被检查
+- `fx.identity` — 身份路径系统，约束通过身份键定位目标方面
+- `fx.includes` — 条件包含辅助，与约束系统的排除/替换是不同的控制流机制
+- `fx.key-classification` — 键分类系统，与约束注册的交互
+- `den.lib.policy.include` / `den.lib.policy.exclude` — 策略层的包含/排除效果
+
+## 关联文档
+
+- [方面配置指南](../../../04-方面配置指南.md) — 约束在方面元数据中的使用
+- [策略系统](../../../07-策略系统.md) — 策略效果的 exclude 效果

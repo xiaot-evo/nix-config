@@ -249,3 +249,18 @@ excludeFields = ref: {
 ```
 
 约束匹配器在 `check-constraint` 效果中检查当前方面身份是否匹配注册的排除/替换身份。
+
+---
+
+## 关联函数
+
+- `fx.pipeline` — 管道编排器，身份在去重、约束、路径收集中被使用
+- `fx.constraints` — 约束系统，通过身份键定位排除/替换目标
+- `den.lib.aspects.has-aspect` — 方面查询系统，hasAspectIn 使用 aspectPath/pathKey 计算 refKey
+- `den.lib.aspects.types` — 方面类型系统，aspectType 通过 meta.provider 累积身份路径
+- `den.lib.aspects` — 顶层方面引擎，collectPathSet 依赖身份路径收集
+
+## 关联文档
+
+- [方面配置指南](../../../04-方面配置指南.md) — 方面去重和身份识别的概念
+- [核心概念](../../../02-核心概念.md) — 方面解析和去重机制

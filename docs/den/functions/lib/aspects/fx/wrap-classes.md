@@ -256,3 +256,17 @@ buildValidatorModule = { class, nodeIdentity, result }:
   ];
 }
 ```
+
+---
+
+## 关联函数
+
+- `fx.class-module` / `wrapClassModule` — 类模块封装的核心实现，wrapClasses 是其上层调度
+- `fx.resolve` — 后处理组装阶段，wrapClasses 在 wrapPerScope 中被调用
+- `fx.pipeline` — 管道编排器，wrapClasses 作用于管道输出的类导入上
+- `fx.identity` — 身份路径用于跨作用域去重
+
+## 关联文档
+
+- [方面配置指南](../../../04-方面配置指南.md) — 类模块的扁平形式说明
+- [核心概念](../../../02-核心概念.md) — 类的概念和扁平参数形式

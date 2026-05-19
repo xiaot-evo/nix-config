@@ -175,3 +175,18 @@ allKeys = builtins.filter (k: !(structuralKeysSet ? ${k}) && !(forwardedSet ? ${
 这确保：
 - `aspect.docker`（在顶层）→ 跳过分类（已通过 `provides.docker` 处理）
 - `aspect.nixos`（在顶层）→ 分类为类键 → 发射
+
+---
+
+## 关联函数
+
+- `fx.pipeline` — 管道编排器，classify 效果在 compile-static 阶段被调用
+- `fx.assemble-pipes` — 管道数据组装，pipeKeys 的条目通过 assemblePipes 处理
+- `fx.class-module` — 类模块封装，classKeys 的条目通过 wrapClassModule 处理
+- `den.lib.aspects.types` — 方面类型系统，classifyKeys 依赖 classRegistry 和 pipeRegistry
+- `den.lib.aspects` — 顶层方面引擎，导出类注册表
+
+## 关联文档
+
+- [方面配置指南](../../../04-方面配置指南.md) — 类键、嵌套键、管道键的概念
+- [管道与 Quirks](../../../08-管道与quirks.md) — 管道键（pipeKeys）的分类和应用

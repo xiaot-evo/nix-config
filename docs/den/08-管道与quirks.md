@@ -424,3 +424,12 @@ Quirks 和 policies 的关系：
 
 - [策略系统](./07-策略系统.md)——策略和 pipe 效果
 - [高级主题](./11-高级主题.md)——fleet 管理、作用域划分
+
+## 关联函数
+
+| 函数 | 说明 |
+|------|------|
+| [`den.lib.policy`](functions/lib/policy-effects.md) | 策略效果构造器（pipe 效果） |
+| [`den.lib.aspects.fx.assemble-pipes`](functions/lib/aspects/fx/assemble-pipes.md) | 管道数据组装 |
+| [`den.lib.aspects.fx.key-classification`](functions/lib/aspects/fx/key-classification.md) | 键分类系统（pipeKeys） |
+| [`den.lib.aspects.fx.pipeline`](functions/lib/aspects/fx/pipeline.md) | FX 管道编排器 |

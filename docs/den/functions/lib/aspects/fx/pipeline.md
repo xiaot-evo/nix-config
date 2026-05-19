@@ -307,3 +307,23 @@ fxResolve mkPipeline { class = "nixos"; self = tree; ctx = { }; }
 8. 阶段4: applyInstantiates (实例化实体)
 9. 返回: { imports = ...; }
 ```
+
+---
+
+## 关联函数
+
+- `fx.resolve` — 后处理组装阶段，连接管道执行后的四阶段处理（包装、提供、路由、实例化）
+- `fx.assemble-pipes` — 管道数据组装，从管道状态中提取并处理弯曲数据
+- `fx.class-module` / `wrapClassModule` — 类模块封装，包装管道输出的类导入
+- `fx.wrap-classes` — 类封装传递，wrapClassModule 的上层调度
+- `fx.identity` — 身份路径系统，管道中用于去重、约束、路径收集
+- `fx.key-classification` — 键分类系统，classify 效果的核心实现
+- `fx.constraints` — 约束系统，gate 阶段检查排除/替换
+- `fx.includes` — 条件包含辅助，compile 阶段处理 includeIf
+- `den.lib.aspects` — 顶层方面引擎，mkPipeline 被 resolve/resolveImports/resolveWithState 调用
+
+## 关联文档
+
+- [核心概念](../../../02-核心概念.md) — 方面解析流程概述
+- [方面配置指南](../../../04-方面配置指南.md) — 方面的四种形态和编译流程
+- [高级主题](../../../11-高级主题.md) — 代数效应管道和调试

@@ -1,6 +1,6 @@
 # 方面定义基础设施（Aspect Definition Infrastructure）
 
-**源文件**: `nix/nixModule/aspects.nix`、`lib/aspects/types.nix`、`nix/nixModule/default.nix`
+**源文件**: `nix/nixModule/aspects.nix`、`nix/lib/aspects/types.nix`、`nix/nixModule/default.nix`
 
 ## 概述
 

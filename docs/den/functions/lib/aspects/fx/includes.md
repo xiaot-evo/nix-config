@@ -106,3 +106,17 @@ else
   # 失败或延迟：发送 defer-conditional
   fx.send "defer-conditional" aspect
 ```
+
+---
+
+## 关联函数
+
+- `fx.pipeline` — 管道编排器，includeIf 创建的方面通过管道的 compileHandler 处理
+- `fx.constraints` — 约束系统，条件包含与约束排除/替换是不同的控制机制
+- `fx.resolve` — 后处理组装，条件包含解析后进入正常管道流程
+- `den.lib.policy.when` — 策略层的条件判断，与 includeIf 的方面层条件互补
+
+## 关联文档
+
+- [方面配置指南](../../../04-方面配置指南.md) — 条件方面的概念和用法
+- [策略系统](../../../07-策略系统.md) — `den.lib.policy.when` 策略层条件判断

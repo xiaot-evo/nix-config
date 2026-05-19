@@ -539,3 +539,18 @@ Den 支持主机和用户之间互相交付配置，这是其最强大的特性�
 4. **Mutual Provider 用于跨实体配置**：用户需要影响主机时使用策略
 5. **独立 HM 用于远程/无主机场景**：如 CI 环境、容器
 6. **同一实体避免多个 HM 源冲突**：通过 `den.lib.policy.for` 限定特定实体
+
+## 关联函数
+
+| 函数/电池 | 说明 |
+|-----------|------|
+| [`den.batteries.home-manager`](functions/batteries/home-manager.md) | HM 集成电池 |
+| [`den.batteries.hjem`](functions/batteries/hjem.md) | Hjem 集成电池 |
+| [`den.batteries.maid`](functions/batteries/maid.md) | Nix-Maid 集成电池 |
+| [`den.batteries.define-user`](functions/batteries/define-user.md) | 创建 OS + HM 用户 |
+| [`den.batteries.primary-user`](functions/batteries/primary-user.md) | 赋予管理员权限 |
+| [`den.batteries.user-shell`](functions/batteries/user-shell.md) | 设置用户登录 Shell |
+| [`den.batteries.host-aspects`](functions/batteries/host-aspects.md) | 主机方面投射到用户 |
+| [`den.batteries.forward`](functions/batteries/forward.md) | 自定义类转发工厂 |
+| [`den.lib.policy`](functions/lib/policy-effects.md) | 策略效果构造器 |
+| [`den.lib.home-env`](functions/lib/home-env.md) | 家庭环境集成工厂 |

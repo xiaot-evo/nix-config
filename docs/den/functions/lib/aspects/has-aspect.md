@@ -155,3 +155,18 @@ refKey = ref:
 ```
 
 确保 ref 具有完整的身份信息（通过 `mergeWithAspectMeta` 注入的 `name` 和 `meta`）。否则抛出一个明确的错误。
+
+---
+
+## 关联函数
+
+- `den.lib.aspects` — 方面引擎主模块，hasAspectIn/collectPathSet/mkEntityHasAspect 的所在模块
+- `den.lib.aspects.types` — 方面类型系统，提供身份元数据（name、meta）的类型定义
+- `den.lib.aspects.fx.identity` — 身份路径计算（aspectPath/pathKey），是 hasAspect 中 refKey 计算的基础
+- `den.lib.aspects.fx.pipeline` — 管道编排器，collectPathSet 通过 fxFullResolve 获取 pathSet
+- `den.lib.aspects.normalizeRoot` — 方面规范化，collectPathSet 内部调用
+
+## 关联文档
+
+- [方面配置指南](../../04-方面配置指南.md) — 方面查询和条件化配置的使用场景
+- [高级主题](../../11-高级主题.md) — hasAspect 在调试和条件配置中的应用

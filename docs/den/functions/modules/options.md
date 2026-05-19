@@ -103,7 +103,23 @@ den.policies.host-to-users = { host, ... }: [
 
 **文件**: `modules/options.nix`
 
-注册 Nix 配置输出类别。每个类有 `description` 和可选的 `forwardTo`：
+注册 Nix 配置输出类别。每个类有 `description` 和可选的 `forwardTo`。
+
+Den 注册了以下内置类：
+
+| 类名 | 来源 | 用途 |
+|------|------|------|
+| `nixos` | `modules/options.nix`（默认） | NixOS 系统配置 |
+| `darwin` | `modules/options.nix`（默认） | nix-darwin 系统配置 |
+| `homeManager` | `batteries/home-manager.nix` | Home Manager 用户环境 |
+| `hjem` | `batteries/hjem.nix` | Hjem 用户配置（Rust 实现） |
+| `user` | `batteries/os-user.nix` | `users.users.<name>` 系统用户 |
+| `os` | `batteries/os-class.nix` | 同时注入 nixos + darwin |
+| `wsl` | `batteries/wsl.nix` | WSL 特定配置 |
+| `maid` | `batteries/maid.nix` | nix-maid 家政服务 |
+| `packages` / `apps` / `checks` / `devShells` / `legacyPackages` | `policies/flake.nix` | Flake 输出类 |
+
+此外，方面和命名空间可以通过 `den.aspects.*.classes` 和 `den.ful.*.classes` 动态注册新类。每个类有 `description` 和可选的 `forwardTo`：
 
 ```nix
 den.classes.homeManager.description = "Home Manager user environment";
@@ -184,7 +200,7 @@ den.batteries.define-user = { ... };
 
 ## den.default — 默认方面
 
-**类型**: `submodule { freeformType = attrsOf anything; }`
+**类型**: `aspectType`（带结构化选项的子模块类型：`name`、`description`、`meta`、`policies`、`includes`、`excludes`、`provides`、`classes`，自定义合并语义 `mergeWithAspectMeta`）
 
 **默认值**: `{}`
 
@@ -221,7 +237,7 @@ den.default = {
 
 **类型**: `listOf str`
 
-**默认值**: 来自 `flame.nix`（`modules/outputs.nix` 或其他位置推导）
+**默认值**: 来自 `systems.nix`（`modules/outputs/systems.nix`，从 `den.hosts`/`den.homes` 自动推导）
 
 Flake 支持的系统架构列表：
 

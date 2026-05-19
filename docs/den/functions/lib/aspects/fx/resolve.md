@@ -282,3 +282,20 @@ fxResolveImports : mkPipeline -> {
 （跳过阶段4）
 → { imports = [ ... ]; }
 ```
+
+---
+
+## 关联函数
+
+- `fx.pipeline` — 管道编排器，fxResolve 连接管道执行和后处理
+- `fx.assemble-pipes` — 管道数据组装，在 fxResolve 的阶段 0 中执行
+- `fx.class-module` / `wrapClassModule` — 类模块封装，在阶段 1 中调用
+- `den.lib.aspects` — 顶层方面解析入口，调用 fxResolve 获取最终模块
+- `den.lib.aspects.resolveImports` — fxResolveImports 的对外暴露接口（跳过阶段 4）
+- `den.lib.aspects.normalizeRoot` — 在进入 fxResolve 前规范化方面树
+
+## 关联文档
+
+- [核心概念](../../../02-核心概念.md) — 方面解析的概念说明
+- [方面配置指南](../../../04-方面配置指南.md) — 方面解析的实际使用
+- [高级主题](../../../11-高级主题.md) — `den.lib.aspects.resolve` 在调试和自定义类中的应用

@@ -265,3 +265,18 @@ scopedPipeEffects."host=igloo" = [
 # "host=igloo" 上下文获得：
 # myPipe = [ { addr = "10.0.0.2"; resolved = true; } ];
 ```
+
+---
+
+## 关联函数
+
+- `fx.resolve` — 后处理组装阶段，assemblePipes 在其中被调用
+- `fx.class-module` / `wrapClassModule` — 管道数据组装后，类模块通过 wrapClassModule 接收上下文
+- `fx.pipeline` — 管道编排器，assemblePipes 是管道执行后的关键步骤
+- `fx.key-classification` — 键分类决定哪些键被收集为管道条目
+- `fx.identity` — 身份路径用于管道路由和定向数据
+
+## 关联文档
+
+- [管道与 Quirks](../../../08-管道与quirks.md) — 管道数据流的概念说明和使用场景
+- [方面配置指南](../../../04-方面配置指南.md) — 方面中的怪癖（quirk）数据声明
