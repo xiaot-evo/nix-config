@@ -1,4 +1,4 @@
-# den.batteries.os-class
+# os-class (自动注册模块)
 
 **源文件**: `modules/aspects/batteries/os-class.nix`
 
@@ -126,6 +126,6 @@ Den 的 `den.default.includes` 在所有方面作用域中都生效（包括 hos
 
 | 电池 | 关系 |
 |---|---|
-| `den.batteries.os-user` | 类似模式：提供 `user` 类转发到 `users.users.<name>` |
+| `os-user` 模块 | 类似模式：提供 `user` 类转发到 `users.users.<name>` |
 | `den.batteries.forward` | 通用转发机制，本电池的底层实现用了类似模式 |
 | `den.batteries.hostname` | 替代方案：专用电池 vs 通用 os 类 |

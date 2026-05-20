@@ -185,7 +185,7 @@ den.schema.user.includes = [ myUserModule ];
 
 **默认值**: `{}`
 
-**文件**: `nix/nixModule/default.nix`
+**文件**: `modules/aspects/batteries.nix`
 
 预构建的可复用方面集合：
 

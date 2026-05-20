@@ -1,4 +1,4 @@
-# den.batteries.home-manager
+# home-manager (自动注册模块)
 
 **源文件**: `modules/aspects/batteries/home-manager.nix`
 
@@ -16,13 +16,7 @@ Home Manager 集成的核心电池。自动将声明了 `homeManager` 类的用�
 
 ## 使用示例
 
-```nix
-{
-  den.batteries.home-manager  # 在 den.default.includes 中自动启用
-}
-```
-
-默认已包含在 `den.schema.host.includes` 和 `den.schema.user.includes` 中，无需手动引入。只需要在用户 aspect 中使用 `den.batteries.define-user` 并将 `homeManager` 加入 `user.classes`：
+本模块通过 `import-tree` 自动注册到 `den.schema.host.includes` 和 `den.schema.user.includes` 中，无需手动引入。只需要在用户 aspect 中使用 `den.batteries.define-user` 并将 `homeManager` 加入 `user.classes`：
 
 ```nix
 den.aspects.alice = {
@@ -63,8 +57,8 @@ makeHomeEnv {
 |---|---|
 | `den.batteries.define-user` | 与 home-manager 配合创建完整的 OS + HM 用户 |
 | `den.batteries.host-aspects` | 主机方面向用户提供 HM 配置，依赖 home-manager 电池 |
-| `den.batteries.hjem` | Hjem 集成电池，同类替代方案 |
-| `den.batteries.maid` | Nix-Maid 集成电池，同类替代方案 |
+| `hjem` (自动注册模块) | Hjem 集成模块，同类替代方案 |
+| `maid` (自动注册模块) | Nix-Maid 集成模块，同类替代方案 |
 
 ## 关联函数
 

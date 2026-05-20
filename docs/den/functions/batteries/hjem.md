@@ -1,10 +1,10 @@
-# den.batteries.hjem
+# hjem (自动注册模块)
 
 **源文件**: `modules/aspects/batteries/hjem.nix`
 
 ## 用途
 
-Hjem（Rust 实现的 Home Manager 替代方案）集成电池。与 `den.batteries.home-manager` 类似，但将用户配置转发到 Hjem 模块系统。
+Hjem（Rust 实现的 Home Manager 替代方案）集成电池。与 `home-manager` (自动注册模块) 类似，但将用户配置转发到 Hjem 模块系统。
 
 关键行为：
 - 注册 `hjem` 类，描述为 "Hjem user environment"
@@ -22,9 +22,9 @@ Hjem（Rust 实现的 Home Manager 替代方案）集成电池。与 `den.batter
     hjem.url = "github.com/feel-co/hjem";
   };
 
-  # Host aspect 中启用
+  # Host aspect — hjem 模块已自动注册，无需在 includes 中手动引入
   den.aspects.my-laptop = {
-    includes = [ den.batteries.hjem ];
+    # 无需 includes = [ den.batteries.hjem ]，本模块已自动注册到 den.schema.host.includes
   };
 }
 ```
@@ -61,8 +61,8 @@ makeHomeEnv {
 
 | 电池 | 关系 |
 |---|---|
-| `den.batteries.home-manager` | Home Manager 集成电池，同类方案 |
-| `den.batteries.maid` | Nix-Maid 集成电池，同类方案 |
+| `home-manager` (自动注册模块) | Home Manager 集成模块，同类方案 |
+| `maid` (自动注册模块) | Nix-Maid 集成模块，同类方案 |
 | `den.batteries.define-user` | 与 hjem 配合创建完整的 OS + 用户配置 |
 
 ## 关联函数

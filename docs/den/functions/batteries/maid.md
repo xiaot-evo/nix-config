@@ -1,4 +1,4 @@
-# den.batteries.maid
+# maid (自动注册模块)
 
 **源文件**: `modules/aspects/batteries/maid.nix`
 
@@ -23,7 +23,7 @@
   };
 
   den.aspects.my-laptop = {
-    includes = [ den.batteries.maid ];
+    # 无需 includes = [ den.batteries.maid ]，本模块已自动注册到 den.schema.host.includes
   };
 }
 ```
@@ -64,8 +64,8 @@ makeHomeEnv {
 
 | 电池 | 关系 |
 |---|---|
-| `den.batteries.home-manager` | Home Manager 集成电池，同类方案 |
-| `den.batteries.hjem` | Hjem 集成电池，同类方案 |
+| `home-manager` (自动注册模块) | Home Manager 集成模块，同类方案 |
+| `hjem` (自动注册模块) | Hjem 集成模块，同类方案 |
 | `den.batteries.define-user` | 与 maid 配合创建完整的 OS + 用户配置 |
 
 ## 关联函数

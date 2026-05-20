@@ -111,7 +111,7 @@ mkCollisionValidator = policy: denArgNames: moduleArgs:
       in
       if !hasReal then [ ]
       else if p == "error" then
-        throw "den: class module arg '${name}' collides with module-system arg"
+        throw "den: class module arg '${name}' collides with module-system arg — set collisionPolicy to resolve"
       else if p == "class-wins" then
         [ "den: class module arg '${name}' collision — class-wins, den value dropped" ]
       else

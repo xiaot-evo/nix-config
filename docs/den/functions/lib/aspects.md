@@ -12,7 +12,7 @@
 
 ## den.lib.aspects.resolve
 
-**签名**: `(class: string, resolved: aspect) → [modules]`
+**签名**: `(class: string, resolved: aspect) → { imports = [modules] }`
 
 ### 用途
 
@@ -37,7 +37,7 @@ let
   };
 in
 den.lib.aspects.resolve "nixos" myAspect
-# → [ { services.ssh.enable = true; } ]
+# → { imports = [ { services.ssh.enable = true; } ]; }
 ```
 
 ### 实现简析
@@ -48,7 +48,7 @@ den.lib.aspects.resolve "nixos" myAspect
 
 ## den.lib.aspects.resolveImports
 
-**签名**: `(class: string, resolved: aspect) → [imports]`
+**签名**: `(class: string, resolved: aspect) → { imports = [imports] }`
 
 ### 用途
 
@@ -67,14 +67,14 @@ den.lib.aspects.resolve "nixos" myAspect
 ```nix
 let
   hostTree = {
-    nixos = { ... };
+    nixos = { };
     provides.users.user1 = {
       homeManager.programs.git.enable = true;
     };
   };
 in
 den.lib.aspects.resolveImports "homeManager" hostTree
-# → 只解析 user1 的 includes，不实例化主机
+# → { imports = [ ... ]; } 只解析 user1 的 includes，不实例化主机
 ```
 
 ### 实现简析
@@ -85,7 +85,7 @@ den.lib.aspects.resolveImports "homeManager" hostTree
 
 ## den.lib.aspects.resolveWithState
 
-**签名**: `(class: string, resolved: aspect) → { modules, state, ... }`
+**签名**: `(class: string, resolved: aspect) → { value, state, ... }`
 
 ### 用途
 
@@ -97,8 +97,8 @@ den.lib.aspects.resolveImports "homeManager" hostTree
 
 ### 返回值说明
 
-返回包含模块列表和完整管道状态的 attrset：
-- `modules` — 解析得到的模块列表
+返回包含完整管道结果和状态的 attrset：
+- `value` — 管道最终解析结果
 - `state` — 管道内部状态（pathSet 等）
 
 ### 使用示例
@@ -108,14 +108,14 @@ let
   result = den.lib.aspects.resolveWithState "nixos" myAspect;
 in
 {
-  inherit (result) modules;
+  modules = result.value;
   pathSet = result.state.pathSet null;
 }
 ```
 
 ### 实现简析
 
-使用 `fx.pipeline.fxFullResolve`，返回完整的管道处理结果，不丢弃状态信息。
+使用 `fx.pipeline.fxFullResolve`，返回 `{ value, state }` 结构（原始管道处理结果），不丢弃状态信息。
 
 ---
 

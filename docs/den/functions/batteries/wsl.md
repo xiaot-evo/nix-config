@@ -1,4 +1,4 @@
-# den.batteries.wsl
+# wsl (自动注册模块)
 
 **源文件**: `modules/aspects/batteries/wsl.nix`
 
@@ -173,5 +173,5 @@ guard = { options, ... }: options ? wsl;
 |---|---|
 | `den.batteries.primary-user` | 在 `wsl` 类中写入 `defaultUser`，通过 `wsl-to-host` 路由 |
 | `den.batteries.hostname` | 同样在 `wsl` 类中设置 hostname |
-| `den.batteries.os-class` | `os` 类策略也会在 WSL 主机上生效 |
+| `os-class` 模块 | `os` 类策略也会在 WSL 主机上生效 |
 | `den.batteries.forward` | `wsl-to-host` 的 guard 机制与 forward 的 guard 类似 |

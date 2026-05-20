@@ -84,11 +84,8 @@ den.hosts."x86_64-linux".igloo = {
 
 ```nix
 options.den.default = lib.mkOption {
-  description = "Default aspect applied to all entities";
-  default = { };
-  type = lib.types.submodule {
-    freeformType = lib.types.attrsOf lib.types.anything;
-  };
+  description = "Default aspect";
+  type = den.lib.aspects.types.aspectType;
 };
 ```
 
@@ -118,7 +115,7 @@ den.default.includes = [
 
 ## den.batteries 选项类型
 
-**源文件**: `nix/nixModule/default.nix`
+**源文件**: `modules/aspects/batteries.nix`、`nix/lib/aspects/types.nix`
 
 ### 用途
 

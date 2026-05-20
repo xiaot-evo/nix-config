@@ -77,7 +77,7 @@ mermaidString = diag.toMermaid graph;
 | `normal` | `-->` |
 | `excluded` | `-.-x` |
 | `replaced` | `-.->|replaced|` |
-| `provide` | `-.->|provides|` |
+| `provide` | `-.->|<label>|` |
 | `policy` | `-.->|dispatches|` |
 
 ### 实体类型子图

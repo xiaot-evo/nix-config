@@ -24,7 +24,7 @@ unwrapContentValuesList :: Any -> [Any]
 | 输入类型 | 行为 | 示例 |
 |----------|------|------|
 | 列表 | 直接透传 | `[ a b ] → [ a b ]` |
-| `__contentValues` attrset | 提取 `__contentValues` 值并去重 | `{ __contentValues = [ a b a ]; } → [ a b ]` |
+| `__contentValues` attrset | 提取 `.value` 字段，过滤空 attrset；0 条→`[{}]`, 1 条→`[val]`, 2+条→`[{ imports = vals }]` | `{ __contentValues = [{ value = a; } { value = b; }]; } → [{ imports = [ a b ]; }]` |
 | 其他值 | 包装为单元素列表 | `"x" → [ "x" ]` |
 
 ### 使用示例
@@ -33,8 +33,13 @@ unwrapContentValuesList :: Any -> [Any]
 unwrapContentValuesList [ 1 2 3 ]
 # → [ 1 2 3 ]
 
-unwrapContentValuesList { __contentValues = [ 1 2 2 3 ]; }
-# → [ 1 2 3 ]  （已去重）
+unwrapContentValuesList {
+  __contentValues = [
+    { value = { services.nginx.enable = true; }; }
+    { value = { services.nginx.enable = false; }; }
+  ];
+}
+# → [{ imports = [ { services.nginx.enable = true; } { services.nginx.enable = false; } ]; }]
 
 unwrapContentValuesList "hello"
 # → [ "hello" ]
@@ -43,15 +48,22 @@ unwrapContentValuesList "hello"
 ### 实现简析
 
 ```nix
-unwrapContentValuesList = v:
-  if builtins.isList v then v
-  else if builtins.isAttrs v && v ? __contentValues then
-    lib.unique v.__contentValues
-  else [ v ];
+unwrapContentValuesList = rawValue:
+  if builtins.isList rawValue then rawValue
+  else if builtins.isAttrs rawValue && rawValue ? __contentValues then
+    let
+      vals = builtins.filter (v: !(builtins.isAttrs v && v == { })) (
+        map (d: d.value) rawValue.__contentValues
+      );
+    in
+    if builtins.length vals == 0 then [ { } ]
+    else if builtins.length vals == 1 then [ (builtins.head vals) ]
+    else [ { imports = vals; } ]
+  else [ rawValue ];
 ```
 
 1. 首先检查是否为列表——直接返回
-2. 检查是否为带有 `__contentValues` 属性的 attrset——提取并去重
+2. 检查是否为带有 `__contentValues` 属性的 attrset——提取每个元素的 `.value` 字段，过滤空 attrset；0 条返回 `[{}]`、1 条返回单元素、多条包装为 `[{ imports = ... }]`
 3. 其他所有值——包装在单元素列表中
 
 ---
@@ -100,29 +112,29 @@ unwrapContentValuesForClassification "hello"
 
 ### 签名
 ```nix
-applyProvide :: AttrSet -> AttrSet -> AttrSet
+applyProvide :: Any -> AttrSet -> Any
 ```
 
 ### 用途
 
-展开一个 provides 值，通过检测其形状并应用上下文来生成最终输出。这是 provides 处理的核心展开函数。
+展开一个 provides 值，通过检测其形状并应用上下文来生成最终输出。这是 provides 处理的核心展开函数。第一参数是要展开的值，第二参数是上下文。
 
 ### 形状检测与处理
 
 | 输入形状 | 处理方式 |
 |----------|----------|
-| `__fn` attrset | 作为函数调用，传入上下文参数 |
-| `__functor` attrset | 作为 functor 调用 |
+| `__fn` attrset | 直接调用 `value.__fn ctx`（不合并 `__args`） |
+| `includes` attrset | 原样返回（`__functor` 不被调用，因为会触发管道外解析） |
+| `__functor` attrset | 调用 `(value.__functor value) ctx`——functor 先自调用再传 ctx |
 | 裸函数 | 直接调用，传入上下文 |
-| `includes` attrset | 展开 `includes` 中的条目 |
-| 普通 attrset | 直接作为值使用 |
+| 其他值 | 原样返回 |
 
 ### 使用示例
 
 ```nix
 # __fn 包装
 applyProvide
-  { __fn = ctx: ctx.host.name; __args = { host = true; }; }
+  { __fn = ctx: ctx.host.name; }
   { host = { name = "igloo"; }; }
 # → "igloo"
 
@@ -148,18 +160,19 @@ applyProvide
 ### 实现简析
 
 ```nix
-applyProvide = ctx: value:
-  if builtins.isAttrs value then
-    if value ? __fn then value.__fn (ctx // value.__args or { })
-    else if value ? __functor then value.__functor ctx
-    else if value ? includes then value
-    else value
-  else if builtins.isFunction value then
+applyProvide = value: ctx:
+  if builtins.isAttrs value && value ? __fn then
+    value.__fn ctx
+  else if builtins.isAttrs value && value ? includes then
+    value
+  else if builtins.isAttrs value && value ? __functor then
+    (value.__functor value) ctx
+  else if lib.isFunction value then
     value ctx
   else value;
 ```
 
-1. attrset 值按形状分派：`__fn` → 函数调用、`__functor` → functor 调用、`includes` → 直接传递、其他 → 原样返回
+1. attrset 值按形状分派：`__fn` → 调用（无 `__args` 合并）、`includes` → 直接返回、`__functor` → functor 自调用后传 ctx、其他 → 原样返回
 2. 函数值直接调用上下文
 3. 非 attrset 非函数值原样返回
 

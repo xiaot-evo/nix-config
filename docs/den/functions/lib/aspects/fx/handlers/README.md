@@ -1,6 +1,6 @@
 # 效果处理程序（Handlers）
 
-**源文件**: `nix/lib/aspects/fx/handlers/*.nix`（37 个文件）
+**源文件**: `nix/lib/aspects/fx/handlers/*.nix`（37 个文件：36 个处理程序 + 1 个汇编文件 `default.nix`）
 
 ## 概述
 

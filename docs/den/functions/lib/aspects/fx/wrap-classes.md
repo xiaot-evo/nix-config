@@ -100,18 +100,18 @@ applyPipeTargeting = ctx: entry:
 
 ### 签名
 ```nix
-mergeEnrichment : Context -> Context -> { enrichmentKeys :: [String], ctx :: Context }
+mergeEnrichment : Context -> Context -> { enrichmentKeys :: AttrSet, ctx :: Context }
 ```
 
 ### 用途
-将充实键合并到条目的上下文中，但**不**覆盖条目已有的键（如 `host`、`user` 等实体绑定）：
+将充实键合并到条目的上下文中，但**不**覆盖条目已有的键（如 `host`、`user` 等实体绑定）。返回的 `enrichmentKeys` 是 attrset，稍后通过 `builtins.attrNames` 转为列表：
 
 ```nix
 mergeEnrichment = enrichedCtx: entryCtx:
   let
     enrichmentKeys = lib.filterAttrs (k: _: !(entryCtx ? ${k})) enrichedCtx;
   in
-  { enrichmentKeys = builtins.attrNames enrichmentKeys; ctx = entryCtx // enrichmentKeys; };
+  { inherit enrichmentKeys; ctx = entryCtx // enrichmentKeys; };
 ```
 
 ---
@@ -136,12 +136,17 @@ stripEnrichmentArgs : {
 ```nix
 stripEnrichmentArgs = { module, wrapped, enrichmentOnlyKeys, ctx }:
   let
-    rawFuncArgs = if wrapped then module.__functionArgs else builtins.functionArgs module;
+    isWrappedAttrset = builtins.isAttrs module && module ? __functionArgs;
+    rawFuncArgs =
+      if isWrappedAttrset then module.__functionArgs
+      else if builtins.isFunction module then builtins.functionArgs module
+      else { };
     argsToStrip = if wrapped then enrichmentOnlyKeys
       else builtins.filter (k: rawFuncArgs.${k} or false && !(ctx ? ${k})) (builtins.attrNames rawFuncArgs);
+    isFunction = builtins.isFunction module;
   in
-  if argsToStrip == [ ] then module
-  else if wrapped then module // { __functionArgs = removeAttrs rawFuncArgs argsToStrip; }
+  if argsToStrip == [ ] || (!isWrappedAttrset && !isFunction) then module
+  else if isWrappedAttrset then module // { __functionArgs = removeAttrs rawFuncArgs argsToStrip; }
   else lib.setFunctionArgs module (removeAttrs rawFuncArgs argsToStrip);
 ```
 

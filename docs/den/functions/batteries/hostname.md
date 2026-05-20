@@ -103,5 +103,5 @@ ${host.class}.networking.hostName = host.hostName;
 | 电池 | 关系 |
 |---|---|
 | `den.batteries.primary-user` | 同样使用 `host.class` 动态分发到不同目标类 |
-| `den.batteries.wsl` | 也涉及 `host.class` 检测，但增加了守卫条件 |
+| WSL 模块 | 也涉及 `host.class` 检测，但增加了守卫条件 |
 | `den.batteries.forward` | 本电池的分发模式可视为一种最简单的静态转发 |

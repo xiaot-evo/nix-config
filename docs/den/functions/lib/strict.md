@@ -58,6 +58,8 @@ definition exists. If this wasn't a mistake, disable STRICT mode or configure
 an option. e.g.
 
 den.schema.<kind>.options.<option-name> = lib.mkOption { ... };
+
+See https://documentation.example
 ```
 
 ## 实现简析

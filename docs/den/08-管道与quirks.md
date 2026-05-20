@@ -95,7 +95,7 @@ den.aspects.networking = {
 
 **包含顺序无关紧要。** 无论消费者出现在生产者之前还是之后，结果都是相同的。
 
-## 管道阶段（8 种变换）
+## 管道阶段
 
 所有管道阶段通过 `den.lib.policy.pipe` 访问：
 
@@ -239,9 +239,9 @@ den.policies.backends-to-monitoring = { host, ... }:
 
 `pipe.as` 必须指向与源不同的 quirk。自指向会抛出错误。
 
-### `pipe.thunk`——配置相关惰性求值
+### 配置相关惰性求值（Config Thunk）
 
-Quirk 值可以依赖主机的 NixOS `config`：
+Quirk 值可以依赖主机的 NixOS `config`（没有 `pipe.thunk` 函数——thunk 是函数值 quirk 的隐式特性）：
 
 ```nix
 den.aspects.my-service = {

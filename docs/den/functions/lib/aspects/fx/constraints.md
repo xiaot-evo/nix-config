@@ -164,6 +164,8 @@ filterBy.global :: (Aspect -> Bool) -> ConstraintRecord
 }
 ```
 
+被谓词拒绝的方面得到与显式排除相同的墓碑处理。与 `exclude` 和 `substitute` 不同，过滤器在管道的 `check-constraint` 效果中返回决策而非直接阻塞。
+
 ### 示例
 ```nix
 {
@@ -179,10 +181,10 @@ filterBy.global :: (Aspect -> Bool) -> ConstraintRecord
 
 过滤器约束在 `constraintRegistryHandler` 中被评估。与 `exclude` 和 `substitute` 不同，过滤器在 `check-constraint` 效果中返回一个决策：
 
-```nix
+ ```nix
 # 过滤器决策
 if predicate aspect then
-  { action = "pass"; }
+  { action = "keep"; }
 else
   { action = "exclude"; owner = "filter:<predicate-id>"; };
 ```
@@ -234,12 +236,10 @@ scoped = mkFields: {
 
 约束存储在每个作用域的状态中：
 
-```nix
+ ```nix
 scopedConstraintRegistry = _: {
   "scope1" = {
-    "identity/path" = {
-      constraints = [ { type = "exclude"; owner = "..."; } ... ];
-    };
+    "identity/path" = [ { type = "exclude"; owner = "..."; } ... ];
     ...
   };
 };

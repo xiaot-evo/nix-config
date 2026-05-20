@@ -162,8 +162,8 @@ guard = { options, ... }: options ? wsl;
 
 | 电池 | 关系 |
 |---|---|
-| `den.batteries.os-user` | 使用 `den.lib.policy.route`（底层与 forward 共享机制）实现 `user` 类转发 |
-| `den.batteries.wsl` | 使用 guard 机制的 forward 模式 |
-| `den.batteries.os-class` | 使用 `route` 实现 `os` 类转发 |
+| `os-user` 模块 | 使用 `den.lib.policy.route`（底层与 forward 共享机制）实现 `user` 类转发 |
+| `wsl` 模块 | 使用 guard 机制的 forward 模式 |
+| `os-class` 模块 | 使用 `route` 实现 `os` 类转发 |
 | `den.batteries.define-user` | 不使用 forward，直接写入多个类 |
 | `den.batteries.import-tree` | 互补工具：import 进入模块，forward 分发内容 |

@@ -38,7 +38,7 @@ namespaceType :: SubmoduleType
   };
   
   # 自由形式：方面条目（前缀为命名空间名称的方面类型）
-  freeformType = mkAspectsType { providerPrefix = [ name ]; };
+  freeformType = (mkAspectsType { providerPrefix = [ name ]; }).aspectsType;
 }
 ```
 

@@ -16,19 +16,11 @@ Den 支持三种用户级家庭环境：
 
 ## 启用家庭环境
 
-### Home Manager
+Home Manager、Hjem 和 Nix-Maid 集成由 Den 框架通过模块自动激活——无需手动 `den.schema.host.includes` 引入。
 
-```nix
-{
-  # 集成 home-manager（通常由框架自动添加）
-  den.schema.host.includes = [ den.batteries.home-manager ];
+### 使用前提
 
-  # 声明用户默认使用 HM
-  den.schema.user.classes = [ "homeManager" ];
-}
-```
-
-需要 flake 中有 `home-manager` 输入：
+需要 flake 中有对应的输入：
 
 ```nix
 {
@@ -37,35 +29,26 @@ Den 支持三种用户级家庭环境：
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    hjem = { url = "github:feel-co/hjem"; };
+    nix-maid = { url = "github:maid-nix/maid"; };
   };
 }
 ```
 
-### Hjem
+然后在主机上为用户声明对应的 class：
 
 ```nix
 {
-  den.schema.host.includes = [ den.batteries.hjem ];
-
-  # 用户同时使用 HM 和 Hjem
-  den.schema.user.classes = [ "homeManager" "hjem" ];
+  den.hosts.x86_64-linux.igloo.users.tux = {
+    classes = [ "homeManager" ];     # 启用 Home Manager
+    # classes = [ "hjem" ];          # 启用 Hjem
+    # classes = [ "maid" ];          # 启用 Nix-Maid
+    # classes = [ "homeManager" "hjem" ];  # 同时启用 HM + Hjem
+  };
 }
 ```
 
-需要 `inputs.hjem`。
-
-### Nix-Maid
-
-```nix
-{
-  den.schema.host.includes = [ den.batteries.maid ];
-
-  # 用户使用 maid 替代 HM
-  den.schema.user.classes = [ "maid" ];
-}
-```
-
-需要 `inputs.nix-maid`。
+主机管理模式下，若同时使用 `den.batteries.host-aspects` 电池，该电池会为用户自动回退到 `homeManager` class。
 
 ## 主机管理的家庭配置 vs 独立家庭配置
 
@@ -225,12 +208,7 @@ Den 支持三种用户级家庭环境：
 
 ```nix
 {
-  # 同时启用
-  den.schema.host.includes = [
-    den.batteries.home-manager
-    den.batteries.hjem
-  ];
-
+  # 同时启用（电池已由框架自动激活）
   den.hosts.x86_64-linux.igloo.users.alice = {
     classes = [ "homeManager" "hjem" ];
   };
@@ -355,10 +333,8 @@ Den 支持主机和用户之间互相交付配置，这是其最强大的特性�
 
 ```nix
 { lib, pkgs, den, ... }: {
-  # ====== 启用 HM ======
-  den.schema.host.includes = [ den.batteries.home-manager ];
-  den.schema.user.classes = [ "homeManager" ];
-
+  # ====== HM 已由框架自动激活 ======
+  
   # ====== 主机声明 ======
   den.hosts.x86_64-linux.igloo = {
     hostName = "nixos-test";
@@ -434,8 +410,7 @@ Den 支持主机和用户之间互相交付配置，这是其最强大的特性�
 
 ```nix
 { den, ... }: {
-  # 启用 HM
-  den.schema.host.includes = [ den.batteries.home-manager ];
+  # HM 已由框架自动激活
 
   # 独立家庭：绑定到 igloo 的 tux
   den.homes.x86_64-linux."tux@igloo" = { };
@@ -463,12 +438,8 @@ Den 支持主机和用户之间互相交付配置，这是其最强大的特性�
 
 ```nix
 { den, ... }: {
-  # 同时启用 HM 和 Hjem
-  den.schema.host.includes = [
-    den.batteries.home-manager
-    den.batteries.hjem
-  ];
-
+  # HM 和 Hjem 已由框架自动激活
+  
   den.hosts.x86_64-linux.workstation.users.alice = {
     classes = [ "homeManager" "hjem" ];
   };
@@ -500,9 +471,9 @@ Den 支持主机和用户之间互相交付配置，这是其最强大的特性�
 ```nix
 {
   den.schema.user.includes = [
-    # 仅当用户启用了 vim 时才生效
+    # 仅当用户包含某个方面时才生效
     den.lib.policy.when
-      ({ config, ... }: config.programs.vim.enable)
+      ({ hasAspect, ... }: hasAspect "vim-aspect")
       (den.lib.policy.include {
         homeManager.home.keyboard.model = "vim-friendly";
       })

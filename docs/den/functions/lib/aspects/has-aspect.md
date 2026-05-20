@@ -151,7 +151,7 @@ refKey = ref:
   if (ref ? name) && (ref ? meta) then
     pathKey (aspectPath ref)
   else
-    throw "hasAspect: ref must have both `name` and `meta`";
+    throw "hasAspect: ref must have both `name` and `meta` (got ${builtins.typeOf ref}).";
 ```
 
 确保 ref 具有完整的身份信息（通过 `mergeWithAspectMeta` 注入的 `name` 和 `meta`）。否则抛出一个明确的错误。

@@ -134,5 +134,5 @@ userToHostContext = { user, host, ... }: {
 |---|---|
 | `den.batteries.define-user` | 前置依赖，必须先创建用户才能设置为主用户 |
 | `den.batteries.user-shell` | 常配合使用，设置主用户的默认 shell |
-| `den.batteries.wsl` | 本电池的 `wsl.defaultUser` 需要在 WSL 模块加载后才生效 |
+| WSL 模块 | 本电池的 `wsl.defaultUser` 需要在 WSL 模块加载后才生效 |
 | `den.batteries.hostname` | 同为主机层配置电池 |

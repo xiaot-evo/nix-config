@@ -15,10 +15,10 @@
 assemblePipes : {
   scopeContexts :: AttrSet ScopeId Context,
   scopedClassImports :: AttrSet ScopeId (AttrSet ClassName [Entry]),
-  scopedPipeEffects :: AttrSet ScopeId [PipeEffect],
-  scopeParent :: AttrSet ScopeId ScopeId,
-  scopeEntityKind :: AttrSet ScopeId String,
-  hostConfigs :: AttrSet ScopeId Config
+  scopedPipeEffects ? :: AttrSet ScopeId [PipeEffect],
+  scopeParent ? :: AttrSet ScopeId ScopeId,
+  scopeEntityKind ? :: AttrSet ScopeId String,
+  hostConfigs ? :: AttrSet ScopeId Config
 } -> AttrSet ScopeId Context
 ```
 
@@ -231,7 +231,7 @@ asResults = lib.concatMap (e:
 assertNoSelfAs = effect:
   let target = getAsTarget effect; in
   if target != null && target == effect.pipeName then
-    throw "den: pipe.as targets its own pipe '${effect.pipeName}' — this is a no-op that silently drops data."
+    throw "den: pipe.as targets its own pipe '${effect.pipeName}' — this is a no-op that silently drops data. Remove the pipe.as stage or target a different pipe."
   else true;
 ```
 

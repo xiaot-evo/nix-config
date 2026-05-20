@@ -92,9 +92,10 @@ includeIf = guardFn: aspects: {
 };
 ```
 
-```nix
+ ```nix
 # 形态路由器（compileHandler）中的检测逻辑
-isConditional = aspect.meta.guard or null != null && !aspect.meta.deferred or false;
+isConditional = aspect.meta ? guard;
+# 延迟的条件会在 deferConditional 中移除 meta.guard，因此不会再次匹配
 ```
 
 ```nix

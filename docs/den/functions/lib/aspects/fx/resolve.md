@@ -148,8 +148,12 @@ dedupProvides = raw:
     go = seen: specs:
       if specs == [ ] then [ ]
       else
-        let s = builtins.head specs; in
-        let key = "${s.__providePolicyName}/${s.class}/${lib.concatStringsSep "/" (s.path or [ ])}"; in
+        let
+          s = builtins.head specs;
+          rest = builtins.tail specs;
+          pn = s.__providePolicyName or null;
+          key = if pn != null then "${pn}/${s.class}/${lib.concatStringsSep "/" (s.path or [ ])}" else null;
+        in
         if key != null && seen ? ${key} then go seen rest
         else [ s ] ++ go (if key != null then seen // { ${key} = true; } else seen) rest;
   in go { } raw;
@@ -208,17 +212,26 @@ applyInstantiates : {
 ```nix
 findHostScopeId = scopeParent: allScopeIds: spec:
   let
-    sid = spec.sourceScopeId;
-    entityName = spec.name;
+    sid = spec.sourceScopeId or null;
+    entityName = spec.name or null;
     # 查找源作用域的子作用域中匹配实体名称的
-    children = builtins.filter
-      (scopeId: scopeId != sid && (scopeParent.${scopeId} or null) == sid)
-      allScopeIds;
-    matchByName = builtins.filter
-      (scopeId: lib.hasInfix "=${entityName}" scopeId) children;
+    children =
+      if sid != null then
+        builtins.filter (scopeId: scopeId != sid && (scopeParent.${scopeId} or null) == sid) allScopeIds
+      else [ ];
+    matchByName =
+      if entityName != null then
+        builtins.filter (scopeId: lib.hasInfix "=${entityName}" scopeId) children
+      else [ ];
     # 首选最短作用域 ID（实体自身的作用域）
-    bestMatch = if builtins.length matchByName <= 1 then matchByName
-      else [ (builtins.head (builtins.sort ... matchByName)) ];
+    bestMatch =
+      if builtins.length matchByName <= 1 then
+        matchByName
+      else
+        let
+          sorted = builtins.sort (a: b: builtins.stringLength a < builtins.stringLength b) matchByName;
+        in
+        [ (builtins.head sorted) ];
   in
   if bestMatch != [ ] then builtins.head bestMatch
   else if spec ? mainModule && builtins.length children == 1 then builtins.head children

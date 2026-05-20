@@ -68,17 +68,18 @@ g = diag.graph.build {
 
 ## graph.ofHost — 从主机构建图
 
-通过 `context.nix` 中的 `hostContext` + `buildGraph` 组合实现。是 `diag.hostContext` 的别名。
+对 `context.nix` 中 `hostContext` 的精简封装，去除了 `rootAspect`、`pathSets`、`classes` 等辅助字段，仅返回纯图 IR。
 
 ```nix
 # 等同于：
-g = diag.hostContext { inherit host; };
+g = builtins.removeAttrs (diag.hostContext { inherit host; }) [ "rootAspect" "pathSets" "classes" ];
 ```
 
 简便调用，自动封装：
 1. 调用 `resolveEntity "host" { inherit host; }`
-2. 调用 `captureAll` 捕获所有类
+2. 调用 `captureWithPathsWith` 捕获所有类及路径集
 3. 调用 `buildGraph` 构建 IR
+4. 去除辅助字段后返回纯图
 
 ---
 

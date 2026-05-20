@@ -54,9 +54,6 @@
 | [types](./functions/lib/types.md) | 库类型导出 |
 | [nsTypes](./functions/lib/nsTypes.md) | namespaceType（`den.ful` 选项类型） |
 | [fx](./functions/lib/fx.md) | `den.lib.fx` — nix-effects 代数效果库重导出 |
-| [evalModules](./functions/lib/evalModules.md) | evalModules 使用参考 |
-
-注：`den.lib.parametric` 和 `den.lib.take` 已弃用（排期移除），本文档不再收录。
 
 ### FX 管道
 

@@ -12,29 +12,32 @@
 
 ### 签名
 ```nix
-structuredTraceHandler :: Handler
+structuredTraceHandler :: String -> Handler
 ```
 
 ### 用途
 
-最小跟踪处理程序。累积解析完成事件的条目，不进行消歧。用于轻量级诊断和构建基础跟踪数据集。
+最小跟踪处理程序。累积解析完成事件的条目，不进行消歧。用于轻量级诊断和构建基础跟踪数据集。以 class 名为参数创建处理程序。
 
 ### 捕获的事件
 
 | 效果键 | 事件 | 记录内容 |
 |--------|------|----------|
-| `resolve-complete` | 方面解析完成 | name、parent、entityKind、provider、excluded 状态 |
+| `resolve-complete` | 方面解析完成 | name、parent、entityKind、provider、excluded 等 |
 
 ### 条目结构
 
-每个跟踪条目包含：
+通过 `mkBaseEntry` 构建，每个条目包含 `class`、`provider`、`excluded`、`excludedFrom`、`replacedBy`、`isProvider`、`handlers`、`hasClass`、`isParametric`、`fnArgNames`，再加上处理程序添加的 `name`、`parent`、`entityKind`：
 ```nix
 {
-  name = "entity-name";
-  parent = "parent-scope-id";
-  entityKind = "host" | "user" | "home" | ...;
+  name = "<anon>";
+  parent = null;        # 或父作用域路径
+  entityKind = "host";
   provider = [ "namespace" "aspects" "entity" ];
   excluded = false;
+  class = "nixos";
+  isProvider = true;
+  hasClass = true;
 }
 ```
 
@@ -45,14 +48,12 @@ structuredTraceHandler :: Handler
 let
   pipeline = den.lib.aspects.fx.pipeline.mkPipeline {
     class = "nixos";
-    extraHandlers = {
-      trace = den.lib.aspects.fx.trace.structuredTraceHandler;
-    };
+    extraHandlers = den.lib.aspects.fx.trace.structuredTraceHandler "nixos";
   };
   result = pipeline { self = myAspect; ctx = { }; };
 in
-result.state.scopedTrace
-# → { scope-id = [ { name = "igloo"; entityKind = "host"; ... } ... ] }
+result.state.entries
+# → [ { name = "igloo"; entityKind = "host"; ... } ]
 ```
 
 ---
@@ -61,54 +62,64 @@ result.state.scopedTrace
 
 ### 签名
 ```nix
-tracingHandler :: Handler
+tracingHandler :: String -> Handler
 ```
 
 ### 用途
 
-完整跟踪处理程序。捕获管道执行期间的所有关键事件，包括解析、编译、类发射、管道效果注册和策略触发。对匿名条目使用实体类型标签进行消歧。
+完整跟踪处理程序。捕获管道执行期间的所有关键事件，包括解析、编译、管道效果注册和策略触发。对匿名条目使用实体类型标签进行消歧。以 class 名为参数创建处理程序。
 
 ### 捕获的事件
 
 | 效果键 | 事件 | 记录内容 |
 |--------|------|----------|
-| `resolve` | 开始解析 | 方面、身份、上下文、门控状态 |
-| `resolve-complete` | 解析完成 | 名称、父作用域、实体类型、提供者、排除状态 |
-| `emit-class` | 类模块发射 | 类名、模块内容 |
-| `register-pipe-effect` | 管道效果注册 | 提供者/消费者信息 |
-| `record-fired` | 策略触发 | 策略名称、触发上下文 |
+| `resolve` | 开始解析 | 将 entityKind 写入 entityKindMap |
+| `resolve-complete` | 解析完成 | 名称、entityKind、entityInstance、父作用域、ctxTrace |
+| `emit-class` | 管道类发射 | pipeName、aspectIdentity、scope（仅管道条目） |
+| `register-pipe-effect` | 管道效果注册 | pipeName、hasCollect、stageTypes、scope |
+| `record-fired` | 策略触发 | 策略名称、entityKind、entityInstance |
+
+> 注意：模块内容的实际收集由 `class-collector` 处理程序的 `emit-class` 效果完成，而非 tracingHandler。
 
 ### 匿名条目消歧
 
-当实体没有显式名称时，`tracingHandler` 使用 `entityKind/resolve(aspect):provider` 格式生成消歧标签：
+当实体没有显式名称时，`tracingHandler` 使用以下消歧逻辑：
 
 ```nix
-resolveEntityName = scopeContext: scopeContext.${entityKind}.name or (
-  "${entityKind}/resolve(aspect):${formatProviders provider}"
-);
+name =
+  if isAnon && constraintOwner != null then "filter:${constraintOwner}"
+  else if isAnon && entityKind != null then
+    "${entityKind}/resolve${aspectTag}:${provTag}"
+  else if isAnon && sourcePolicyName != null then "policy:${sourcePolicyName}"
+  else if isParametricAnon then "<parametric:{${fnArgs}}>"
+  else rawName;
 ```
 
 这使得即使匿名条目也能在跟踪输出中区分。
+
+> `resolveEntityName` 实际实现仅通过 `scopeCtx.${ek}.name or ek` 解析实体名称，不涉及消歧逻辑。消歧完全在上述 `name` 绑定中处理。
 
 ### 条目结构
 
 ```nix
 {
-  # resolve-complete 条目
+  # resolve-complete 条目（由 mkBaseEntry 构建）
   name = "igloo";
   parent = "__unscoped";
   entityKind = "host";
+  entityInstance = "host:igloo";
+  class = "nixos";
   provider = [ "den" "aspects" "igloo" ];
   excluded = false;
-  
-  # 额外的 tracingHandler 字段
-  producers = [ 1 2 3 ];     # 管道效果生产者
-  consumers = [ 4 5 ];        # 管道效果消费者
-  firedPolicies = [           # 已触发的策略
-    { name = "myPolicy"; scope = "scope-id"; ... }
-  ];
+  isProvider = true;
+  hasClass = true;
 }
 ```
+
+此外，状态中独立维护：
+- `state.pipeProducers` — `emit-class` 管道条目：`{ pipeName, aspectIdentity, scope }`
+- `state.pipeConsumers` — `register-pipe-effect` 条目：`{ pipeName, hasCollect, scope, stageTypes }`
+- `state.ctxTrace` — 按 entityKind 去重的上下文条目：`{ key, selfName, entityKind, ctxKeys }`
 
 ### 使用示例
 
@@ -117,14 +128,12 @@ resolveEntityName = scopeContext: scopeContext.${entityKind}.name or (
 let
   pipeline = den.lib.aspects.fx.pipeline.mkPipeline {
     class = "nixos";
-    extraHandlers = {
-      trace = den.lib.aspects.fx.trace.tracingHandler;
-    };
+    extraHandlers = den.lib.aspects.fx.trace.tracingHandler "nixos";
   };
   result = pipeline { self = myAspect; ctx = { }; };
 in
-result.state.scopedTrace
-# → 包含所有解析、发射、注册和触发事件的完整跟踪
+result.state.entries
+# → 包含所有解析、注册和触发事件的完整跟踪
 ```
 
 ---
@@ -133,19 +142,18 @@ result.state.scopedTrace
 
 ### 签名
 ```nix
-deriveEntityKind :: AttrSet -> (String | Null)
+deriveEntityKind :: State -> (String | Null)
 ```
 
 ### 用途
 
-从方面条目的 `includes` 链中推导实体类型。遍历 includes 链并查找 `__entityKind` 标记。
+从管道状态的 `scopedIncludesChain` 中推导实体类型。在 entityKindMap 中查找祖先的 entityKind，回退到扫描已有 entries。
 
 ### 实现简析
 
-1. 检查条目本身是否有 `__entityKind`
-2. 如果没有，遍历 `includes` 链
-3. 对每个 include 递归调用 `deriveEntityKind`
-4. 找到的第一个非空 `__entityKind` 即为结果
+1. 从 `state.scopedIncludesChain` 中获取当前作用域的包含链
+2. 对链中每个身份：先查 `entityKindMap`，再在 entries 中按 `e.path or e.name` 匹配
+3. 返回链中第一个非空 entityKind（从叶子向上）
 
 ---
 
@@ -153,18 +161,18 @@ deriveEntityKind :: AttrSet -> (String | Null)
 
 ### 签名
 ```nix
-chainParent :: AttrSet -> (String | Null)
+chainParent :: [String] -> String -> (String | Null)
 ```
 
 ### 用途
 
-在包含链（includes chain）中找到最近的"有意义的"祖先作用域。跳过中间作用域，返回最近的具名祖先。
+在包含链（includes chain）中找到最近的"有意义的"祖先作用域。跳过 selfPath 本身和匿名中间节点。
 
 ### 实现简析
 
-1. 从当前条目开始，沿 `includes` 链向上查找
-2. 对每个祖先，检查是否有可见的名称（`name` 属性）
-3. 返回第一个有名称的祖先的 ID；如果没有，返回 `null`
+1. 过滤掉 selfPath（避免自引用）
+2. 在剩余条目中查找有意义名称（通过 `isMeaningfulName`）且不含 `<anon>` 的
+3. 如有，返回最后一个（最近的）；如无，返回最后一个非 self 的；否则返回 `null`
 
 ---
 
@@ -172,30 +180,38 @@ chainParent :: AttrSet -> (String | Null)
 
 ### 签名
 ```nix
-mkBaseEntry :: {
-  name        :: String,
-  parent      :: String,
-  entityKind  :: String,
-  provider    :: [String],
-  excluded    :: Bool
-} -> TraceEntry
+mkBaseEntry :: String -> Param -> TraceEntry
 ```
 
 ### 用途
 
-创建共享的跟踪条目基础结构。所有跟踪条目（无论来自哪个处理程序）共用的字段在此构建。
+创建共享的跟踪条目基础结构。从 `param.meta` 中提取所有跟踪条目共用的字段，而非接收独立参数。
+
+### 字段来源
+
+| 字段 | 来源 |
+|------|------|
+| `class` | `class` 参数 |
+| `provider` | `param.meta.provider or [ ]` |
+| `excluded` | `param.meta.excluded or false` |
+| `excludedFrom` | `param.meta.excludedFrom or null` |
+| `replacedBy` | `param.meta.replacedBy or null` |
+| `isProvider` | `(param.meta.provider or [ ]) != [ ]` |
+| `handlers` | `param.meta.handleWith or [ ]` |
+| `hasClass` | `param ? ${class}` |
+| `isParametric` | `param.meta.isParametric or false` |
+| `fnArgNames` | `param.meta.fnArgNames or [ ]` |
 
 ### 使用示例
 
 ```nix
-mkBaseEntry {
-  name = "igloo";
-  parent = "__unscoped";
-  entityKind = "host";
-  provider = [ "den" "aspects" "igloo" ];
-  excluded = false;
+mkBaseEntry "nixos" {
+  meta = {
+    provider = [ "den" "aspects" "igloo" ];
+    excluded = false;
+  };
 }
-# → { name = "igloo"; parent = "__unscoped"; entityKind = "host"; ... }
+# → { class = "nixos"; provider = [ "den" "aspects" "igloo" ]; excluded = false; ... }
 ```
 
 ---
@@ -209,7 +225,7 @@ mkBaseEntry {
 { param, state } -> { resume :: Any, state :: State }
 ```
 
-状态中包含 `scopedTrace` 字段，按作用域 ID 累积跟踪条目。
+状态中包含 `entries` 字段，以列表形式累积跟踪条目。
 
 ### `structuredTraceHandler` vs `tracingHandler`
 
@@ -217,21 +233,19 @@ mkBaseEntry {
 |------|----------------------|----------------|
 | 捕获事件数 | 1（resolve-complete） | 5（resolve、resolve-complete、emit-class、register-pipe-effect、record-fired） |
 | 匿名消歧 | 无 | entityKind 标签消歧 |
-| 管道效果追踪 | 无 | 记录生产者/消费者 |
-| 策略触发记录 | 无 | 记录触发策略 |
+| 管道效果追踪 | 无 | 记录 pipeProducers/pipeConsumers |
+| 策略触发记录 | 无 | 记录 policyDispatch 条目 |
 | 适用场景 | 轻量诊断、基础图 | 完整调试、图表生成 |
 
 ### 状态结构
 
 ```nix
 {
-  scopedTrace = {
-    scope-id = [ entries ];
-  };
+  entries = [ entry1 entry2 ... ];
 }
 ```
 
-每次事件触发时，将新条目追加到当前作用域的 `scopedTrace` 列表中。
+每次事件触发时，将新条目追加到 `entries` 列表中。
 
 ---
 

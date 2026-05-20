@@ -1,4 +1,4 @@
-# den.batteries.os-user
+# os-user (自动注册模块)
 
 **源文件**: `modules/aspects/batteries/os-user.nix`
 
@@ -142,5 +142,5 @@ den.policies.user-to-host = { user, host, ... }: [
 | `den.batteries.define-user` | 完整用户创建方案，依赖 home-manager |
 | `den.batteries.primary-user` | 可在 `user` 类之上添加主要用户组 |
 | `den.batteries.user-shell` | 可在 `user` 类之上设置 shell |
-| `den.batteries.os-class` | 同类模式：提供便利类 + 策略转发 |
+| `os-class` 模块 | 同类模式：提供便利类 + 策略转发 |
 | `den.batteries.forward` | 底层机制，本电池的 `route` 调用本质上是 forward 的一种 |

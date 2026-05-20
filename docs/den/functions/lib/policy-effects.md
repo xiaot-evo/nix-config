@@ -203,7 +203,7 @@ den.lib.policy.provide {
 
 ## den.lib.policy.pipe.from
 
-**签名**: `(pipeName: string, stages: [stage]) → effect`
+**签名**: `(pipeName: string | ref, stages: [stage]) → effect`
 
 ### 用途
 
