@@ -33,17 +33,17 @@
             enableClipboardPaste = true; # Pasting items from the clipboard (wtype)
 
             settings = readjson ./settings.json [
-              "currentThemeName"
-              "customThemeFile"
-              "dockTransparency"
-              "fontFamily"
-              "popupTransparency"
-              "theme"
+              # "currentThemeName"
+              # "customThemeFile"
+              # "dockTransparency"
+              # "fontFamily"
+              # "popupTransparency"
+              # "theme"
             ];
             session = readjson ./session.json [
-              "wallpaperPath"
-              "wallpaperPathDark"
-              "wallpaperPathLight"
+              # "wallpaperPath"
+              # "wallpaperPathDark"
+              # "wallpaperPathLight"
             ];
             clipboardSettings = {
               maxHistory = 25;

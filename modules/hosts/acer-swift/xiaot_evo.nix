@@ -18,7 +18,7 @@
         services.dae
         services.ly
         # services.greetd
-        services.udisks
+        services.udiskie
         services.printing
         services.kdeconnect
         system.fonts

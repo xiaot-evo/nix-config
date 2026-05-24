@@ -1,6 +1,6 @@
 { den, ... }:
 {
-  den.aspects.services.udisks = {
+  den.aspects.services.udiskie = {
     nixos = {
       services.udisks2 = {
         enable = true;

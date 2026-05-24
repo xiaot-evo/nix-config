@@ -10,6 +10,8 @@
           settings = {
             command = "${self'.packages.fish}/bin/fish";
             # command = "${pkgs.nushell}/bin/nu";
+            # theme
+            theme = "dankcolors";
             # 窗口装饰
             window-decoration = "none";
             # 背景不透明度
