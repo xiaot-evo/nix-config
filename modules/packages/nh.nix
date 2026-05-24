@@ -4,6 +4,9 @@
   perSystem =
     { pkgs, ... }:
     {
-      packages = den.lib.nh.denPackages { fromFlake = true; } pkgs;
+      packages = den.lib.nh.denPackages {
+        fromFlake = true;
+        defaultArgs = [ "--accept-flake-config" ];
+      } pkgs;
     };
 }

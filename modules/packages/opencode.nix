@@ -3,7 +3,7 @@
   perSystem =
     { system, pkgs, ... }:
     {
-      packages.myopencode =
+      packages.opencode =
         let
           pkgs = import inputs.nixpkgs {
             inherit system;
@@ -14,11 +14,18 @@
           pkgs = pkgs;
           settings = {
             theme = "opencode";
+            # providers = [ ]; # <-- add this
+            # agents = { };
             plugin = [
               "opencode-antigravity-auth@latest"
               "@tarquinen/opencode-dcp@latest"
               "superpowers@git+https://github.com/obra/superpowers.git"
             ];
+            # lsp.nixd = {
+            #   disabled = false;
+            #   command = "nixd";
+            #   initialization = { };
+            # };
             mcp.nixos = {
               enabled = true;
               type = "local";
