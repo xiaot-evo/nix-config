@@ -1,6 +1,6 @@
 { den, ... }:
 {
-  den.aspects.apps.ghostty = {
+  den.aspects.apps.terminals.ghostty = {
     includes = [ den.batteries.self' ];
     homeManager =
       { pkgs, self', ... }:

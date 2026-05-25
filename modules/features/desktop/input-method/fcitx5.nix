@@ -1,6 +1,6 @@
 { den, ... }:
 {
-  den.aspects.apps.input-method.fcitx5 = {
+  den.aspects.desktop.input-method.fcitx5 = {
     homeManager =
       { config, pkgs, ... }:
       {

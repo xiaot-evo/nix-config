@@ -1,6 +1,6 @@
 { den, inputs, ... }:
 {
-  den.aspects.apps.zen-browser = {
+  den.aspects.apps.browsers.zen-browser = {
     homeManager = {
       imports = [ inputs.zen-browser.homeModules.beta ];
       programs.zen-browser = {
