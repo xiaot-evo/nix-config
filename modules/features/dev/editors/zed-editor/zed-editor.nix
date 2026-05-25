@@ -14,6 +14,7 @@
           package = pkgs.zed-editor;
           extraPackages = with pkgs; [
             nixd
+            nil
             nixfmt
             package-version-server
             yaml-language-server
