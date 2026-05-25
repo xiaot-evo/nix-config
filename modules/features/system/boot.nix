@@ -28,9 +28,8 @@
           kernelParams = [
             "quiet"
             "splash"
-            "boot.shell_on_fail"
-            "udev.log_priority=3"
-            "rd.systemd.show_status=auto"
+            "udev.log_level=3"
+            "systemd.show_status=auto"
             "drm.edid_firmware=eDP-1:edid/1080p80.bin"
             "zswap.enabled=1" # enables zswap
             "zswap.compressor=lz4" # compression algorithm
