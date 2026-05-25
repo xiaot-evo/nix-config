@@ -6,27 +6,14 @@
         "nixd"
         "!nil"
       ];
-      # formatter = {
-      #   external = {
-      #     command = "nixfmt";
-      #     arguments = [ "--quiet" ];
-      #   };
-      # };
     };
   };
   lsp = {
     nixd = {
-      # initialization_options = {
-      #   formatting = {
-      #     command = [
-      #       "${pkgs.nixfmt}/bin/nixfmt"
-      #     ];
-      #   };
-      # };
       settings = {
         nixpkgs = {
           # For flake.
-          expr = "import (builtins.getFlake (builtins.toString ./.)).inputs.nixpkgs { }   ";
+          expr = "import (builtins.getFlake (builtins.toString \"./.\")).inputs.nixpkgs { }   ";
 
           # This expression will be interpreted as "nixpkgs" toplevel
           # Nixd provides package, lib completion/information from it.
@@ -51,22 +38,19 @@
           # the expression directly.
           #
           nixos = {
-            expr = "(builtins.getFlake (builtins.toString ./.)).nixosConfigurations.nixos.options";
+            expr = "(builtins.getFlake (builtins.toString \"./.\")).nixosConfigurations.acer-swift.options";
           };
 
-          # Before configuring Home Manager options, consider your setup =
-          # Which command do you use for home-manager switching?
-          #
-          # A. home-manager switch --flake .#... (standalone Home Manager)
-          # B. nixos-rebuild switch --flake .#... (NixOS with integrated Home Manager)
-          #
-          # Configuration examples for both approaches are shown below.
           home-manager = {
-            # A =
-            expr = "(builtins.getFlake (builtins.toString ./.)).homeConfigurations.xiaot_evo.options";
-
-            # B =
-            # "expr" = "(builtins.getFlake (builtins.toString ./.)).nixosConfigurations.<name>.options.home-manager.users.type.getSubOptions []"
+            expr = "(builtins.getFlake (builtins.toString \"./.\")).nixosConfigurations.acer-swift.options.home-manager.users.type.getSubOptions []";
+          };
+          # Den framework options (den.aspects, den.batteries, den.hosts, etc.)
+          den = {
+            expr = "(builtins.getFlake (builtins.toString \"./.\")).debug.options.den.type.getSubOptions []";
+          };
+          # For a `perSystem` flake-parts option
+          flake-parts = {
+            expr = "(builtins.getFlake \"./.\").currentSystem.options";
           };
         };
         # Control the diagnostic system

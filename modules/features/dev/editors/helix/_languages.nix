@@ -29,7 +29,7 @@
         config.nixd = {
           nixpkgs = {
             # 用于 flake。
-            expr = "import (builtins.getFlake \"/home/xiaot_evo/NixOS/\").inputs.nixpkgs { }";
+            expr = "import (builtins.getFlake (builtins.toString ./.)).inputs.nixpkgs { }";
             # 这个表达式将被解释为 "nixpkgs" 的顶层
             # Nixd 会从中提供包、库的补全/信息。
             #
@@ -53,20 +53,16 @@
             # 该表达式来进行验证。
             #
             nixos = {
-              expr = "(builtins.getFlake (builtins.toString ./.)).nixosConfigurations.nixos.options";
+              expr = "(builtins.getFlake (builtins.toString ./.)).nixosConfigurations.acer-swift.options";
             };
-            # 在配置 Home Manager 选项之前，请考虑你的环境设置：
-            # 你使用哪个命令来切换 home-manager？
-            #
-            #  A. home-manager switch --flake .#... (独立的 Home Manager)
-            #  B. nixos-rebuild switch --flake .#... (集成了 Home Manager 的 NixOS)
-            #
-            # 两种方法的配置示例在下方给出。
             home-manager = {
-              # A:
-              expr = "(builtins.getFlake (builtins.toString ./.)).homeConfigurations.xiaot_evo.options";
-              # B:
-              # expr = "(builtins.getFlake (builtins.toString ./.)).nixosConfigurations.<name>.options.home-manager.users.type.getSubOptions []";
+              expr = "(builtins.getFlake (builtins.toString ./.)).nixosConfigurations.acer-swift.options.home-manager.users.type.getSubOptions []";
+            };
+            den = {
+              expr = "(builtins.getFlake (builtins.toString ./.)).debug.options.den.type.getSubOptions []";
+            };
+            flake-parts = {
+              expr = "(builtins.getFlake \"./.\").currentSystem.options";
             };
           };
           # 控制诊断系统

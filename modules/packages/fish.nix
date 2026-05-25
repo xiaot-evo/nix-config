@@ -8,7 +8,7 @@
         configFile.content = "
           set fish_greeting # Disable greeting
           ${self'.packages.starship}/bin/starship init fish | source
-          devenv hook fish | source
+          # devenv hook fish | source
         ";
       };
     };

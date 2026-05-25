@@ -6,7 +6,6 @@
         enable = true;
         x11Support = true;
         settings = {
-
         };
       };
     };
