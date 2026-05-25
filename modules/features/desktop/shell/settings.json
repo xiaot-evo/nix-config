@@ -1,6 +1,6 @@
 {
-  "currentThemeName": "custom",
-  "currentThemeCategory": "generic",
+  "currentThemeName": "dynamic",
+  "currentThemeCategory": "dynamic",
   "customThemeFile": "/nix/store/b7580sk6hhfqvfscd9gjqbw1snfllc9s-dankMaterialShell-stylix-color-theme.json",
   "registryThemeVariants": {},
   "matugenScheme": "scheme-tonal-spot",
@@ -124,8 +124,8 @@
       "width": 25
     },
     {
-      "id": "battery",
       "enabled": true,
+      "id": "battery",
       "width": 50
     },
     {
@@ -312,7 +312,7 @@
   "muxUseCustomCommand": false,
   "muxCustomCommand": "",
   "muxSessionFilter": "",
-  "runDmsMatugenTemplates": false,
+  "runDmsMatugenTemplates": true,
   "matugenTemplateGtk": true,
   "matugenTemplateNiri": true,
   "matugenTemplateHyprland": false,

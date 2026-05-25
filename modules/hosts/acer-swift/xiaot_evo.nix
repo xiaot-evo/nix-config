@@ -17,19 +17,19 @@
       ++ (with den.aspects; [
         services.dae
         services.ly
-        # services.greetd
         services.udiskie
         services.printing
         services.kdeconnect
         system.fonts
         desktop.wm.niri
         desktop.shell.dms-shell
-        # desktop.budgie
+        desktop.input-method.fcitx5
+        preference.cursor-theme
+        preference.icon-theme
         dev.editors.zed-editor
         dev.editors.helix
-        apps.input-method.fcitx5
-        apps.ghostty
-        apps.zen-browser
+        apps.terminals.ghostty
+        apps.browsers.zen-browser
       ]);
 
     homeManager =
@@ -44,6 +44,7 @@
           ])
           ++ (with pkgs; [
             ## cmd
+            fastfetch
             devenv
             yazi
             android-tools
@@ -66,10 +67,9 @@
       };
 
     provides.to-hosts.nixos = {
-      # users.users.xiaot_evo.extraGroups = [
-      #   "wheel"
-      #   "networkmanager"
-      # ];
+      nix.settings.trusted-users = [
+        "xiaot_evo"
+      ];
     };
   };
 }

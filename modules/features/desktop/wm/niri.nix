@@ -8,7 +8,6 @@
         withXDG = true;
         useNautilus = true;
       };
-      services.gnome.gnome-keyring.enable = true;
     };
     homeManager =
       { pkgs, lib, ... }:

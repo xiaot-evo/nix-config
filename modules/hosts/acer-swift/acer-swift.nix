@@ -24,23 +24,11 @@
     nixos =
       { pkgs, lib, ... }:
       {
-        nix.settings.trusted-users = [
-          "root"
-          "xiaot_evo"
-        ];
-        environment.defaultPackages = with pkgs; [
-          wayland
-        ];
       };
 
     provides.to-users.homeManager =
       { pkgs, ... }:
       {
-        home.packages = with pkgs; [
-          fastfetch
-          vim
-          wget
-        ];
       };
   };
 }
