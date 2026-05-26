@@ -57,10 +57,40 @@
 
             screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
             window-rule = [
-              # {
-              #   # match = { };
-              #   # block-out-from = "screen-capture";
-              # }
+              {
+                match._props.app-id = "zen-beta";
+                opacity = 0.9;
+                open-maximized = true;
+                background-effect = {
+                  xray = true;
+                  blur = true;
+                };
+              }
+              {
+                match._props.app-id = "com.mitchellh.ghostty";
+                opacity = 0.9;
+                background-effect = {
+                  xray = true;
+                  blur = true;
+                };
+              }
+              {
+                match._props.app-id = "dev.zed.Zed";
+                opacity = 0.9;
+                open-maximized = true;
+                background-effect = {
+                  xray = true;
+                  blur = true;
+                };
+              }
+              {
+                # match = { };
+                # block-out-from = "screen-capture";
+                default-column-width = {
+                  proportion = 0.75;
+                };
+                clip-to-geometry = true;
+              }
               {
                 match = {
                   _props = {
