@@ -1,11 +1,17 @@
-{ pkgs, lib, config, inputs, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  inputs,
+  ...
+}:
 
 {
   # https://devenv.sh/basics/
   env.GREET = "devenv";
 
   # https://devenv.sh/packages/
-  packages = [ pkgs.git ];
+  # packages = [ pkgs.git ];
 
   # https://devenv.sh/languages/
   # languages.rust.enable = true;
@@ -19,6 +25,17 @@
   # https://devenv.sh/scripts/
   scripts.hello.exec = ''
     echo hello from $GREET
+  '';
+  scripts.flake-write.exec = ''
+    nix run .#write-flake
+  '';
+  scripts.build.exec = ''
+    nix run  .#${builtins.replaceStrings [ "\n" ] [ "" ] (builtins.readFile /etc/hostname)}  --impure
+  '';
+  scripts.build-switch.exec = ''
+    nix run  .#${
+      builtins.replaceStrings [ "\n" ] [ "" ] (builtins.readFile /etc/hostname)
+    }  -- switch --impure
   '';
 
   # https://devenv.sh/basics/
