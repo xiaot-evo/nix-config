@@ -1,5 +1,4 @@
 {
-  self',
   pkgs,
   lib,
   ...
@@ -24,7 +23,7 @@
   };
   terminal = {
     shell = {
-      program = "${self'.packages.fish}/bin/fish";
+      program = "${pkgs.fish}/bin/fish";
     };
   };
   # Tell Zed to use direnv and direnv can use a flake.nix environment

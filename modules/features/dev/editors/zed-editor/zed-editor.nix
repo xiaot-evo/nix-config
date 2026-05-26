@@ -3,7 +3,6 @@
   den.aspects.dev.editors.zed-editor = {
     homeManager =
       {
-        self',
         pkgs,
         lib,
         ...
@@ -14,7 +13,6 @@
           package = pkgs.zed-editor;
           extraPackages = with pkgs; [
             nixd
-            nil
             nixfmt
             package-version-server
             yaml-language-server
@@ -28,7 +26,7 @@
             "catppuccin-icons"
           ];
           userSettings =
-            (import ./_settings.nix { inherit self' pkgs lib; }) // (import ./_languages.nix { inherit pkgs; });
+            (import ./_settings.nix { inherit pkgs lib; }) // (import ./_languages.nix { inherit pkgs; });
           userKeymaps = import ./_keymap.nix;
         };
       };
