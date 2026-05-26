@@ -5,7 +5,7 @@
       (with den.batteries; [
         define-user
         primary-user
-        (user-shell "bash")
+        (user-shell "fish")
         (unfree [
           "qq"
           "wechat"
@@ -26,6 +26,10 @@
         desktop.input-method.fcitx5
         preference.cursor-theme
         preference.icon-theme
+        dev.shell.fish
+        dev.shell.starship
+        dev.tools.git
+        dev.editors.opencode
         dev.editors.zed-editor
         dev.editors.helix
         apps.terminals.ghostty
@@ -33,16 +37,10 @@
       ]);
 
     homeManager =
-      { self', pkgs, ... }:
+      { pkgs, ... }:
       {
         home.packages =
-          (with self'.packages; [
-            opencode
-            fish
-            starship
-            git
-          ])
-          ++ (with pkgs; [
+          (with pkgs; [
             ## cmd
             fastfetch
             devenv

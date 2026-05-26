@@ -31,10 +31,10 @@
         url = "github:nix-community/home-manager";
         inputs.nixpkgs.follows = "nixpkgs";
       };
-      wrappers = {
-        url = "github:BirdeeHub/nix-wrapper-modules";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
+      # wrappers = {
+      #   url = "github:BirdeeHub/nix-wrapper-modules";
+      #   inputs.nixpkgs.follows = "nixpkgs";
+      # };
       daeuniverse.url = "github:daeuniverse/flake.nix";
       niri-nix = {
         url = "git+https://codeberg.org/BANanaD3V/niri-nix";

@@ -1,14 +1,13 @@
 { den, ... }:
 {
   den.aspects.apps.terminals.ghostty = {
-    includes = [ den.batteries.self' ];
     homeManager =
-      { pkgs, self', ... }:
+      { pkgs, ... }:
       {
         programs.ghostty = {
           enable = true;
           settings = {
-            command = "${self'.packages.fish}/bin/fish";
+            command = "${pkgs.fish}/bin/fish";
             # command = "${pkgs.nushell}/bin/nu";
             # theme
             theme = "dankcolors";

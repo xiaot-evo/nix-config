@@ -45,10 +45,6 @@
     import-tree.url = "github:vic/import-tree";
     niri-nix.url = "git+https://codeberg.org/BANanaD3V/niri-nix";
     nixpkgs.url = "https://channels.nixos.org/nixpkgs-unstable/nixexprs.tar.xz";
-    wrappers = {
-      url = "github:BirdeeHub/nix-wrapper-modules";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs = {
