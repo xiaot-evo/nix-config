@@ -8,7 +8,6 @@
           enable = true;
           interactiveShellInit = ''
             set fish_greeting # Disable greeting
-            ${pkgs.starship}/bin/starship init fish | source
             ${pkgs.devenv}/bin/devenv hook fish | source
           '';
         };
