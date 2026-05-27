@@ -11,7 +11,7 @@
           fcitx5.addons = with pkgs; [
             (fcitx5-rime.override { rimeDataPkgs = [ pkgs.rime-ice ]; })
             fcitx5-gtk
-            catppuccin-fcitx5
+            fcitx5-mellow-themes
           ];
         };
         # rime-ice patch
@@ -19,9 +19,9 @@
           patch:
             __include: rime_ice_suggestion:/
         '';
-        # catppuccin latte theme
+        # fcitx5 theme
         xdg.configFile."fcitx5/conf/classicui.conf".text = ''
-          Theme=catppuccin-latte-blue
+          Theme=kwinblur-mellow-youlan
         '';
       };
   };
