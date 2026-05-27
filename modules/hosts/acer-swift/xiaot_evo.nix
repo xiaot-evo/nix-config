@@ -34,13 +34,16 @@
         dev.editors.helix
         apps.terminals.ghostty
         apps.browsers.zen-browser
+        apps.notes.obsidian
+        apps.gaming.steam
       ]);
 
     homeManager =
       { pkgs, ... }:
       {
-        home.packages =
-          (with pkgs; [
+        home.packages = (
+          with pkgs;
+          [
             ## cmd
             fastfetch
             devenv
@@ -61,7 +64,8 @@
             readest
             wpsoffice-cn
             obs-studio
-          ]);
+          ]
+        );
       };
 
     provides.to-hosts.nixos = {

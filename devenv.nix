@@ -15,6 +15,13 @@
 
   # https://devenv.sh/languages/
   # languages.rust.enable = true;
+  languages.nix = {
+    enable = true;
+    lsp = {
+      enable = true;
+      package = pkgs.nixd;
+    };
+  };
 
   # https://devenv.sh/processes/
   # processes.dev.exec = "${lib.getExe pkgs.watchexec} -n -- ls -la";
@@ -23,24 +30,21 @@
   # services.postgres.enable = true;
 
   # https://devenv.sh/scripts/
-  scripts.hello.exec = ''
-    echo hello from $GREET
-  '';
-  scripts.flake-write.exec = ''
-    nix run .#write-flake
-  '';
-  scripts.build.exec = ''
-    nix run  .#${builtins.replaceStrings [ "\n" ] [ "" ] (builtins.readFile /etc/hostname)}  --impure
-  '';
-  scripts.build-switch.exec = ''
-    nix run  .#${
-      builtins.replaceStrings [ "\n" ] [ "" ] (builtins.readFile /etc/hostname)
-    }  -- switch --impure
-  '';
-
+  scripts = {
+    flake-write.exec = ''
+      nix run .#write-flake
+    '';
+    build.exec = ''
+      nix run  .#${builtins.replaceStrings [ "\n" ] [ "" ] (builtins.readFile /etc/hostname)}  --impure
+    '';
+    build-switch.exec = ''
+      nix run  .#${
+        builtins.replaceStrings [ "\n" ] [ "" ] (builtins.readFile /etc/hostname)
+      }  -- switch --impure
+    '';
+  };
   # https://devenv.sh/basics/
   enterShell = ''
-    hello         # Run scripts directly
     git --version # Use packages
   '';
 
