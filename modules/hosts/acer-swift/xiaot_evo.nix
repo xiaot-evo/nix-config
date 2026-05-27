@@ -11,8 +11,9 @@
           "wechat"
           "bilibili"
           "wpsoffice-cn"
+          "ventoy"
         ])
-        self'
+        (insecure [ "ventoy-1.1.12" ])
       ])
       ++ (with den.aspects; [
         services.dae
@@ -36,6 +37,7 @@
         apps.browsers.zen-browser
         apps.notes.obsidian
         apps.gaming.steam
+        apps.gaming.prismlauncher
       ]);
 
     homeManager =
@@ -54,16 +56,14 @@
             bilibili
             resources
             splayer
-            # typora
             marktext
-            # hmcl
-            prismlauncher
             qq
             wechat
             telegram-desktop
             readest
             wpsoffice-cn
             obs-studio
+            ventoy
           ]
         );
       };
