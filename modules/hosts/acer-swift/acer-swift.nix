@@ -15,7 +15,7 @@
           amdgpuBusId = "PCI:4@0:0:0";
         })
         (system.hardware.nbfc-linux "Acer Swift SFX14-41G")
-        (system.boot "/boot/efi")
+        system.boot
         system.nix
         system.sound
       ]

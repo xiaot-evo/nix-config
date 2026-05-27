@@ -1,10 +1,10 @@
 {
   programs.helix.settings = {
-    # theme = "catppuccin_macchiato";
-    theme = {
-      light = "catppuccin_latte";
-      dark = "catppuccin_macchiato";
-    };
+    theme = "catppuccin_latte";
+    # theme = {
+    #   light = "catppuccin_latte";
+    #   dark = "catppuccin_macchiato";
+    # };
     editor = {
       bufferline = "multiple";
       color-modes = true;

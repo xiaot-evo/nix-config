@@ -1,7 +1,7 @@
 { den, ... }:
 {
   den.aspects.dev.editors.opencode = {
-    homeManager = { ... }: {
+    homeManager = {
       programs.opencode = {
         enable = true;
         tui.theme = "opencode";

@@ -1,6 +1,12 @@
 { den, ... }:
 {
   den.aspects.apps.gaming.steam = {
+    includes = [
+      (den.batteries.unfree [
+        "steam"
+        "steam-unwrapped"
+      ])
+    ];
     nixos =
       { pkgs, ... }:
       {

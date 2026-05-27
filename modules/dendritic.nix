@@ -16,12 +16,14 @@
         "https://niri-nix.cachix.org"
         "https://cache.garnix.io"
         "https://cache.nixos-cuda.org"
+        "https://attic.xuyh0120.win/lantian"
       ];
       extra-trusted-public-keys = [
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "niri-nix.cachix.org-1:SvFtqpDcf7Sm1SMJdby1/+Y+6f3Yt3/3PMcSTKPJNJ0="
         "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
         "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
+        "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
       ];
     };
     inputs = {
@@ -35,6 +37,8 @@
       #   url = "github:BirdeeHub/nix-wrapper-modules";
       #   inputs.nixpkgs.follows = "nixpkgs";
       # };
+      nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
+      # Do not override its nixpkgs input, otherwise there can be mismatch between patches and kernel version
       daeuniverse.url = "github:daeuniverse/flake.nix";
       niri-nix = {
         url = "git+https://codeberg.org/BANanaD3V/niri-nix";
