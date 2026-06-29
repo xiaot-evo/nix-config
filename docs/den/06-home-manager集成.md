@@ -232,7 +232,9 @@ Home Manager、Hjem 和 Nix-Maid 集成由 Den 框架通过模块自动激活—
 }
 ```
 
-## Host ↔ User 互相配置：Mutual Provider 模式
+> **Mutual Provider 电池已弃用**：跨实体路由现在内置于管道中。`den.batteries.mutual-provider` 已是一个空的兼容层。直接在方面中使用 `provides.to-users` 和 `provides.to-hosts` 即可，无需包含任何电池。
+
+## Host ↔ User 互相配置（Mutual Providing）
 
 Den 支持主机和用户之间互相交付配置，这是其最强大的特性之一。
 
@@ -502,12 +504,34 @@ Den 支持主机和用户之间互相交付配置，这是其最强大的特性�
 }
 ```
 
+## 重要行为变化
+
+### 主机作用域的参数化方面不再向用户传递 homeManager 内容
+
+在较早版本中，主机作用域的参数化方面（如 `{ user, ... }`）中的 `homeManager` 类内容会"泄漏"到该主机的每个用户。现在这种行为已经改变——主机作用域的参数化方面虽然在每个用户上下文下重复，但它的类内容是**在主机上本地发射**的，不会传递到用户的 Home Manager 求值。
+
+如果你的代码依赖这种泄漏行为来从主机作用域向用户推送家庭配置，请改用以下方式之一：
+
+- 使用显式的 `provides.to-users` 跨实体路由
+- 使用 `den.batteries.host-aspects` 电池
+- 在用户方面中直接包含所需的配置
+
+```nix
+# ✅ 正确做法：使用 provides.to-users
+den.aspects.igloo = {
+  nixos = { ... };
+  provides.to-users.homeManager = { pkgs, ... }: {
+    home.packages = [ pkgs.vim ];
+  };
+};
+```
+
 ## 最佳实践
 
 1. **优先使用主机管理**：`den.hosts.<host>.users` 比 `den.homes` 更便于统一管理
 2. **利用 `provides.to-users`**：主机提供的默认配置减少重复
 3. **合理设置 classes**：不需要 HM 的用户用 `classes = [ "user" ]`
-4. **Mutual Provider 用于跨实体配置**：用户需要影响主机时使用策略
+4. **Mutual Provider 已内置**：`provides.to-users` / `provides.to-hosts` 无需额外电池，直接在方面中使用
 5. **独立 HM 用于远程/无主机场景**：如 CI 环境、容器
 6. **同一实体避免多个 HM 源冲突**：通过 `den.lib.policy.for` 限定特定实体
 

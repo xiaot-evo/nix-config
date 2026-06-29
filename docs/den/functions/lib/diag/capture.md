@@ -1,6 +1,8 @@
 # 跟踪捕获（Trace Capture）
 
-**源文件**: `nix/lib/diag/capture.nix`
+> **⚠️ 移到 `den.lib.capture`**：捕获函数现位于 `den.lib.capture`（`nix/lib/aspects/fx/trace.nix`），不再是独立的 diag 库的一部分。diag 渲染功能已提取到 [`den-diagram`](https://github.com/denful/den-diagram)。
+
+**源文件**: `nix/lib/diag/capture.nix`（已移除，新位置: `nix/lib/aspects/fx/`）
 
 ## 概述
 
