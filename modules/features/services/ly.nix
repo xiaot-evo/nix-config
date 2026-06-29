@@ -1,9 +1,6 @@
 { den, ... }:
 {
   den.aspects.services.ly = {
-    includes = [
-      den.aspects.security.gnome-keyring
-    ];
     nixos =
       { pkgs, ... }:
       {
