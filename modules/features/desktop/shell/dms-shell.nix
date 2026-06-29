@@ -1,16 +1,16 @@
 { inputs, den, ... }:
 {
   den.aspects.desktop.shell.dms-shell = {
-    includes = [
-      den.aspects.services.powermanagement
-    ];
     homeManager =
       { lib, config, ... }:
       {
         imports = [
           inputs.dms.homeModules.dank-material-shell
-          inputs.dms-plugin-registry.modules.default
+          inputs.dms-plugin-registry.homeModules.dms-plugin-registry
         ];
+        systemd.user.services.dms.Install = lib.mkForce {
+          WantedBy = [ "niri.service" ];
+        };
         programs.dank-material-shell =
           let
             readjson = path: remove: lib.removeAttrs (builtins.fromJSON (lib.readFile path)) remove;
