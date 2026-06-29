@@ -6,9 +6,16 @@
       nixos =
         {
           lib,
+          pkgs,
           ...
         }:
         {
+          # EDID —— 自定义 1080p@80Hz 模型线
+          hardware.display.edid = {
+            enable = true;
+            modelines."1080p80" = "186.71 1920 1968 2000 2080 1080 1083 1088 1122 +hsync -vsync";
+          };
+
           # 引导与内核
           boot = {
             # systemd-boot EFI 引导
@@ -25,6 +32,10 @@
             plymouth = {
               enable = true;
               theme = "bgrt";
+              logo = builtins.fetchurl {
+                url = "https://brand.nixos.org/logos/nixos-logo-default-gradient-white-regular-horizontal-recommended.svg";
+                sha256 = "16hrday7y2jp1csj2akwyj8c94b0wn30lawfnazrp47abal0696c";
+              };
             };
 
             consoleLogLevel = 3;
@@ -51,6 +62,7 @@
                 };
               in
               pkgs.cachyosKernels.linuxPackages-cachyos-bore-x86_64-v3;
+            # kernelPackages = pkgs.linuxPackages_latest;
           };
         };
     };

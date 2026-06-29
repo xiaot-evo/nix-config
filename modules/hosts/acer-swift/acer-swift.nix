@@ -17,18 +17,22 @@
         (system.hardware.nbfc-linux "Acer Swift SFX14-41G")
         system.boot
         system.nix
+        system.network
         system.sound
+        services.powermanagement
       ]
 
       );
-    nixos =
-      { pkgs, lib, ... }:
-      {
-      };
+      nixos =
+        { pkgs, lib, ... }:
+        {
+          # 时区与语言
+          time.timeZone = "Asia/Shanghai";
+          i18n.defaultLocale = "zh_CN.UTF-8";
 
-    provides.to-users.homeManager =
-      { pkgs, ... }:
-      {
-      };
+          environment.systemPackages = with pkgs; [
+            pciutils
+          ];
+        };
   };
 }
