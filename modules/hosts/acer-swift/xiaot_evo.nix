@@ -7,16 +7,24 @@
         primary-user
         (user-shell "fish")
         (unfree [
+          "warp-terminal"
           "qq"
           "wechat"
           "bilibili"
           "wpsoffice-cn"
           "ventoy"
+          "modrinth-app"
+          "modrinth-app-unwrapped"
         ])
-        (insecure [ "ventoy-1.1.12" ])
+        (insecure [
+          # "ventoy-1.1.12"
+          # "electron-39.8.10"
+        ])
       ])
       ++ (with den.aspects; [
+        security.gnome-keyring
         services.dae
+        services.ddns-updater
         services.ly
         services.udiskie
         services.printing
@@ -30,6 +38,7 @@
         dev.shell.fish
         dev.shell.starship
         dev.tools.git
+        dev.tools.yazi
         dev.editors.opencode
         dev.editors.zed-editor
         dev.editors.helix
@@ -49,21 +58,34 @@
             ## cmd
             fastfetch
             devenv
-            yazi
             android-tools
+            trash-cli
 
             ## gui
             bilibili
             resources
-            splayer
+            warp-terminal
+            # splayer
             marktext
             qq
             wechat
             telegram-desktop
+            (modrinth-app.override {
+              jdks =
+                let
+                  t = javaPackages.compiler.temurin-bin;
+                in
+                [
+                  t."jdk-8"
+                  t."jdk-17"
+                  t."jdk-21"
+                  t."jdk-25"
+                ];
+            })
             readest
             wpsoffice-cn
             obs-studio
-            ventoy
+            # ventoy
           ]
         );
       };

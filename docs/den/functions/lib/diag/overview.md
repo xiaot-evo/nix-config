@@ -1,6 +1,10 @@
 # 图表库总览（Diagram Library Overview）
 
-**源文件**: `nix/lib/diag/default.nix`
+> **⚠️ 已提取到独立库**：`den.lib.diag` 已从 Den 核心移除，提取到 [`den-diagram`](https://github.com/denful/den-diagram)（`github:denful/den-diagram`）独立库中。Den 核心现在通过 `den.lib.capture` 提供追踪捕获功能。
+>
+> 本页文档保留作为历史参考。新开发请使用 `den-diagram` 库。
+
+**源文件**: `nix/lib/diag/default.nix`（已移除）
 
 ## 概述
 

@@ -1,5 +1,4 @@
-{ den, inputs, ... }:
-{
+{ den, inputs, ... }: {
   den.aspects.desktop.wm.niri =
     { user, ... }:
     {
@@ -224,6 +223,7 @@
               };
               environment = {
                 NIXOS_OZONE_WL = "1";
+                ELECTRON_OZONE_PLATFORM_HINT = "auto";
                 EDITOR = "hx";
               };
               spawn-sh-at-startup = [

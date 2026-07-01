@@ -25,6 +25,28 @@
 | 11 | [高级主题](./11-高级主题.md) | Fleet、作用域划分、调试、代数效应、图库 |
 | 12 | [从其他框架迁移](./12-从其他框架迁移.md) | 从 NixOS/flake-parts 迁移到 Den |
 | 13 | [常见问题与排错](./13-常见问题.md) | FAQ、调试方法、社区资源 |
+| **14** | **[实用模式汇总](./14-实用模式.md)** | **17 个实战模式 —— 跨类路由、角色组合、Pipe 数据流、转发类等** |
+
+---
+
+## 模板指南
+
+| 文件 | 内容 |
+|------|------|
+| [README](./examples/README.md) | **总览**：13 个模板的用途、复杂度评级、选择指南 |
+| [minimal](./examples/minimal.md) | 最小 NixOS 配置（3 输入，无 flake-parts/HM） |
+| [default](./examples/default.md) | **推荐起点**：flake-parts + HM + VM 工作流 |
+| [noflake](./examples/noflake.md) | 无 flake 使用 Den（npins + nix-maid/hjem） |
+| [bogus](./examples/bogus.md) | Bug 复现和报告模板 |
+| [scoped-import-tree](./examples/scoped-import-tree.md) | 作用域导入树 + 库自动注入 |
+| [example](./examples/example.md) | 跨平台（NixOS + nix-darwin）完整示例 |
+| [flake-parts-modules](./examples/flake-parts-modules.md) | 转发类与 perSystem 工具集成 |
+| [diagram-demo](./examples/diagram-demo.md) | 管道捕捉 + 可视化诊断 |
+| [fleet-demo](./examples/fleet-demo.md) | Fleet 多主机编排与 Pipe 数据流 |
+| [microvm](./examples/microvm.md) | MicroVM 集成（独立 + 托管） |
+| [nvf-standalone](./examples/nvf-standalone.md) | 独立 Neovim 应用配置 |
+| [terranix-demo](./examples/terranix-demo.md) | Terraform/OpenTofu 集成 |
+| [ci](./examples/ci.md) | 测试套件（133+ 用例） |
 
 ---
 
