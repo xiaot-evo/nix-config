@@ -8,8 +8,8 @@
         tui.theme = "opencode";
         settings = {
           plugin = [
+            "@cortexkit/opencode-magic-context"
             "opencode-antigravity-auth@latest"
-            "@tarquinen/opencode-dcp@latest"
             "superpowers@git+https://github.com/obra/superpowers.git"
             "oh-my-opencode-slim@latest"
           ];
@@ -27,9 +27,22 @@
               "--"
             ];
           };
+          agent = {
+            explore.disable = true;
+            general.disable = true;
+          };
+          lsp = true;
         };
       };
-      xdg.configFile."opencode/oh-my-opencode-slim.json".text = ''
+      # Force overwrite instead of creating backups — prevents ".bak would be clobbered" on re-deploy
+      xdg.configFile."opencode/tui.json".force = true;
+      xdg.configFile."opencode/opencode.json".force = true;
+      home.sessionVariables = {
+        OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS = "true";
+      };
+      xdg.configFile."opencode/oh-my-opencode-slim.json" = {
+        force = true;
+        text = ''
         {
           "$schema": "https://unpkg.com/oh-my-opencode-slim@latest/oh-my-opencode-slim.schema.json",
 
@@ -203,6 +216,7 @@
           }
         }
       '';
+      };
     };
   };
 }
