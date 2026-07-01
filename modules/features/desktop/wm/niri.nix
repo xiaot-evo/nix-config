@@ -76,6 +76,14 @@
                   };
                 }
                 {
+                  match._props.app-id = "tabby";
+                  opacity = 0.9;
+                  background-effect = {
+                    xray = true;
+                    blur = true;
+                  };
+                }
+                {
                   match._props.app-id = "dev.zed.Zed";
                   opacity = 0.9;
                   open-maximized = true;
