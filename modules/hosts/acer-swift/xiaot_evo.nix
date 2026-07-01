@@ -7,18 +7,17 @@
         primary-user
         (user-shell "fish")
         (unfree [
-          "warp-terminal"
           "qq"
           "wechat"
           "bilibili"
           "wpsoffice-cn"
+          "warp-terminal"
           "ventoy"
           "modrinth-app"
           "modrinth-app-unwrapped"
         ])
         (insecure [
           # "ventoy-1.1.12"
-          # "electron-39.8.10"
         ])
       ])
       ++ (with den.aspects; [
@@ -40,9 +39,11 @@
         dev.tools.git
         dev.tools.yazi
         dev.editors.opencode
+        dev.editors.pi-coding-agent
         dev.editors.zed-editor
         dev.editors.helix
         apps.terminals.ghostty
+        apps.terminals.tabby
         apps.browsers.zen-browser
         apps.notes.obsidian
         apps.gaming.steam
@@ -61,11 +62,10 @@
             android-tools
             trash-cli
 
-            ## gui
+            ## guio
+            warp-terminal
             bilibili
             resources
-            warp-terminal
-            # splayer
             marktext
             qq
             wechat
@@ -91,6 +91,7 @@
       };
 
     provides.to-hosts.nixos = {
+      home-manager.backupFileExtension = "bak";
       nix.settings.trusted-users = [
         "xiaot_evo"
       ];
