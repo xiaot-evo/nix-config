@@ -95,11 +95,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1782731592,
-        "narHash": "sha256-uacAMwt/zLSMtkYdgUTCGV32CfesqqwHazyfVZOBwO0=",
+        "lastModified": 1782780764,
+        "narHash": "sha256-Q2wPFsuDo1y6neZ3ttxxOOItupg/4+mPkyAZbC0+wfw=",
         "owner": "AvengeMedia",
         "repo": "dms-plugin-registry",
-        "rev": "bd8370e54d219903e7dd93eeac6263ac5055a22d",
+        "rev": "9fa716427ab5905845b2a10a01d67bee0b1e4c4b",
         "type": "github"
       },
       "original": {
@@ -202,11 +202,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1782702263,
-        "narHash": "sha256-8/MG4Su7PhnynrmsVO61IeAfrK7GuUEu+E+gwbhy1QQ=",
+        "lastModified": 1782749631,
+        "narHash": "sha256-slFTUgDy0KTPA4LBAmC/9SngDq8GCPdX+ZR0yQHHN1E=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "789a35fbdeb3c46b260096daa0b321c11be527ea",
+        "rev": "5d72a29fc36ac21adae6ae35568fe5ee6700850f",
         "type": "github"
       },
       "original": {
@@ -369,11 +369,11 @@
     },
     "nixpkgs_4": {
       "locked": {
-        "lastModified": 1782636521,
-        "narHash": "sha256-Yf2TcFLw0r574fP/5eUN6N8el70HbYNdbDeeHpnK2eQ=",
-        "rev": "e1c1b84752fb0897897380a3cae9dc7fcab91ca3",
+        "lastModified": 1782760764,
+        "narHash": "sha256-L3gmggVc+GxfmG8b6bWL0wkiniDNppQRsfaKc0IfyRA=",
+        "rev": "7a1a64774a5fd0b0cd39ac95d0e170ace8b266a0",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixpkgs/nixpkgs-26.11pre1023798.e1c1b84752fb/nixexprs.tar.xz"
+        "url": "https://releases.nixos.org/nixpkgs/nixpkgs-26.11pre1024597.7a1a64774a5f/nixexprs.tar.xz"
       },
       "original": {
         "type": "tarball",
@@ -444,11 +444,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1782623843,
-        "narHash": "sha256-zQdTvI8jcVfblsrWafw1ykTnCVoV94ttxb5e6drwVaI=",
+        "lastModified": 1782812215,
+        "narHash": "sha256-OPVK9WW9QsO2aj1R+Ln3p7fniFj5h441vb3LyrzpeE4=",
         "owner": "0xc000022070",
         "repo": "zen-browser-flake",
-        "rev": "c59e57b9c6ea4c86f9f3b7efc92db3cbd305d078",
+        "rev": "a7c2a9a5e492e0e62072547f7e4c2abf138425c5",
         "type": "github"
       },
       "original": {
