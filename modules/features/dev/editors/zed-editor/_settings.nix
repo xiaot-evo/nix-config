@@ -15,6 +15,9 @@
   # buffer_font_size = 16;
 
   agent_servers = {
+    pi-acp = {
+      type = "registry";
+    };
     OpenCode = {
       type = "custom";
       command = "opencode";
