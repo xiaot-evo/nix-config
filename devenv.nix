@@ -19,7 +19,7 @@
     enable = true;
     lsp = {
       enable = true;
-      package = pkgs.nixd;
+      package = pkgs.nil;
     };
   };
 

@@ -143,7 +143,7 @@ in
 
             # Git 提交属性
             attribution = {
-              trailer_style = "assisted-by";    # co-authored-by / none
+              trailer_style = "assisted-by"; # co-authored-by / none
               generated_with = true;
             };
 

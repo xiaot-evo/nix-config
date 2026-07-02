@@ -90,6 +90,27 @@
         "type": "github"
       }
     },
+    "charmbracelet-nur": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "treefmt-nix": "treefmt-nix"
+      },
+      "locked": {
+        "lastModified": 1782822334,
+        "narHash": "sha256-dNh489qzsUf2QvliQk5jnc9+fdIyPJs2185/vNSShKg=",
+        "owner": "charmbracelet",
+        "repo": "nur",
+        "rev": "c16b1b21157c231152b382b372cdb857ca526434",
+        "type": "github"
+      },
+      "original": {
+        "owner": "charmbracelet",
+        "repo": "nur",
+        "type": "github"
+      }
+    },
     "daeuniverse": {
       "inputs": {
         "flake-parts": "flake-parts",
@@ -318,7 +339,7 @@
           "nixpkgs"
         ],
         "systems": "systems",
-        "treefmt-nix": "treefmt-nix"
+        "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
         "lastModified": 1782913490,
@@ -509,6 +530,7 @@
     },
     "root": {
       "inputs": {
+        "charmbracelet-nur": "charmbracelet-nur",
         "daeuniverse": "daeuniverse",
         "den": "den",
         "dms": "dms",
@@ -540,6 +562,27 @@
       }
     },
     "treefmt-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "charmbracelet-nur",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1769353635,
+        "narHash": "sha256-J0G1ACrUK29M0THPAsz429eZX07GmR9Bs/b0pB3N0dQ=",
+        "owner": "numtide",
+        "repo": "treefmt-nix",
+        "rev": "f46bb205f239b415309f58166f8df6919fa88377",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "treefmt-nix",
+        "type": "github"
+      }
+    },
+    "treefmt-nix_2": {
       "inputs": {
         "nixpkgs": [
           "llm-agents-nix",
