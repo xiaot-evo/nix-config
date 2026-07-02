@@ -16,8 +16,9 @@
 8. [rpiv-ask-user-question](#8-rpiv-ask-user-question)—结构化提问
 9. [rpiv-todo](#9-rpiv-todo)—任务列表管理
 10. [pi-lens](#10-pi-lens)—代码透镜
-11. [@plannotator/pi-extension](#11-plannotatorpi-extension)—草图/图表理解
-12. [superpowers-zh](#12-superpowers-zh)—技能系统
+11. [superpowers-zh](#11-superpowers-zh)—技能系统
+12. [@ayulab/pi-rewind](#12-ayulabpi-rewind)—修改追踪与恢复
+13. [@gotgenes/pi-permission-system](#13-gotgenespi-permission-system)—权限管理
 
 ---
 
@@ -275,21 +276,6 @@ ctx_execute("javascript", `
 "Run a review loop on this change until reviewers stop finding fixes worth doing, max 3 rounds."
 ```
 
-### 设置模型覆盖
-
-```json
-{
-  "subagents": {
-    "agentOverrides": {
-      "reviewer": {
-        "model": "anthropic/claude-sonnet-4",
-        "thinking": "high"
-      }
-    }
-  }
-}
-```
-
 ---
 
 ## 7. pi-mcp-adapter
@@ -416,50 +402,188 @@ todo({ action: "delete", id: 1 })
 
 ---
 
-## 11. @plannotator/pi-extension
+## 11. superpowers-zh
 
-**作用**：交互式计划审查和图表理解——为 agent 消息添加注释，审查代码/PR，识别图片中的流程图和架构。
+**作用**：superpowers（`github:obra/superpowers`）的中文增强版技能系统，提供 20 个预定义工作流技能。在 Nix 项目上下文中，agent 应主动调用合适的技能。
 
-### 主要功能
+### 全部技能列表
 
-- **计划注释**：在 agent 生成的计划上添加交互式注释
-- **代码/PR 审查**：审查代码和 Pull Request
-- **图表理解**：识别上传图片中的流程图、架构图等
+| 技能 | 分类 | 用途 | 触发时机 |
+|------|------|------|----------|
+| `brainstorming` | 设计 | 创造性工作前探索、澄清、设计、批准 | **任何创造性工作前** |
+| `writing-plans` | 设计 | 创建实施计划 | brainstorming 之后 |
+| `executing-plans` | 开发 | 执行实施计划 | 计划批准后 |
+| `subagent-driven-development` | 开发 | 含独立子任务的计划执行 | 实施计划含独立子任务 |
+| `dispatching-parallel-agents` | 开发 | 并行分派独立任务 | 2+ 无共享状态的任务 |
+| `test-driven-development` | 开发 | 测试驱动开发工作流 | 需要测试优先的场景 |
+| `systematic-debugging` | 调试 | 系统化诊断根因 | **遇到 bug / 测试失败** |
+| `requesting-code-review` | 审查 | 请求代码审查 | 工作完成后、合并前 |
+| `receiving-code-review` | 审查 | 接收并处理代码审查反馈 | 收到审查意见后 |
+| `chinese-code-review` | 审查 | 中文代码审查 | 需要中文审查反馈 |
+| `verification-before-completion` | 验证 | 完成前运行验证 | **声明完成前** |
+| `finishing-a-development-branch` | 交付 | 决定合并/PR/清理 | 实现完成后 |
+| `writing-skills` | 工具 | 创建/编辑 superpowers 技能 | 需要新技能时 |
+| `mcp-builder` | 工具 | 构建 MCP 工具 | 需要 MCP 集成时 |
+| `workflow-runner` | 工具 | 运行工作流 | 多步骤自动化工作流 |
+| `chinese-documentation` | 文档 | 中文文档编写 | 需要中文文档时 |
+| `chinese-commit-conventions` | 文档 | 中文提交规范 | 格式化提交信息 |
+| `chinese-git-workflow` | 文档 | 中文 Git 工作流 | Git 操作需要中文指引 |
+| `using-superpowers` | 元 | 使用 superpowers 技能系统的指南 | 初次使用或需要帮助时 |
+| `using-git-worktrees` | 工具 | Git 工作树管理 | 并行开发分支 |
 
----
-
-## 12. superpowers-zh
-
-**作用**：obrasuperpowers 的中文增强版技能系统，提供 20+ 预定义工作流技能。
-
-### 可用技能
-
-| 技能 | 用途 |
-|------|------|
-| `brainstorming` | 创造性工作前探索、澄清、设计 |
-| `writing-plans` | 创建实施计划 |
-| `systematic-debugging` | 系统化调试 |
-| `requesting-code-review` | 请求代码审查 |
-| `verification-before-completion` | 完成前验证 |
-| `dispatching-parallel-agents` | 并行任务分派 |
-| `subagent-driven-development` | 子 agent 驱动开发 |
-| `finishing-a-development-branch` | 完成开发分支 |
-| `executing-plans` | 执行实施计划 |
-| `writing-skills` | 创建/编辑技能 |
-| `chinese-*` | 中文适配的各技能版本 |
-| `mcp-builder` | 构建 MCP 工具 |
-| `test-driven-development` | 测试驱动开发 |
-| `workflow-runner` | 工作流运行器 |
-
-### 标准工作流
+### 标准开发工作流
 
 ```
-1. brainstorming → 探索、澄清、设计、批准
-2. writing-plans → 创建实施计划
-3. 实现 → 编码 + nix flake check
+1. brainstorming          → 探索、澄清、设计、批准
+2. writing-plans          → 创建实施计划
+3. 实现                   → 编码 + nix flake check
 4. requesting-code-review → 验证满足需求
 5. finishing-a-development-branch → 合并/PR/清理
 ```
+
+### 调试工作流
+
+```
+1. systematic-debugging   → 诊断根因
+2. 修复 + nix flake check
+3. verification-before-completion → 确认修复
+```
+
+### 技能分类速查
+
+| 场景 | 技能链 |
+|------|--------|
+| 新功能开发 | brainstorming → writing-plans → subagent-driven-development / executing-plans → verification-before-completion → requesting-code-review → finishing-a-development-branch |
+| Bug 修复 | systematic-debugging → writing-plans → 修复 → verification-before-completion |
+| 并行任务 | dispatching-parallel-agents（每个子任务内运行完整开发工作流） |
+| TDD | test-driven-development → 写测试 → 实现 → 验证 |
+| 创建新技能 | writing-skills → test-driven-development → 完成 |
+| MCP 集成 | mcp-builder → 开发 → 验证 |
+
+---
+
+## 12. @ayulab/pi-rewind
+
+**源仓库**：`github:ayulab/pi-rewind`  
+**作用**：修改追踪与恢复——交互式检查点导航，支持代码/对话回滚。
+
+### 主要功能
+
+| 功能 | 说明 |
+|------|------|
+| **/rewind 命令** | 交互式检查点列表，显示文件变更统计 |
+| **三种恢复模式** | ① 恢复代码+对话 ② 仅恢复对话 ③ 仅恢复代码 |
+| **/checkpoint 管理器** | `Current Folder` / `All` 视图，`Ctrl+D` 删除 |
+| **/tree 集成** | 树导航时可选同步文件状态（`restoreOnTree: ask/never/always`）|
+| **Fork/Clone 集成** | 自动复制检查点存储，支持叉出时恢复代码 |
+| **会话恢复** | `/resume` 和 `pi -r` 可选恢复文件状态 |
+
+### 常用命令
+
+```
+/rewind                     # 打开交互式检查点导航
+/checkpoint                 # 查看检查点存储状态
+/tree                       # 树导航（集成文件同步）
+```
+
+### 配置
+
+```json
+{
+  "ayu": {
+    "rewind": {
+      "restoreOnTree": "ask"
+    },
+    "checkpoint": {
+      "restoreOnResume": false,
+      "restoreOnFork": false,
+      "restoreOnClone": false
+    }
+  }
+}
+```
+
+### 与 git-checkpoint 的关系
+
+git-checkpoint.ts（已移除）是 Pi 官方的最小示例扩展。@ayulab/pi-rewind 是其功能完整的替代品，提供交互式 TUI、存储管理和更细粒度的恢复控制。
+
+---
+
+## 13. @gotgenes/pi-permission-system
+
+**源仓库**：`github:gotgenes/pi-packages`  
+**作用**：集中式权限管理——allow/ask/deny 三级策略，在工具调用和 bash 执行前进行权限检查。
+
+### 主要功能
+
+| 功能 | 说明 |
+|------|------|
+| **三级策略** | `allow`（允许）/ `ask`（询问）/ `deny`（拒绝）|
+| **工具隐藏** | 拒绝的工具在 agent 启动前就隐藏，不浪费轮次 |
+| **Bash 命令控制** | 通配符模式匹配：`git *: ask`、`rm -rf *: deny` |
+| **路径保护** | `.env`、`~/.ssh/*`、`.git/*` 等敏感路径自动 deny |
+| **外部目录守卫** | 操作超出 `cwd` 时弹窗确认 |
+| **子 agent 集成** | 子 session 自动注册权限策略，`ask` 状态转发到父 UI |
+
+### 当前配置
+
+当前通过 Nix 配置部署了以下策略：
+
+```json
+{
+  "permission": {
+    "*": "allow",
+    "path": {
+      "*": "allow",
+      "*.env": { "action": "deny", "reason": "环境变量文件包含凭证" },
+      "*.env.*": { "action": "deny", "reason": "环境变量文件包含凭证" },
+      ".git/*": { "action": "deny", "reason": ".git 内部文件不应直接修改" },
+      "~/.ssh/*": { "action": "deny", "reason": "SSH 密钥文件受保护" }
+    },
+    "bash": {
+      "*": "allow",
+      "rm -rf *": "deny",
+      "rm -rf /*": "deny",
+      "sudo *": "ask",
+      "chmod 777 *": "ask",
+      "chmod -R 777 *": "ask",
+      "> *": "ask",
+      ">>*": "ask",
+      "dd *": "deny",
+      "mkfs*": "deny",
+      "reboot": "deny",
+      "shutdown": "deny"
+    },
+    "external_directory": "ask"
+  }
+}
+```
+
+---
+
+## TS 扩展
+
+除了 npm 包，还有以下 TypeScript 扩展直接部署在 `~/.pi/agent/extensions/` 中：
+
+### notify.ts
+
+**源仓库**：`github:earendil-works/pi`（官方示例）  
+**作用**：agent 完成任务后发送原生终端通知。
+
+- 支持 Ghostty / iTerm2 / WezTerm（OSC 777）
+- 支持 Kitty（OSC 99）
+- 支持 Windows Terminal（PowerShell toast）
+- 自动检测终端类型
+
+### plan-mode
+
+**源仓库**：`github:earendil-works/pi`（官方示例）  
+**作用**：只读计划模式——安全代码分析和步骤化执行。
+
+- `/plan` 或 `Ctrl+Shift+P` 切换计划模式
+- 计划模式下禁用 edit/write 工具
+- 提取 `Plan:` 章节中的编号步骤
+- `[DONE:n]` 标记完成步骤
 
 ---
 

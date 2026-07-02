@@ -69,7 +69,7 @@
 | 桌面 | `desktop.wm.niri`、`desktop.shell.dms-shell`、`desktop.input-method.fcitx5` |
 | 偏好 | `preference.cursor-theme`、`preference.icon-theme` |
 | 开发 | `dev.shell.fish`、`dev.shell.starship`、`dev.tools.git`、`dev.tools.yazi` |
-| 编辑器 | `dev.editors.opencode`、`dev.editors.pi-coding-agent`、`dev.editors.zed-editor`、`dev.editors.helix` |
+| 编辑器 | `dev.editors.opencode`、`dev.editors.pi-coding-agent`（含 13 个 npm 插件 + 3 个 TS 扩展）、`dev.editors.zed-editor`、`dev.editors.helix` |
 | 应用 | `apps.terminals.ghostty`、`apps.terminals.tabby`、`apps.browsers.zen-browser`、`apps.notes.obsidian`、`apps.gaming.steam`、`apps.gaming.prismlauncher` |
 
 ### provides.to-hosts.nixos
@@ -155,11 +155,26 @@ nix.settings.trusted-users = [ "xiaot_evo" ];
 | `system.hardware.nvidia` | `system/hardware/nvidia.nix` | 已实现 |
 | `system.hardware.nbfc-linux` | `system/hardware/nbfc-linux.nix` | 已实现 |
 
+### Pi Coding Agent 配置详情
+
+| 配置项 | 说明 |
+|---|---|
+| 提供商 | opencode (DeepSeek) |
+| 模型 | deepseek-v4-flash-free |
+| npm 插件 | 13 个（见 [plugins-overview](modules/features/dev/editors/pi-coding-agent/docs/plugins-overview.md)）|
+| TS 扩展 | notify.ts, plan-mode（通知 + 计划模式）|
+| MCP 服务器 | nixos (mcp-nixos) |
+| 权限系统 | @gotgenes/pi-permission-system (allow/ask/deny) |
+| 检查点 | @ayulab/pi-rewind (/rewind 交互式导航) |
+| 技能系统 | superpowers-zh (20 个技能) |
+| 使用教程 | [usage-guide.md](modules/features/dev/editors/pi-coding-agent/docs/usage-guide.md) |
+
 ---
 
 ## 已知待办
 
 - 未配置 formatter / linter / pre-commit hooks / .envrc
+- @plannotator/pi-extension 已从配置移除（如需手动卸载：`pi uninstall @plannotator/pi-extension`）
 
 ---
 

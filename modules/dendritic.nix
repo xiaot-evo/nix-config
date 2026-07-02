@@ -51,6 +51,17 @@
         url = "github:AvengeMedia/dms-plugin-registry";
         inputs.nixpkgs.follows = "nixpkgs";
       };
+      llm-agents-nix = {
+        url = "github:numtide/llm-agents.nix";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
+      # Crush — Charmbracelet's AI coding assistant in terminal
+      # https://github.com/charmbracelet/crush
+      charmbracelet-nur = {
+        url = "github:charmbracelet/nur";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
+
       zen-browser = {
         url = "github:0xc000022070/zen-browser-flake";
         inputs = {
