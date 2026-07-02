@@ -3,6 +3,7 @@
   imports = [
     (inputs.flake-file.flakeModules.dendritic or { })
     (inputs.den.flakeModules.dendritic or { })
+    (inputs.treefmt-nix.flakeModule or { })
   ];
 
   # other inputs may be defined at a module using them.
@@ -59,6 +60,11 @@
       # https://github.com/charmbracelet/crush
       charmbracelet-nur = {
         url = "github:charmbracelet/nur";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
+
+      treefmt-nix = {
+        url = "github:numtide/treefmt-nix";
         inputs.nixpkgs.follows = "nixpkgs";
       };
 
