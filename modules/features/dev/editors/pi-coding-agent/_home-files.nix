@@ -17,7 +17,7 @@ let
   };
 
   # 組裝擴展目錄
-  extensionsDir = pkgs.runCommand "pi-extensions" {} ''
+  extensionsDir = pkgs.runCommand "pi-extensions" { } ''
     mkdir -p $out/plan-mode
     cp ${src.notify} $out/notify.ts
     cp ${src.planModeIndex} $out/plan-mode/index.ts

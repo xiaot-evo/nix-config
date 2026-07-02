@@ -23,16 +23,16 @@
       ]
 
       );
-      nixos =
-        { pkgs, lib, ... }:
-        {
-          # 时区与语言
-          time.timeZone = "Asia/Shanghai";
-          i18n.defaultLocale = "zh_CN.UTF-8";
+    nixos =
+      { pkgs, lib, ... }:
+      {
+        # 时区与语言
+        time.timeZone = "Asia/Shanghai";
+        i18n.defaultLocale = "zh_CN.UTF-8";
 
-          environment.systemPackages = with pkgs; [
-            pciutils
-          ];
-        };
+        environment.systemPackages = with pkgs; [
+          pciutils
+        ];
+      };
   };
 }
