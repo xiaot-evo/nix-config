@@ -1,0 +1,11 @@
+{
+  "enabledModels": ["deepseek-v4*"],
+  "branchSummary": {
+    "skipPrompt": true
+  },
+  "retry": {
+    "provider": {
+      "maxRetries": 1
+    }
+  }
+}

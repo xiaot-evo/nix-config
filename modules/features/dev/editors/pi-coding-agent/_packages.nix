@@ -7,6 +7,25 @@
     ];
     context = ''
       请用中文回复。参考 AGENTS.md 了解项目结构、约定和完整技能表。
+
+      【工具选择优先级】（从上到下优先）
+      Nix 包/选项/版本查询 → mcp()                             首选 MCP 服务器
+      大文件/目录分析       → ctx_execute / ctx_execute_file     沙箱处理，不进上下文
+      并行调研/代码搜索    → Agent(Explore) 后台运行             不阻塞主任务
+      代码理解              → module_report → read_symbol → read  逐层深入，避免全文读
+      代码导航              → lsp_navigation（定义/引用/悬停）    阅读效率最高
+      构建前检查            → lsp_diagnostics                     减少试错
+      精确代码匹配          → ast_grep_search（优先于 grep 文本） 语义级匹配
+      需求不明确/决策不清   → ask_user（用结构化问题确认后再行动） 避免猜测
+
+      【Nix 工作流】
+      1. edit → nixfmt → git add → nix flake check（每步不可跳过）
+      2. 扁平化编辑：一次 edit 传多个 edits[]，而非多次单 edit
+      3. 新建 .nix 文件必须先 git add，否则 flake 看不到
+      4. 改 dendritic.nix → 运行 nix run .#write-flake
+
+      【思考深度选择】
+      简单查询/列目录 → low   日常开发 → medium   复杂 Nix/Den → high   架构/跨模块 → xhigh
     '';
     settings = {
       defaultProvider = "opencode";
@@ -14,7 +33,7 @@
       defaultThinkingLevel = "high";
       compaction = {
         enabled = true;
-        keepRecentTokens = 100000;
+        keepRecentTokens = 32000;
         reserveTokens = 16384;
       };
 
