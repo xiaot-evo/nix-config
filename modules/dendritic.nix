@@ -17,6 +17,7 @@
         "https://cache.garnix.io"
         "https://cache.nixos-cuda.org"
         "https://attic.xuyh0120.win/lantian"
+        "https://noctalia.cachix.org"
       ];
       extra-trusted-public-keys = [
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
@@ -24,6 +25,7 @@
         "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
         "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
         "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
+        "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
       ];
     };
     inputs = {
@@ -51,17 +53,11 @@
         url = "github:AvengeMedia/dms-plugin-registry";
         inputs.nixpkgs.follows = "nixpkgs";
       };
+      # AI coding agent packages（pi, claude-code, opencode, crush 等）
       llm-agents-nix = {
         url = "github:numtide/llm-agents.nix";
         inputs.nixpkgs.follows = "nixpkgs";
       };
-      # Crush — Charmbracelet's AI coding assistant in terminal
-      # https://github.com/charmbracelet/crush
-      charmbracelet-nur = {
-        url = "github:charmbracelet/nur";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
-
       treefmt-nix = {
         url = "github:numtide/treefmt-nix";
         inputs.nixpkgs.follows = "nixpkgs";
@@ -74,6 +70,13 @@
           nixpkgs.follows = "nixpkgs";
           home-manager.follows = "home-manager";
         };
+      };
+
+      # Noctalia — Rust 编写的平铺桌面环境/Shell
+      # https://docs.noctalia.dev/
+      noctalia = {
+        url = "github:noctalia-dev/noctalia/cachix";
+        # 不 follow nixpkgs 以确保二进制缓存命中
       };
     };
   };

@@ -27,6 +27,18 @@ nix flake check                  # CI 门禁 — 修改后务必运行
 
 内部使用 `nh`。可用主机列表见 `AGENTS_PROJECT.md`。
 
+### Pi agent 配置
+
+Pi agent 配置通过 Nix Home Manager 声明式管理，**不要使用 `pi install`**：
+
+| 文件 | 职责 |
+|------|------|
+| `modules/features/dev/editors/pi-coding-agent/_packages.nix` | settings.json 的 packages 列表、上下文、模型配置 |
+| `modules/features/dev/editors/pi-coding-agent/_home-files.nix` | 文件部署：mcp.json、本地扩展 |
+| `modules/features/dev/editors/pi-coding-agent/pi-coding-agent.nix` | den aspect 定义 + imports |
+
+修改后：`git add` → `nix flake check` → `nix run .#<host> -- switch`
+
 ---
 
 ## 项目结构
@@ -134,6 +146,7 @@ dendritic.nix ──> flake.nix（自动生成）
 | `dms-plugin-registry` | `AvengeMedia/dms-plugin-registry` | nixpkgs | DMS 插件注册表 |
 | `llm-agents-nix` | `github:numtide/llm-agents.nix` | nixpkgs | pi-coding-agent 包 |
 | `zen-browser` | `0xc000022070/zen-browser-flake` | nixpkgs, home-manager | 浏览器 |
+| `noctalia` | `noctalia-dev/noctalia/cachix` | — | 平铺桌面环境/Shell |
 
 ---
 
@@ -185,7 +198,7 @@ MCP 数据源（`source` 参数）：`nixos`、`home-manager`、`darwin`、`flak
 | `web_search` | 网页搜索 | 需要外部信息时 |
 | `fetch_content` | 获取 URL/视频/GitHub 内容 | 文档、仓库、视频分析 |
 | `mcp` | MCP 网关 | Nix/Den 查询优先用 MCP |
-| `ask_user_question` | 结构化问卷 | 需求不明确时 |
+| `ask_user` | 交互式提问（agent-skills 捆绑 pi-ask-user 提供）| 需求不明确时 |
 | `todo` | 任务列表管理 | 多步骤任务跟踪 |
 
 ### Pi-lens 代码分析工具
@@ -214,56 +227,44 @@ MCP 数据源（`source` 参数）：`nixos`、`home-manager`、`darwin`、`flak
 
 ---
 
-## Superpowers Skills — 完整技能表（20 个）
+## 可用技能
 
-项目使用 **superpowers**（`github:obra/superpowers`）技能系统。Pi agent 应主动调用合适的技能。
+项目使用 `@chankov/agent-skills`（27 个工程化技能）和各自包内的技能。agent 会自动发现并按需加载。
 
-### 全部技能
+### 常见场景速查
 
-| 技能 | 分类 | 用途 | 触发时机 |
-|------|------|------|----------|
-| `brainstorming` | 设计 | 创造性工作前探索、澄清、设计、批准 | **任何创造性工作前** |
-| `writing-plans` | 设计 | 创建实施计划 | brainstorming 之后 |
-| `executing-plans` | 开发 | 执行实施计划 | 计划批准后 |
-| `subagent-driven-development` | 开发 | 含独立子任务的计划执行 | 实施计划含独立子任务 |
-| `dispatching-parallel-agents` | 开发 | 并行分派独立任务 | 2+ 无共享状态的任务 |
-| `test-driven-development` | 开发 | 测试驱动开发工作流 | 需要测试优先的场景 |
-| `systematic-debugging` | 调试 | 系统化诊断根因 | **遇到 bug / 测试失败** |
-| `requesting-code-review` | 审查 | 请求代码审查 | 工作完成后、合并前 |
-| `receiving-code-review` | 审查 | 接收并处理代码审查反馈 | 收到审查意见后 |
-| `chinese-code-review` | 审查 | 中文代码审查 | 需要中文审查反馈 |
-| `verification-before-completion` | 验证 | 完成前运行验证 | **声明完成前** |
-| `finishing-a-development-branch` | 交付 | 决定合并/PR/清理 | 实现完成后 |
-| `writing-skills` | 工具 | 创建/编辑 superpowers 技能 | 需要新技能时 |
-| `mcp-builder` | 工具 | 构建 MCP 工具 | 需要 MCP 集成时 |
-| `workflow-runner` | 工具 | 运行工作流 | 多步骤自动化工作流 |
-| `chinese-documentation` | 文档 | 中文文档编写 | 需要中文文档时 |
-| `chinese-commit-conventions` | 文档 | 中文提交规范 | 格式化提交信息 |
-| `chinese-git-workflow` | 文档 | 中文 Git 工作流 | Git 操作需要中文指引 |
-| `using-superpowers` | 元 | 使用 superpowers 技能系统的指南 | 初次使用或需要帮助时 |
-| `using-git-worktrees` | 工具 | Git 工作树管理 | 并行开发分支 |
+| 场景 | 推荐命令/技能 |
+|------|--------------|
+| 定义需求 | `/spec` 或 skill: spec-driven-development |
+| 制定计划 | `/plan` 或 skill: planning-and-task-breakdown |
+| 增量实现 | `/build` 或 skill: incremental-implementation |
+| 测试驱动 | `/test` 或 skill: test-driven-development |
+| 代码审查 | `/review` 或 skill: code-review-and-quality |
+| 简化代码 | `/code-simplify` 或 skill: code-simplification |
+| Bug 修复 | skill: debugging-and-error-recovery |
+| 安全审计 | skill: security-and-hardening |
+| 性能优化 | skill: performance-optimization |
+| 安全发布 | `/ship` 或 skill: shipping-and-launch |
 
-### 标准工作流
+---
 
-```
-1. brainstorming          → 探索、澄清、设计、批准
-2. writing-plans          → 创建实施计划
-3. 实现                   → 编码 + nix flake check
-4. requesting-code-review → 验证满足需求
-5. finishing-a-development-branch → 合并/PR/清理
-```
 
-### 场景化技能链
+## 可用斜杠命令
 
-| 场景 | 技能链 |
-|------|--------|
-| **新功能开发** | brainstorming → writing-plans → subagent-driven-development / executing-plans → verification-before-completion → requesting-code-review → finishing-a-development-branch |
-| **Bug 修复** | systematic-debugging → writing-plans → 修复 → verification-before-completion |
-| **并行任务** | dispatching-parallel-agents（每个子任务内运行完整开发工作流） |
-| **TDD** | test-driven-development → 写测试 → 实现 → 验证 |
-| **创建新技能** | writing-skills → test-driven-development → 完成 |
-| **MCP 集成** | mcp-builder → 开发 → 验证 |
-| **多步骤自动化** | workflow-runner（编排多个 phase）|
+| 命令 | 来源 | 用途 |
+|------|------|------|
+| `/spec` `/plan` `/build` `/test` `/review` `/ship` | agent-skills | 开发生命周期管理 |
+| `/code-simplify` | agent-skills | 代码简化审查 |
+| `/revise-agent-md` | agent-md-management | 会话学习捕获 → AGENTS.md 更新 |
+
+## AGENTS.md 自动管理
+
+`agent-md-management` 包提供 AGENTS.md 的审计与改进：
+
+- `/revise-agent-md` — 会话结束后捕获学习，建议更新 AGENTS.md
+- 工作流：发现变更 → 质量评估 → 生成 diff 建议 → 用户确认后更新 → `nix flake check` 验证
+
+灵感来自 Anthropic 官方 claude-md-management 插件。
 
 ---
 
@@ -283,3 +284,6 @@ MCP 数据源（`source` 参数）：`nixos`、`home-manager`、`darwin`、`flak
 - **git add**: 新建/删除 `.nix` 文件后必须先 `git add`，否则 flake 评估看不到变更。
 - **import-tree**: `_` 前缀的 `.nix` 文件会被跳过；`dir/dir.nix` 的 aspect 名称为 `dir`（去重）。
 - **插件**: 添加 pi npm 包时检查功能重叠，确认是否需要系统二进制依赖。
+- **斜杠命令冲突**: 多个包可能注册同名 `/command`（如 plan-mode 和 agent-skills 的 `/plan`）。冲突时保留需要的，删掉另一个。
+- **pi-subagents 版本**: 官方 `pi-subagents`（1 个 `subagent` 工具，轻量）vs `@tintinweb/pi-subagents`（3 个工具，FleetView + 会话查看器 UI，略重）。按需选用。
+- **文件验证技巧**: 使用 `ctx_execute` / `ctx_execute_file` 处理大输出或文件分析，避免原始内容占用上下文。

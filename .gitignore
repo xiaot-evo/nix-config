@@ -21,3 +21,6 @@ nixos.qcow2
 
 # others
 /den
+
+# pi-subagents artifacts
+.pi-subagents

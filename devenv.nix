@@ -5,7 +5,9 @@
   inputs,
   ...
 }:
-
+let
+  hostname = builtins.replaceStrings [ "\n" ] [ "" ] (builtins.readFile /etc/hostname);
+in
 {
   # https://devenv.sh/basics/
   # env.GREET = "devenv";
@@ -35,12 +37,10 @@
       nix run .#write-flake
     '';
     build.exec = ''
-      nix run  .#${builtins.replaceStrings [ "\n" ] [ "" ] (builtins.readFile /etc/hostname)}  --impure
+      nix run  .#${hostname}  --impure
     '';
     build-switch.exec = ''
-      nix run  .#${
-        builtins.replaceStrings [ "\n" ] [ "" ] (builtins.readFile /etc/hostname)
-      }  -- switch --impure
+      nix run  .#${hostname}  -- switch --impure
     '';
   };
   # https://devenv.sh/basics/

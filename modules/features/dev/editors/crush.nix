@@ -3,29 +3,33 @@ let
   charm = inputs.charmbracelet-nur;
 in
 {
-  den.aspects.dev.editors.crush-agent = {
+  den.aspects.dev.editors.crush = {
+    includes = [
+      den.batteries.inputs'
+      (den.batteries.unfree [ "crush" ])
+    ];
     # ──────────────────────────────────────────────
     # Crush — Charmbracelet 的终端 AI 编程助手
     # 声明式配置模板，通过 NUR (charmbracelet/nur) 管理
     # 文档: https://github.com/charmbracelet/crush
     #
     # 使用方式：在 host/user 的 includes 中添加：
-    #   den.aspects.dev.editors.crush-agent
+    #   den.aspects.dev.editors.crush
     #
     # API 密钥通过环境变量注入（不硬编码在配置中）：
     #   export ANTHROPIC_API_KEY="sk-..."
     #   export OPENAI_API_KEY="sk-..."
     # ──────────────────────────────────────────────
 
-    homeManager = {
+    homeManager = { pkgs, inputs', ... }: {
       imports = [ charm.homeModules.crush ];
 
       programs.crush = {
         enable = true;
 
-        # ── 包覆盖（可选）─────────────────────────
-        # 默认使用 charmbracelet/nur 提供的包
-        # package = pkgs.crush;
+        # ── 包来源 ──────────────────────────────────
+        # 使用 llm-agents.nix 提供的包
+        package = inputs'.llm-agents-nix.packages.crush;
 
         settings = {
           # ── 模型选择 ─────────────────────────────
@@ -33,18 +37,18 @@ in
           # 需先在 providers 里配置对应提供商
           models = {
             large = {
-              model = "claude-sonnet-4-20250514";
-              provider = "anthropic";
-              # reasoning_effort = "high";   # OpenAI 推理模型
-              # think = true;                 # Anthropic 思考模式
+              model = "deepseek-v4-flash-free";
+              provider = "opencode-zen";
+              reasoning_effort = "high";
+              think = true;
               # max_tokens = 50000;
               # temperature = 0.7;
               # top_p = 0.9;
             };
-            # small = {
-            #   model = "claude-3-5-haiku-20241022";
-            #   provider = "anthropic";
-            # };
+            small = {
+              model = "big-pickle";
+              provider = "opencode-zen";
+            };
           };
 
           # ── AI 提供商 ────────────────────────────
@@ -87,7 +91,31 @@ in
 
           # ── MCP 服务 ─────────────────────────────
           # 通过 Model Context Protocol 扩展工具能力
-          mcp = { };
+          mcp = {
+            nixos = {
+              disabled = false;
+              type = "stdio";
+              command = "nix";
+              args = [
+                "run"
+                "github:jsiegel-supplyframe/mcp-nixos/nix-taco-sprint/den-source"
+                "--"
+              ];
+            };
+            github = {
+              type = "http";
+              url = "https://api.githubcopilot.com/mcp/";
+              timeout = 120;
+              disabled = true;
+              disabled_tools = [
+                # "create_issue"
+                # "create_pull_request"
+              ];
+              # headers = {
+              #   Authorization = "Bearer $GH_PAT";
+              # };
+            };
+          };
 
           # ── 全局选项 ─────────────────────────────
           options = {
@@ -95,7 +123,7 @@ in
             context_paths = [
               # ".cursorrules"
               # "CLAUDE.md"
-              # "AGENTS.md"
+              "AGENTS.md"
               # "CRUSH.md"
               # ".github/copilot-instructions.md"
             ];
@@ -113,13 +141,13 @@ in
             # ];
 
             # 项目初始化时自动生成的分析文件名
-            # initialize_as = "AGENTS.md";
+            initialize_as = "AGENTS.md";
 
             # TUI 界面选项
             tui = {
               compact_mode = false;
               # diff_mode = "unified";    # 或 "split"
-              # transparent = false;
+              transparent = true;
               # scrollbar = "default";    # "always" / "never"
               completions = {
                 max_depth = 0;
@@ -132,14 +160,14 @@ in
             debug_lsp = false;
 
             # 通知
-            # notification_style = "auto";   # native / osc / bell / disabled
+            notification_style = "auto"; # native / osc / bell / disabled
             # disable_notifications = false;
 
             # 进度显示
-            # progress = true;
+            progress = true;
 
             # 自动总结
-            # disable_auto_summarize = false;
+            disable_auto_summarize = false;
 
             # Git 提交属性
             attribution = {
@@ -171,6 +199,8 @@ in
               "grep"
               # "edit"       # 谨慎添加写操作工具
               # "bash"       # 高风险
+              "nixos"
+              "github"
             ];
           };
 

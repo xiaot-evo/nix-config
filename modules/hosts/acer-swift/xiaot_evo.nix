@@ -38,7 +38,7 @@
         dev.shell.starship
         dev.tools.git
         dev.tools.yazi
-        dev.editors.opencode
+        dev.editors.claude-code
         dev.editors.pi-coding-agent
         dev.editors.zed-editor
         dev.editors.helix

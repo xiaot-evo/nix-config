@@ -6,200 +6,19 @@
 
 ## 目录
 
-1. [pi-powerline-footer](#1-pi-powerline-footer)—Powerline 风格底栏
-2. [pi-cache-optimizer](#2-pi-cache-optimizer)—LLM KV 缓存命中率优化
-3. [pi-rtk-optimizer](#3-pi-rtk-optimizer)—命令重写 + 输出压缩
-4. [pi-web-access](#4-pi-web-access)—网页搜索与内容获取
-5. [context-mode](#5-context-mode)—上下文管理：FTS5 知识库 + 沙箱执行
-6. [pi-subagents](#6-pi-subagents)—子 agent 编排
-7. [pi-mcp-adapter](#7-pi-mcp-adapter)—MCP 协议适配器
-8. [rpiv-ask-user-question](#8-rpiv-ask-user-question)—结构化提问
-9. [rpiv-todo](#9-rpiv-todo)—任务列表管理
-10. [pi-lens](#10-pi-lens)—代码透镜
-11. [superpowers-zh](#11-superpowers-zh)—技能系统
-12. [@ayulab/pi-rewind](#12-ayulabpi-rewind)—修改追踪与恢复
-13. [@gotgenes/pi-permission-system](#13-gotgenespi-permission-system)—权限管理
+1. [context-mode](#1-context-mode)
+2. [pi-subagents](#2-pi-subagents)
+3. [pi-mcp-adapter](#3-pi-mcp-adapter)
+4. [rpiv-todo](#4-rpiv-todo)
+5. [pi-lens](#5-pi-lens)
+6. [@chankov/agent-skills](#6-chankov-agent-skills)
+7. [@ayulab/pi-rewind](#7-ayulab-pi-rewind)
+8. [cc-safety-net](#8-cc-safety-net)
+9. [@lynskylate/agent-md-management](#9-lynskylate-agent-md-management)
 
 ---
 
-## 1. pi-powerline-footer
-
-**作用**：自定义 Pi 编辑器底栏，替换默认的简单状态栏为 Powerline 风格。
-
-### 主要功能
-
-| 功能 | 说明 |
-|------|------|
-| **状态栏** | 显示当前模型、思考级别、路径、git 状态、上下文用量、token 数、费用等 |
-| **预设切换** | `/powerline default` / `minimal` / `compact` / `full` / `nerd` / `ascii` |
-| **Editor Stash** | `Alt+S` 暂存编辑器内容，清空输入框，agent 完成后自动恢复 |
-| **Working Vibes** | `/vibe star trek` 让"Working..."变成主题化加载语，支持 pirate / zen / noir 等 |
-| **欢迎覆盖** | 启动时显示品牌 Logo、模型信息、键盘快捷键、统计数据 |
-| **Git 集成** | 异步获取分支、暂存/未暂存/未跟踪文件计数 |
-| **上下文感知** | 70%（黄）和 90%（红）时颜色警告 |
-| **Bash 模式** | `Ctrl+Shift+B` 切换，保持持久 shell 会话，流式输出到编辑器下方 |
-| **Shell 幽灵建议** | 基于项目历史自动补全命令 |
-
-### 常用命令
-
-```
-/powerline                    # 打开设置
-/powerline default            # 切换预设
-/powerline fixed-editor on    # 固定编辑器
-/vibe star trek               # 设置加载语主题
-/Alt+S                        # 暂存编辑器内容
-/Ctrl+Shift+B                 # 切换 Bash 模式
-```
-
-### 设置
-
-```json
-{
-  "powerline": {
-    "preset": "default",
-    "fixedEditor": true
-  },
-  "workingVibe": "star trek"
-}
-```
-
----
-
-## 2. pi-cache-optimizer
-
-**作用**：优化 LLM 的 KV / prompt 缓存命中率，减少重复 token 消耗，降低 API 费用。
-
-### 主要功能
-
-- **缓存优化**：将稳定的系统提示词前置，压缩技能列表，减少动态上下文波动
-- **缓存键回退**：为 OpenAI 兼容代理添加 `prompt_cache_key` 回退
-- **代理诊断**：检测第三方代理（LiteLLM / OneAPI 等）缺少会话亲和性配置并警告
-- **Anthropic 自适应思考检测**：检测 opus-4.6+ / sonnet-4.6+ 模型缺少 `forceAdaptiveThinking` 配置
-- **自动修复**：`/cache-optimizer fix` 可自动修复兼容性问题（需确认）
-- **底栏统计**：显示缓存命中率（如 `DS cache 3/10 · 0.002M/0.005M tok (40%)`）
-
-### 常用命令
-
-```
-/cache-optimizer              # 交互式菜单
-/cache-optimizer enable       # 启用优化
-/cache-optimizer doctor       # 诊断当前模型/提供商的缓存状态
-/cache-optimizer compat       # 显示兼容性建议
-/cache-optimizer stats        # 显示今日缓存统计
-/cache-optimizer fix          # 自动修复兼容问题（需确认）
-/cache-optimizer reset        # 重置本地统计
-```
-
-### 配置
-
-当前配置已设置 DeepSeek 的 `supportsLongCacheRetention` 和 `sendSessionAffinityHeaders`。
-
----
-
-## 3. pi-rtk-optimizer
-
-**作用**：自动将 bash 命令重写为 `rtk` 等效命令，并压缩工具输出（bash / read / grep）以减少 token 消耗。
-
-### 主要功能
-
-| 模块 | 说明 |
-|------|------|
-| **命令重写** | 自动将 `git diff` → `rtk git diff` 等，或仅建议模式 |
-| **ANSI 剥离** | 移除终端颜色/格式化代码 |
-| **测试聚合** | 汇总测试运行器的通过/失败计数 |
-| **构建过滤** | 从构建输出中提取错误/警告 |
-| **Git 压缩** | 压缩 `git status`、`git log`、`git diff` 输出 |
-| **Linter 聚合** | 汇总 lint 工具输出 |
-| **搜索分组** | 按文件分组 `grep`/`rg` 结果 |
-| **源码过滤** | `none` / `minimal` / `aggressive` 三级源码注释/空白移除 |
-| **智能截断** | 保留文件边界和重要行 |
-| **硬截断** | 最终字符数强制限制（默认 12000） |
-
-### 常用命令
-
-```
-/rtk                          # 打开设置弹窗
-/rtk show                     # 显示当前配置和运行时状态
-/rtk verify                   # 检查 rtk 二进制是否可用
-/rtk stats                    # 显示输出压缩指标
-/rtk reset                    # 重置所有设置为默认值
-```
-
-### 配置
-
-```json
-{
-  "enabled": true,
-  "mode": "rewrite",
-  "outputCompaction": {
-    "readCompaction": { "enabled": false },
-    "sourceCodeFiltering": "none",
-    "truncate": { "enabled": true, "maxChars": 12000 }
-  }
-}
-```
-
-> ⚠️ `readCompaction` 默认为关闭，确保代码读取精确。如需开启请注意可能引起文件编辑 mismatch。
-
-### 依赖
-
-需要 `rtk` 二进制（已通过 Nix `extraPackages` 安装）。
-
----
-
-## 4. pi-web-access
-
-**作用**：提供网页搜索、内容提取、GitHub 仓库克隆、YouTube 视频理解和本地视频分析功能。
-
-### 工具
-
-#### web_search — 网页搜索
-
-```typescript
-web_search({ query: "rust async" })
-web_search({ queries: ["q1", "q2"], provider: "openai" })
-web_search({ query: "...", numResults: 10, recencyFilter: "week" })
-web_search({ query: "...", includeContent: true })
-web_search({ query: "...", workflow: "auto-summary" })
-```
-
-| 参数 | 说明 |
-|------|------|
-| `query` / `queries` | 单个/多个搜索查询 |
-| `numResults` | 每查询结果数（默认 5，最大 20） |
-| `recencyFilter` | `day` / `week` / `month` / `year` |
-| `domainFilter` | 限制域名（`-github.com` 排除） |
-| `provider` | `auto`（默认）/ `openai` / `brave` / `parallel` / `tavily` / `exa` / `perplexity` / `gemini` |
-| `includeContent` | 异步获取页面全文 |
-| `workflow` | `none`（跳过浏览器策展）/ `summary-review`（打开策展器并自动摘要，默认）/ `auto-summary`（生成摘要不打开策展器） |
-
-#### fetch_content — 内容获取
-
-```typescript
-fetch_content({ url: "https://example.com" })
-fetch_content({ urls: ["url1", "url2"] })
-fetch_content({ url: "https://github.com/owner/repo" })
-fetch_content({ url: "https://youtube.com/watch?v=abc", prompt: "视频里讲了什么？" })
-```
-
-自动检测：GitHub 仓库（克隆本地）、YouTube（Gemini 视频理解）、PDF（提取文本）、本地视频文件。
-
-#### get_search_content — 检索存储内容
-
-从之前的搜索或获取中提取已存储的完整内容。
-
-### 自动回退链
-
-```
-web_search: OpenAI → Exa(direct) → Exa(MCP) → Brave → Parallel → Tavily → Perplexity → Gemini API → Gemini Web
-fetch_content: Readability → Jina Reader → Gemini 提取
-```
-
-零配置即可使用（Exa MCP 无需 API key），也可在 `~/.pi/web-search.json` 配置各服务的 API key。
-
----
-
-## 5. context-mode
+## 1. context-mode
 
 **作用**：上下文窗口管理——通过沙箱工具、FTS5 知识库和智能搜索，将工具输出减少 98%。
 
@@ -241,44 +60,53 @@ ctx_execute("javascript", `
 
 ---
 
-## 6. pi-subagents
+## 2. @tintinweb/pi-subagents
 
-**作用**：将工作委派给专注的子 agent——代码审查、调研、实现、并行审计等。
+**源仓库**：`github:tintinweb/pi-subagents`  
+**作用**：Claude Code 风格的子 agent 编排——Agent 工具、FleetView 导航、会话查看器、中途引导。
+
+### 工具
+
+| 工具 | 用途 |
+|------|------|
+| `Agent` | 启动子 agent（支持 foreground / background / cron 调度）|
+| `get_subagent_result` | 检查后台 agent 状态和结果 |
+| `steer_subagent` | 中途引导运行中的 agent |
 
 ### 内置 agent
 
-| Agent | 用途 | 适用场景 |
-|-------|------|---------|
-| `scout` | 快速代码库侦察 | 理解代码结构、入口点、数据流、风险 |
-| `researcher` | 网络/文档调研 | 查找官方文档、规范、基准测试 |
-| `planner` | 制定实施计划 | 阅读 -> 规划（不编辑代码） |
-| `worker` | 执行实现 | 编辑文件、验证、上报未批准决策 |
-| `reviewer` | 代码审查 | 检查实现是否符合任务/计划，测试用例，边界条件 |
-| `context-builder` | 构建更强上下文 | 收集代码上下文，编写 handoff 材料 |
-| `oracle` | 第二意见 | 挑战假设、发现漂移、推荐安全方案 |
-| `delegate` | 通用委托 | 行为接近父会话的通用子 agent |
+| Agent | 用途 |
+|-------|------|
+| `general-purpose` | 父 session 双子——继承全部 system prompt 和规则 |
+| `Explore` | 快速代码库探索（只读，haiku 模型）|
+| `Plan` | 架构规划（只读）|
+
+### 主要功能
+
+- **FleetView** — 编辑器下方导航列表，↑↓ 选择，Enter 打开会话查看器
+- **Conversation viewer** — 实时滚动覆盖层，查看子 agent 对话
+- **中途引导** — 运行时注入消息重定向 agent
+- **定时调度** — cron / interval / 一次性调度
+- **自定义 agent** — 通过 `.pi/agents/*.md` YAML frontmatter 定义
+- **优雅终止** — wrap-up 警告再中止，不丢失结果
+- **工作树隔离** — 每个 agent 在独立 git worktree 中运行
+- **agent 记忆** — 项目/用户/本地三级持久化记忆
+
+### 常用命令
+
+```
+/agents          # 交互式管理菜单（运行中 agent、agent 类型、设置）
+```
 
 ### 使用方式
 
 ```text
-# 自然语言触发
-"Use reviewer to review this diff."
-"Ask oracle for a second opinion on my current plan."
-"Run parallel reviewers: one for correctness, one for tests."
-
-# 链式工作流
-"Use scout to understand the auth flow, then have planner turn that into an implementation plan."
-
-# 后台运行
-"Run this in the background."
-
-# 循环审查
-"Run a review loop on this change until reviewers stop finding fixes worth doing, max 3 rounds."
+Agent({ subagent_type: "Explore", prompt: "Find auth files", description: "Scan auth", run_in_background: true })
 ```
 
 ---
 
-## 7. pi-mcp-adapter
+## 3. pi-mcp-adapter
 
 **作用**：在 Pi 中使用 MCP 服务器，同时避免大量工具定义消耗上下文窗口。
 
@@ -310,38 +138,7 @@ mcp({ tool: "name", args: '{"key":"val"}' }) # 调用工具
 
 ---
 
-## 8. rpiv-ask-user-question
-
-**作用**：让 agent 向用户发起结构化多选项问卷，避免猜测用户意图。
-
-### 工具
-
-`ask_user_question()`
-
-```typescript
-ask_user_question({
-  questions: [{
-    question: "选择认证方式？",
-    header: "Auth",
-    options: [
-      { label: "OAuth", description: "使用 OAuth 2.0" },
-      { label: "API Key", description: "使用 API Key" }
-    ]
-  }]
-})
-```
-
-### 特点
-
-- 每个问题支持 2-4 个选项
-- 支持 `multiSelect: true` 多选
-- 支持 `preview` 预览（代码片段/图表对比）
-- 用户可自定义输入或选择"Chat about this"
-- 内置"Type something."自由文本行
-
----
-
-## 9. rpiv-todo
+## 4. rpiv-todo
 
 **作用**：为 agent 提供任务列表管理，跨 /reload 和会话压实存活。
 
@@ -372,7 +169,7 @@ todo({ action: "delete", id: 1 })
 
 ---
 
-## 10. pi-lens
+## 5. pi-lens
 
 **作用**：代码反馈透镜——在 agent 编写/编辑代码时提供快速、语言感知的反馈。
 
@@ -402,67 +199,57 @@ todo({ action: "delete", id: 1 })
 
 ---
 
-## 11. superpowers-zh
+## 6. @chankov/agent-skills
 
-**作用**：superpowers（`github:obra/superpowers`）的中文增强版技能系统，提供 20 个预定义工作流技能。在 Nix 项目上下文中，agent 应主动调用合适的技能。
+**源仓库**：`github:chankov/agent-skills`  
+**作用**：27 个工程化技能 + 8 个斜杠命令，覆盖完整开发生命周期。
 
-### 全部技能列表
+Fork 自 addyosmani/agent-skills，专为 pi / Claude Code / OpenCode 打包。
 
-| 技能 | 分类 | 用途 | 触发时机 |
-|------|------|------|----------|
-| `brainstorming` | 设计 | 创造性工作前探索、澄清、设计、批准 | **任何创造性工作前** |
-| `writing-plans` | 设计 | 创建实施计划 | brainstorming 之后 |
-| `executing-plans` | 开发 | 执行实施计划 | 计划批准后 |
-| `subagent-driven-development` | 开发 | 含独立子任务的计划执行 | 实施计划含独立子任务 |
-| `dispatching-parallel-agents` | 开发 | 并行分派独立任务 | 2+ 无共享状态的任务 |
-| `test-driven-development` | 开发 | 测试驱动开发工作流 | 需要测试优先的场景 |
-| `systematic-debugging` | 调试 | 系统化诊断根因 | **遇到 bug / 测试失败** |
-| `requesting-code-review` | 审查 | 请求代码审查 | 工作完成后、合并前 |
-| `receiving-code-review` | 审查 | 接收并处理代码审查反馈 | 收到审查意见后 |
-| `chinese-code-review` | 审查 | 中文代码审查 | 需要中文审查反馈 |
-| `verification-before-completion` | 验证 | 完成前运行验证 | **声明完成前** |
-| `finishing-a-development-branch` | 交付 | 决定合并/PR/清理 | 实现完成后 |
-| `writing-skills` | 工具 | 创建/编辑 superpowers 技能 | 需要新技能时 |
-| `mcp-builder` | 工具 | 构建 MCP 工具 | 需要 MCP 集成时 |
-| `workflow-runner` | 工具 | 运行工作流 | 多步骤自动化工作流 |
-| `chinese-documentation` | 文档 | 中文文档编写 | 需要中文文档时 |
-| `chinese-commit-conventions` | 文档 | 中文提交规范 | 格式化提交信息 |
-| `chinese-git-workflow` | 文档 | 中文 Git 工作流 | Git 操作需要中文指引 |
-| `using-superpowers` | 元 | 使用 superpowers 技能系统的指南 | 初次使用或需要帮助时 |
-| `using-git-worktrees` | 工具 | Git 工作树管理 | 并行开发分支 |
+### 斜杠命令
 
-### 标准开发工作流
+| 命令 | 用途 |
+|------|------|
+| `/spec` | 编写 PRD（目标、结构、测试策略） |
+| `/plan` | 分解为小颗粒度可验证任务 |
+| `/build` | 增量实现（垂直切片、测试驱动） |
+| `/test` | 测试驱动开发（红-绿-重构） |
+| `/review` | 五维代码审查 |
+| `/code-simplify` | 代码简化（保留功能） |
+| `/webperf` | Web 性能审计 |
+| `/ship` | 安全发布 |
 
-```
-1. brainstorming          → 探索、澄清、设计、批准
-2. writing-plans          → 创建实施计划
-3. 实现                   → 编码 + nix flake check
-4. requesting-code-review → 验证满足需求
-5. finishing-a-development-branch → 合并/PR/清理
-```
+### 27 个技能
 
-### 调试工作流
+| 阶段 | 技能 |
+|------|------|
+| **Define** | interview-me, idea-refine, spec-driven-development |
+| **Plan** | planning-and-task-breakdown |
+| **Build** | incremental-implementation, test-driven-development, context-engineering, source-driven-development, doubt-driven-development, frontend-ui-engineering, api-and-interface-design |
+| **Verify** | browser-testing-with-devtools, debugging-and-error-recovery |
+| **Review** | code-review-and-quality, code-simplification, security-and-hardening, performance-optimization |
+| **Ship** | git-workflow-and-versioning, ci-cd-and-automation, deprecation-and-migration, documentation-and-adrs, observability-and-instrumentation, shipping-and-launch |
+| **Orchestrate** | orchestration-verification |
+| **Meta** | using-agent-skills, designing-agents, guided-workspace-setup |
 
-```
-1. systematic-debugging   → 诊断根因
-2. 修复 + nix flake check
-3. verification-before-completion → 确认修复
-```
+### 特点
 
-### 技能分类速查
+- **Process, not prose**——技能是可执行的工作流，不是参考文档
+- **Anti-rationalization**——每个技能包含常见的 agent 偷懒借口及反驳
+- **Verification is non-negotiable**——每个技能以验证证据结束
+- **Progressive disclosure**——`SKILL.md` 是入口，引用文档按需加载
 
-| 场景 | 技能链 |
-|------|--------|
-| 新功能开发 | brainstorming → writing-plans → subagent-driven-development / executing-plans → verification-before-completion → requesting-code-review → finishing-a-development-branch |
-| Bug 修复 | systematic-debugging → writing-plans → 修复 → verification-before-completion |
-| 并行任务 | dispatching-parallel-agents（每个子任务内运行完整开发工作流） |
-| TDD | test-driven-development → 写测试 → 实现 → 验证 |
-| 创建新技能 | writing-skills → test-driven-development → 完成 |
-| MCP 集成 | mcp-builder → 开发 → 验证 |
+### Bundled 依赖
+
+内置 `pi-ask-user`（提供 `ask_user` 工具），无需额外安装。
+
+### 注意
+
+由于项目约定用中文回复，部分技能输出可能为英文。遇到中文场景可手动提示 agent 使用中文。
 
 ---
 
-## 12. @ayulab/pi-rewind
+## 7. @ayulab/pi-rewind
 
 **源仓库**：`github:ayulab/pi-rewind`  
 **作用**：修改追踪与恢复——交互式检查点导航，支持代码/对话回滚。
@@ -509,55 +296,69 @@ git-checkpoint.ts（已移除）是 Pi 官方的最小示例扩展。@ayulab/pi-
 
 ---
 
-## 13. @gotgenes/pi-permission-system
+## 8. cc-safety-net
 
-**源仓库**：`github:gotgenes/pi-packages`  
-**作用**：集中式权限管理——allow/ask/deny 三级策略，在工具调用和 bash 执行前进行权限检查。
+**源仓库**：`github:kenryu42/cc-safety-net`  
+**作用**：PreToolUse hook — 在命令执行前拦截并阻止破坏性 git 和文件系统命令。
+
+与原先的 `pi-permission-system`（通配符匹配）不同，cc-safety-net 进行 **语义分析**：指令重排、shell wrapper、解释器 one-liner 都无法绕过。
+
+### 为什么替换 pi-permission-system
+
+| 场景 | pi-permission-system | cc-safety-net |
+|------|---------------------|---------------|
+| `git checkout -b feature`（安全） | 被 `git checkout:*` 阻止 ❌ | 允许 ✅ |
+| `git checkout -- file`（危险） | 被阻止 ✅ | 被阻止 ✅ |
+| `rm -rf /tmp/cache`（安全） | 被 `rm -rf *` 阻止 ❌ | 允许 ✅ |
+| `rm -r -f /`（危险） | 允许（flag 顺序绕过）❌ | 被阻止 ✅ |
+| `bash -c 'git reset --hard'` | 允许（wrapper）❌ | 被阻止 ✅ |
+| `python -c 'os.system("rm -rf /")'` | 允许（解释器）❌ | 被阻止 ✅ |
 
 ### 主要功能
 
 | 功能 | 说明 |
 |------|------|
-| **三级策略** | `allow`（允许）/ `ask`（询问）/ `deny`（拒绝）|
-| **工具隐藏** | 拒绝的工具在 agent 启动前就隐藏，不浪费轮次 |
-| **Bash 命令控制** | 通配符模式匹配：`git *: ask`、`rm -rf *: deny` |
-| **路径保护** | `.env`、`~/.ssh/*`、`.git/*` 等敏感路径自动 deny |
-| **外部目录守卫** | 操作超出 `cwd` 时弹窗确认 |
-| **子 agent 集成** | 子 session 自动注册权限策略，`ask` 状态转发到父 UI |
+| **语义分析** | 基于命令意图而非字符串模式判断，flag 重排/变体无法绕过 |
+| **Shell wrapper 检测** | 递归分析 `bash -c`、`sh -c` 等 wrapper（最多 10 层） |
+| **解释器 one-liner** | 检测 `python -c`、`node -e` 等内部的破坏性命令 |
+| **默认 fail-closed** | 输入无效/解析失败时阻止而非放行 |
+| **审计日志** | 所有被阻止的命令记录到 `~/.cc-safety-net/logs/` |
+| **秘密脱敏** | 阻止消息自动遮盖 token、密码、API key |
 
-### 当前配置
+### 被阻止的命令
 
-当前通过 Nix 配置部署了以下策略：
+**Git 破坏性操作：**
 
-```json
-{
-  "permission": {
-    "*": "allow",
-    "path": {
-      "*": "allow",
-      "*.env": { "action": "deny", "reason": "环境变量文件包含凭证" },
-      "*.env.*": { "action": "deny", "reason": "环境变量文件包含凭证" },
-      ".git/*": { "action": "deny", "reason": ".git 内部文件不应直接修改" },
-      "~/.ssh/*": { "action": "deny", "reason": "SSH 密钥文件受保护" }
-    },
-    "bash": {
-      "*": "allow",
-      "rm -rf *": "deny",
-      "rm -rf /*": "deny",
-      "sudo *": "ask",
-      "chmod 777 *": "ask",
-      "chmod -R 777 *": "ask",
-      "> *": "ask",
-      ">>*": "ask",
-      "dd *": "deny",
-      "mkfs*": "deny",
-      "reboot": "deny",
-      "shutdown": "deny"
-    },
-    "external_directory": "ask"
-  }
-}
-```
+| 命令模式 | 危险原因 |
+|---------|---------|
+| `git checkout -- files` | 永久丢弃未提交变更 |
+| `git restore files` | 丢弃未提交的工作区变更 |
+| `git reset --hard` | 销毁所有未提交变更 |
+| `git clean -f` | 永久删除未跟踪文件 |
+| `git push --force / -f` | 销毁远程历史 |
+| `git branch -D` | 强制删除分支（无 merge 检查） |
+| `git stash drop / clear` | 永久删除 stash |
+
+**文件系统破坏性操作：**
+
+| 命令模式 | 危险原因 |
+|---------|---------|
+| `rm -rf /` / `~` / `$HOME` | 根目录/主目录删除 |
+| `find ... -delete` | 永久删除匹配文件 |
+| `xargs rm -rf` | 动态输入不可预测 |
+| `dd` 写入块设备 | 覆盖磁盘/分区 |
+| `mkfs` 块设备 | 格式化磁盘/分区 |
+| `shred` | 永久销毁文件内容 |
+
+### 安全性概览
+
+cc-safety-net 工作在 PreToolUse hook 层级（在权限系统 **之前** 运行）。它充当 "hard technical constraint"，而 AGENTS.md 中的规则是 "soft rules"——两者结合提供纵深防御。
+
+默认模式已足够保护日常工作流。如需更严格的控制，可通过环境变量启用：
+
+- `CC_SAFETY_NET_STRICT=1` — 严格模式，无法解析的命令也阻止
+- `CC_SAFETY_NET_PARANOID=1` — 偏执模式，阻止 cwd 内的 `rm -rf` 和解释器 one-liner
+- `CC_SAFETY_NET_WORKTREE=1` — 工作树模式，在 linked worktree 内放松本地 git discard 规则
 
 ---
 
@@ -575,15 +376,32 @@ git-checkpoint.ts（已移除）是 Pi 官方的最小示例扩展。@ayulab/pi-
 - 支持 Windows Terminal（PowerShell toast）
 - 自动检测终端类型
 
-### plan-mode
+---
 
-**源仓库**：`github:earendil-works/pi`（官方示例）  
-**作用**：只读计划模式——安全代码分析和步骤化执行。
+## 9. @lynskylate/agent-md-management
 
-- `/plan` 或 `Ctrl+Shift+P` 切换计划模式
-- 计划模式下禁用 edit/write 工具
-- 提取 `Plan:` 章节中的编号步骤
-- `[DONE:n]` 标记完成步骤
+**源仓库**：`github:Lynskylate/agent-md-management`  
+**作用**：AGENTS.md 审计与改进——审计质量、捕获会话学习、保持项目记忆更新。
+
+灵感来自 Anthropic 官方 claude-md-management 插件。
+
+### 功能
+
+| 组件 | 触发方式 | 用途 |
+|------|---------|------|
+| **agent-md-improver（skill）** | `"审计我的 AGENTS.md"` | 审计 AGENTS.md 与代码库一致性 |
+| **/revise-agent-md（命令）** | 手动调用 | 捕获本次会话学习，生成更新建议 |
+
+### 审计标准
+
+| 标准 | 权重 | 检查内容 |
+|------|------|----------|
+| 命令完整性 | 高 | 构建/测试/部署命令是否存在且可用？ |
+| 架构清晰度 | 高 | agent 能否理解代码库结构？ |
+| 非显式模式 | 中 | 是否记录了 gotchas 和常见陷阱？ |
+| 简洁性 | 中 | 排除冗长解释和显而易见的信息？ |
+| 时效性 | 高 | 是否反映当前代码库状态？ |
+| 可执行性 | 高 | 指令是否可操作而非模糊？ |
 
 ---
 
