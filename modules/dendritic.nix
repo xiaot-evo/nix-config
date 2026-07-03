@@ -35,10 +35,6 @@
         url = "github:nix-community/home-manager";
         inputs.nixpkgs.follows = "nixpkgs";
       };
-      # wrappers = {
-      #   url = "github:BirdeeHub/nix-wrapper-modules";
-      #   inputs.nixpkgs.follows = "nixpkgs";
-      # };
       nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
       # Do not override its nixpkgs input, otherwise there can be mismatch between patches and kernel version
       daeuniverse.url = "github:daeuniverse/flake.nix";

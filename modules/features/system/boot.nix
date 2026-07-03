@@ -72,7 +72,6 @@
                 };
               in
               pkgs.cachyosKernels.linuxPackages-cachyos-bore-x86_64-v3;
-            # kernelPackages = pkgs.linuxPackages_latest;
           };
         };
     };

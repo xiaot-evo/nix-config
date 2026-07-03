@@ -10,6 +10,7 @@
 2. **主动使用工具**：合理调用可用的 MCP、Skills 和内置工具。
 3. **参考本文件**：AGENTS.md 是单一起源参考，包含项目结构、约定和技能表。
 4. **修改后验证**：所有 `.nix` 文件修改后务必运行 `nix flake check`（需先 `git add`）。
+   - 流程：`edit` → `nixfmt <file>` → `git add` → `nix flake check`
 5. **git add 新文件**：新建/删除 `.nix` 文件后必须先 `git add`，否则 flake 评估看不到变更。
 
 ---
@@ -50,7 +51,6 @@ Pi agent 配置通过 Nix Home Manager 声明式管理，**不要使用 `pi inst
 ├── README.md              # 项目概述
 ├── docs/
 │   ├── den/               # Den 框架文档
-│   └── superpowers/       # superpowers 技能文档
 └── modules/               # import-tree 根目录（所有 .nix 自动导入）
     ├── defaults.nix       # 全局默认值
     ├── dendritic.nix      # flake-file 配置 + 输入声明
@@ -248,7 +248,6 @@ MCP 数据源（`source` 参数）：`nixos`、`home-manager`、`darwin`、`flak
 
 ---
 
-
 ## 可用斜杠命令
 
 | 命令 | 来源 | 用途 |
@@ -287,3 +286,5 @@ MCP 数据源（`source` 参数）：`nixos`、`home-manager`、`darwin`、`flak
 - **斜杠命令冲突**: 多个包可能注册同名 `/command`（如 plan-mode 和 agent-skills 的 `/plan`）。冲突时保留需要的，删掉另一个。
 - **pi-subagents 版本**: 官方 `pi-subagents`（1 个 `subagent` 工具，轻量）vs `@tintinweb/pi-subagents`（3 个工具，FleetView + 会话查看器 UI，略重）。按需选用。
 - **文件验证技巧**: 使用 `ctx_execute` / `ctx_execute_file` 处理大输出或文件分析，避免原始内容占用上下文。
+- **`builtins.toJSON` 替代 JSON 字符串**: `xdg.configFile.<name>.text` 等场景优先用 `builtins.toJSON` + `//` 合并，使 Nix 函数化去重成为可能。
+- **快速 Nix 验证**: `nix-instantiate --parse <file>` 检查语法，`nix eval --impure --expr` 测试表达式输出，无需完整构建。

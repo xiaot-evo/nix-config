@@ -182,4 +182,4 @@ nix.settings.trusted-users = [ "xiaot_evo" ];
 
 - `AGENTS.md` — 通用参考、构建命令、Den 框架、工作流
 - `docs/den/` — Den 框架完整中文文档
-- `docs/superpowers/` — superpowers 技能文档
+- `docs/superpowers/` — superpowers 技能文档（已归档）

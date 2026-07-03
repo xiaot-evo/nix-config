@@ -12,6 +12,18 @@
       };
       homeManager =
         { pkgs, lib, ... }:
+        let
+          # 窗口规则辅助函数：为应用添加毛玻璃效果
+          blurredApp = appId: {
+            match._props.app-id = appId;
+            opacity = 0.9;
+            background-effect = {
+              xray = true;
+              blur = true;
+            };
+          };
+          maximizedBlurredApp = appId: blurredApp appId // { open-maximized = true; };
+        in
         {
           imports = [ inputs.niri-nix.homeModules.default ];
           home.packages = with pkgs; [
@@ -58,49 +70,11 @@
 
               screenshot-path = "/home/${user.userName}/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
               window-rule = [
-                {
-                  match._props.app-id = "zen-beta";
-                  opacity = 0.9;
-                  open-maximized = true;
-                  background-effect = {
-                    xray = true;
-                    blur = true;
-                  };
-                }
-                {
-                  match._props.app-id = "com.mitchellh.ghostty";
-                  opacity = 0.9;
-                  background-effect = {
-                    xray = true;
-                    blur = true;
-                  };
-                }
-                {
-                  match._props.app-id = "tabby";
-                  opacity = 0.9;
-                  background-effect = {
-                    xray = true;
-                    blur = true;
-                  };
-                }
-                {
-                  match._props.app-id = "dev.zed.Zed";
-                  opacity = 0.9;
-                  open-maximized = true;
-                  background-effect = {
-                    xray = true;
-                    blur = true;
-                  };
-                }
-                {
-                  match._props.app-id = "obsidian";
-                  opacity = 0.9;
-                  open-maximized = true;
-                  background-effect = {
-                    xray = true;
-                    blur = true;
-                  };
-                }
+                (maximizedBlurredApp "zen-beta")
+                (blurredApp "com.mitchellh.ghostty")
+                (blurredApp "tabby")
+                (maximizedBlurredApp "dev.zed.Zed")
+                (maximizedBlurredApp "obsidian")
                 {
                   # match = { };
                   # block-out-from = "screen-capture";

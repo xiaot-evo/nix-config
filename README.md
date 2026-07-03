@@ -53,7 +53,6 @@ nix flake update den
 ├── README.md                               # 本文件
 ├── docs/
 │   ├── den/                                # Den 框架文档
-│   └── superpowers/                        # superpowers 技能文档
 ```
 
 ## 主机详情

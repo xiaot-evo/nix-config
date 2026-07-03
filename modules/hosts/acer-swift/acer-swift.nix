@@ -20,9 +20,7 @@
         system.network
         system.sound
         services.powermanagement
-      ]
-
-      );
+      ]);
     nixos =
       { pkgs, lib, ... }:
       {
