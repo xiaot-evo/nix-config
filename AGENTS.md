@@ -6,7 +6,7 @@
 > - **策略** 💡 — 推荐做法，可根据场景灵活变通
 > - **参考** 📖 — 知识库信息，按需加载
 
----
+______________________________________________________________________
 
 ## 工具选择决策流
 
@@ -34,7 +34,7 @@
 MCP 查 Nix → lens 读代码 → ctx 分析数据 → Agent 后台调研 → ask_user 确认需求
 ```
 
----
+______________________________________________________________________
 
 ## Nix 工作流 ⚠️
 
@@ -42,11 +42,13 @@ MCP 查 Nix → lens 读代码 → ctx 分析数据 → Agent 后台调研 → a
 
 ```
 1. edit 写入修改           (或 write 创建新文件)
-2. nixfmt <file>           格式化
+2. nix fmt                 格式化所有修改的文件（.nix .json .md .yaml）
 3. git add <file>          (新建/删除后必做，否则 flake 评估看不到)
 4. nix flake check         CI 门禁 — 修改后必须运行
 5. nix run .#<host> -- switch  部署
 ```
+
+> `nix fmt -- --fail-on-change` 仅检查格式（CI 模式）。单文件快速格式化仍可用 `nixfmt <file>`。
 
 ### 常见陷阱
 
@@ -61,11 +63,11 @@ MCP 查 Nix → lens 读代码 → ctx 分析数据 → Agent 后台调研 → a
 
 ```console
 nix-instantiate --parse <file>      # 仅检查语法
-nix eval --impure --expr '...'      # 测试表达式输出
+nix fmt -- --fail-on-change         # 格式检查（比 flake check 快）
 nix flake check --no-build          # 只评估不构建
 ```
 
----
+______________________________________________________________________
 
 ## 快速命令
 
@@ -73,6 +75,8 @@ nix flake check --no-build          # 只评估不构建
 |------|------|
 | `nix run .#<host>` | 构建主机 |
 | `nix run .#<host> -- switch` | 部署 |
+| `nix fmt` | 格式化所有文件（nix/json/md/yaml） |
+| `nix fmt -- --fail-on-change` | 仅检查格式（CI 模式） |
 | `nix run .#write-flake` | 重新生成 flake.nix |
 | `nix flake update den` | 更新 den 框架输入 |
 | `nix flake check` | CI 门禁 |
@@ -80,7 +84,7 @@ nix flake check --no-build          # 只评估不构建
 
 可用主机列表见 [AGENTS_PROJECT.md](AGENTS_PROJECT.md)。
 
----
+______________________________________________________________________
 
 ## 项目结构
 
@@ -110,7 +114,7 @@ nix flake check --no-build          # 只评估不构建
 | `_home-files.nix` | 文件部署：mcp.json、本地扩展 |
 | `pi-coding-agent.nix` | den aspect 定义 + imports |
 
----
+______________________________________________________________________
 
 ## Den 框架要点
 
@@ -146,12 +150,12 @@ user (homeManager class) → includes: features...
 ### 新建 feature aspect
 
 1. 在 `modules/features/<domain>/` 下创建 `<name>.nix`
-2. 定义 `den.aspects.<domain>.<name>`（`{ nixos = ...; }` 或 `{ homeManager = ...; }`）
-3. 在 `modules/hosts/` 中对应主机/用户的 `includes` 里添加
-4. 如需新输入则运行 `nix run .#write-flake`
-5. `import-tree` 自动发现新文件（无需手动注册）
+1. 定义 `den.aspects.<domain>.<name>`（`{ nixos = ...; }` 或 `{ homeManager = ...; }`）
+1. 在 `modules/hosts/` 中对应主机/用户的 `includes` 里添加
+1. 如需新输入则运行 `nix run .#write-flake`
+1. `import-tree` 自动发现新文件（无需手动注册）
 
----
+______________________________________________________________________
 
 ## 可用能力 💡
 
@@ -200,7 +204,7 @@ ctx_execute("javascript", `
 `);
 ```
 
----
+______________________________________________________________________
 
 ## 注意事项 ⚠️
 
@@ -211,7 +215,7 @@ ctx_execute("javascript", `
 - **文件名前缀 `_`：** `import-tree` 会跳过 `_` 前缀文件。
 - **安全纵深：** cc-safety-net（语义拦截）+ pi-permission-system（写策略）→ 双重保护。
 
----
+______________________________________________________________________
 
 ## 附录：主机与用户 💡
 

@@ -2,21 +2,21 @@
 
 > 本文档汇总了已安装的 Pi 插件及其功能用法，帮助了解和正确使用每个插件。
 
----
+______________________________________________________________________
 
 ## 目录
 
 1. [context-mode](#1-context-mode)
-2. [pi-subagents](#2-pi-subagents)
-3. [pi-mcp-adapter](#3-pi-mcp-adapter)
-4. [rpiv-todo](#4-rpiv-todo)
-5. [pi-lens](#5-pi-lens)
-6. [@chankov/agent-skills](#6-chankov-agent-skills)
-7. [@ayulab/pi-rewind](#7-ayulab-pi-rewind)
-8. [cc-safety-net](#8-cc-safety-net)
-9. [@lynskylate/agent-md-management](#9-lynskylate-agent-md-management)
+1. [pi-subagents](#2-pi-subagents)
+1. [pi-mcp-adapter](#3-pi-mcp-adapter)
+1. [rpiv-todo](#4-rpiv-todo)
+1. [pi-lens](#5-pi-lens)
+1. [@chankov/agent-skills](#6-chankov-agent-skills)
+1. [@ayulab/pi-rewind](#7-ayulab-pi-rewind)
+1. [cc-safety-net](#8-cc-safety-net)
+1. [@lynskylate/agent-md-management](#9-lynskylate-agent-md-management)
 
----
+______________________________________________________________________
 
 ## 1. context-mode
 
@@ -58,11 +58,11 @@ ctx_execute("javascript", `
 - **自动压实**：自动管理上下文窗口，保留最近内容，压缩历史
 - **多客户端支持**：Claude Code / Gemini CLI / VS Code Copilot / OpenCode / Cursor 等 17+ 客户端
 
----
+______________________________________________________________________
 
 ## 2. @tintinweb/pi-subagents
 
-**源仓库**：`github:tintinweb/pi-subagents`  
+**源仓库**：`github:tintinweb/pi-subagents`\
 **作用**：Claude Code 风格的子 agent 编排——Agent 工具、FleetView 导航、会话查看器、中途引导。
 
 ### 工具
@@ -104,7 +104,7 @@ ctx_execute("javascript", `
 Agent({ subagent_type: "Explore", prompt: "Find auth files", description: "Scan auth", run_in_background: true })
 ```
 
----
+______________________________________________________________________
 
 ## 3. pi-mcp-adapter
 
@@ -119,9 +119,9 @@ Agent({ subagent_type: "Explore", prompt: "Find auth files", description: "Scan 
 ### 配置文件优先级
 
 1. `~/.config/mcp/mcp.json` — 用户全局共享
-2. `~/.pi/agent/mcp.json` — Pi 全局覆盖
-3. `.mcp.json` — 项目本地共享
-4. `.pi/mcp.json` — Pi 项目覆盖
+1. `~/.pi/agent/mcp.json` — Pi 全局覆盖
+1. `.mcp.json` — 项目本地共享
+1. `.pi/mcp.json` — Pi 项目覆盖
 
 ### 常用命令
 
@@ -136,7 +136,7 @@ mcp({ tool: "name", args: '{"key":"val"}' }) # 调用工具
 
 当前已配置 `nixos` MCP 服务器，提供 `nixos_nix` 和 `nixos_nix_versions` 两个工具。
 
----
+______________________________________________________________________
 
 ## 4. rpiv-todo
 
@@ -167,7 +167,7 @@ todo({ action: "delete", id: 1 })
 
 `pending` → `in_progress` → `completed`，另有 `deleted` 墓碑状态。
 
----
+______________________________________________________________________
 
 ## 5. pi-lens
 
@@ -197,11 +197,11 @@ todo({ action: "delete", id: 1 })
 - 读后卫和自动补丁支持
 - 后台安全/依赖扫描
 
----
+______________________________________________________________________
 
 ## 6. @chankov/agent-skills
 
-**源仓库**：`github:chankov/agent-skills`  
+**源仓库**：`github:chankov/agent-skills`\
 **作用**：27 个工程化技能 + 8 个斜杠命令，覆盖完整开发生命周期。
 
 Fork 自 addyosmani/agent-skills，专为 pi / Claude Code / OpenCode 打包。
@@ -247,11 +247,11 @@ Fork 自 addyosmani/agent-skills，专为 pi / Claude Code / OpenCode 打包。
 
 由于项目约定用中文回复，部分技能输出可能为英文。遇到中文场景可手动提示 agent 使用中文。
 
----
+______________________________________________________________________
 
 ## 7. @ayulab/pi-rewind
 
-**源仓库**：`github:ayulab/pi-rewind`  
+**源仓库**：`github:ayulab/pi-rewind`\
 **作用**：修改追踪与恢复——交互式检查点导航，支持代码/对话回滚。
 
 ### 主要功能
@@ -294,11 +294,11 @@ Fork 自 addyosmani/agent-skills，专为 pi / Claude Code / OpenCode 打包。
 
 git-checkpoint.ts（已移除）是 Pi 官方的最小示例扩展。@ayulab/pi-rewind 是其功能完整的替代品，提供交互式 TUI、存储管理和更细粒度的恢复控制。
 
----
+______________________________________________________________________
 
 ## 8. cc-safety-net
 
-**源仓库**：`github:kenryu42/cc-safety-net`  
+**源仓库**：`github:kenryu42/cc-safety-net`\
 **作用**：PreToolUse hook — 在命令执行前拦截并阻止破坏性 git 和文件系统命令。
 
 与原先的 `pi-permission-system`（通配符匹配）不同，cc-safety-net 进行 **语义分析**：指令重排、shell wrapper、解释器 one-liner 都无法绕过。
@@ -360,7 +360,7 @@ cc-safety-net 工作在 PreToolUse hook 层级（在权限系统 **之前** 运�
 - `CC_SAFETY_NET_PARANOID=1` — 偏执模式，阻止 cwd 内的 `rm -rf` 和解释器 one-liner
 - `CC_SAFETY_NET_WORKTREE=1` — 工作树模式，在 linked worktree 内放松本地 git discard 规则
 
----
+______________________________________________________________________
 
 ## TS 扩展
 
@@ -368,7 +368,7 @@ cc-safety-net 工作在 PreToolUse hook 层级（在权限系统 **之前** 运�
 
 ### notify.ts
 
-**源仓库**：`github:earendil-works/pi`（官方示例）  
+**源仓库**：`github:earendil-works/pi`（官方示例）\
 **作用**：agent 完成任务后发送原生终端通知。
 
 - 支持 Ghostty / iTerm2 / WezTerm（OSC 777）
@@ -376,11 +376,11 @@ cc-safety-net 工作在 PreToolUse hook 层级（在权限系统 **之前** 运�
 - 支持 Windows Terminal（PowerShell toast）
 - 自动检测终端类型
 
----
+______________________________________________________________________
 
 ## 9. @lynskylate/agent-md-management
 
-**源仓库**：`github:Lynskylate/agent-md-management`  
+**源仓库**：`github:Lynskylate/agent-md-management`\
 **作用**：AGENTS.md 审计与改进——审计质量、捕获会话学习、保持项目记忆更新。
 
 灵感来自 Anthropic 官方 claude-md-management 插件。
@@ -403,7 +403,7 @@ cc-safety-net 工作在 PreToolUse hook 层级（在权限系统 **之前** 运�
 | 时效性 | 高 | 是否反映当前代码库状态？ |
 | 可执行性 | 高 | 指令是否可操作而非模糊？ |
 
----
+______________________________________________________________________
 
 ## 参考来源
 

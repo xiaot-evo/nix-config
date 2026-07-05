@@ -17,7 +17,7 @@
 
 ### Phase 1: Foundation — Nix 配置文件
 
-#### Task 1: 更新 _packages.nix — context + compaction + 模型配置
+#### Task 1: 更新 \_packages.nix — context + compaction + 模型配置
 
 **Description:** 重写 `_packages.nix` 的 `context` 提示词，加入工具选择优先级策略、Nix 工作流步骤和思考深度选择指南；调整 `compaction.keepRecentTokens` 到 32000；移除无实际效果的 `enabledModels`（opencode 无全局 filter 支持，改由 `.pi/settings.json` 项目级设置控制）。
 
@@ -41,9 +41,9 @@
 
 - `modules/features/dev/editors/pi-coding-agent/_packages.nix`
 
----
+______________________________________________________________________
 
-#### Task 2: 通过 _home-files.nix 部署 .pi/settings.json
+#### Task 2: 通过 \_home-files.nix 部署 .pi/settings.json
 
 **Description:** 在 `_home-files.nix` 中添加 `.pi/settings.json` 的声明式部署内容。使用 `builtins.toJSON`（与现有 mcp.json 一致的模式），包含 `enabledModels`（`["deepseek-v4*"]`）和 `branchSummary` 等项目级设置。
 
@@ -65,7 +65,7 @@
 
 - `modules/features/dev/editors/pi-coding-agent/_home-files.nix`
 
----
+______________________________________________________________________
 
 ### Checkpoint 1: Nix 配置文件验证
 
@@ -74,7 +74,7 @@
 - [ ] 评审 Task 1 context 内容是否准确、完备
 - [ ] 评审 Task 2 `.pi/settings.json` 的内容是否合理
 
----
+______________________________________________________________________
 
 ### Phase 2: Core — AGENTS.md 重写
 
@@ -118,7 +118,7 @@
 
 - `AGENTS.md`
 
----
+______________________________________________________________________
 
 ### Checkpoint 2: 最终验证
 

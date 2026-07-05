@@ -2,7 +2,7 @@
 
 > AGENTS.md 的补充，包含本项目所有主机、用户及功能模块的具体信息。
 
----
+______________________________________________________________________
 
 ## 可用主机
 
@@ -10,7 +10,7 @@
 |---|---|---|---|
 | `acer-swift` | acer-swift | `x86_64-linux` | 主力笔记本 |
 
----
+______________________________________________________________________
 
 ## 主机：acer-swift
 
@@ -36,7 +36,7 @@
 - `system.boot`、`system.nix`、`system.network`（NetworkManager + 蓝牙 + 防火墙）
 - `system.sound`、`services.powermanagement`
 
----
+______________________________________________________________________
 
 ## 用户：xiaot_evo
 
@@ -79,7 +79,7 @@ home-manager.backupFileExtension = "bak";
 nix.settings.trusted-users = [ "xiaot_evo" ];
 ```
 
----
+______________________________________________________________________
 
 ## 功能模块清单
 
@@ -169,14 +169,14 @@ nix.settings.trusted-users = [ "xiaot_evo" ];
 | 技能系统 | superpowers-zh (20 个技能) |
 | 使用教程 | [usage-guide.md](modules/features/dev/editors/pi-coding-agent/docs/usage-guide.md) |
 
----
+______________________________________________________________________
 
 ## 已知待办
 
 - 未配置 formatter / linter / pre-commit hooks / .envrc
 - @plannotator/pi-extension 已从配置移除（如需手动卸载：`pi uninstall @plannotator/pi-extension`）
 
----
+______________________________________________________________________
 
 ## 参考
 

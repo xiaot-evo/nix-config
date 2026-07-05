@@ -5,8 +5,8 @@
 对现有 pi coding agent 配置进行全面优化，使其：
 
 1. **充分利用所有 pi 能力** — 让 agent 在正确时机主动调用 MCP、context-mode、subagents、pi-lens 等已安装工具
-2. **优化 Nix 工作流表现** — 针对 Nix flake + Den 框架的日常开发流程，提供精准的工具选择和验证策略
-3. **提升提示词质量** — 从"工具列表参考"升级为"决策驱动的工作指南"
+1. **优化 Nix 工作流表现** — 针对 Nix flake + Den 框架的日常开发流程，提供精准的工具选择和验证策略
+1. **提升提示词质量** — 从"工具列表参考"升级为"决策驱动的工作指南"
 
 ### 目标用户
 
@@ -19,34 +19,34 @@
 - [ ] AGENTS.md 从"参考手册"升级为"决策驱动的 agent 工作指南"
 - [ ] Context 提示词包含具体的工具选择策略，指导 agent 何时用 MCP vs grep vs skills
 - [ ] Compaction 配置优化到合理值（keepRecentTokens: 32000）
-- [ ] 模型快速切换列表已配置（deepseek-v4*）
+- [ ] 模型快速切换列表已配置（deepseek-v4\*）
 - [ ] `.pi/settings.json` 通过 Nix 声明式部署
 - [ ] MCP 调用在 AGENTS.md 中有优先级指南
 - [ ] 修改后 `nix flake check` 通过验证
 
----
+______________________________________________________________________
 
 ## Related Specs
 
 - 无前置 PRD。本 PRD 是 pi-coding-agent aspect 的首次规格文档。
 
----
+______________________________________________________________________
 
 ## Tech Stack
 
-| 项目            | 版本/来源                                                                                                                                                                                                                    |
+| 项目 | 版本/来源 |
 | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| pi-coding-agent | `github:numtide/llm-agents.nix` 提供的包                                                                                                                                                                                     |
-| 运行时          | nodejs、python3（extraPackages）                                                                                                                                                                                             |
-| 提供商          | opencode（DeepSeek V4）                                                                                                                                                                                                      |
-| 默认模型        | deepseek-v4-flash-free（200K 上下文）                                                                                                                                                                                        |
-| 备用模型        | deepseek-v4-pro（1M 上下文）                                                                                                                                                                                                 |
-| 框架            | Den（`github:denful/den`）                                                                                                                                                                                                   |
-| 域名            | NixOS + Home Manager                                                                                                                                                                                                         |
-| 安装的 npm 包   | 11 个（context-mode, pi-web-access, pi-mcp-adapter, pi-powerline-footer, pi-lens, @chankov/agent-skills, @tintinweb/pi-subagents, @ayulab/pi-rewind, cc-safety-net, @lynskylate/agent-md-management, @juicesharp/rpiv-todo） |
-| TS 扩展         | notify.ts, pi-permission-system, pi-rtk-optimizer                                                                                                                                                                            |
+| pi-coding-agent | `github:numtide/llm-agents.nix` 提供的包 |
+| 运行时 | nodejs、python3（extraPackages） |
+| 提供商 | opencode（DeepSeek V4） |
+| 默认模型 | deepseek-v4-flash-free（200K 上下文） |
+| 备用模型 | deepseek-v4-pro（1M 上下文） |
+| 框架 | Den（`github:denful/den`） |
+| 域名 | NixOS + Home Manager |
+| 安装的 npm 包 | 11 个（context-mode, pi-web-access, pi-mcp-adapter, pi-powerline-footer, pi-lens, @chankov/agent-skills, @tintinweb/pi-subagents, @ayulab/pi-rewind, cc-safety-net, @lynskylate/agent-md-management, @juicesharp/rpiv-todo） |
+| TS 扩展 | notify.ts, pi-permission-system, pi-rtk-optimizer |
 
----
+______________________________________________________________________
 
 ## Commands
 
@@ -70,7 +70,7 @@ pi --model opencode/deepseek-v4-pro --thinking high     # 用付费模型处理�
 pi --model opencode/deepseek-v4-flash-free              # 默认模型
 ```
 
----
+______________________________________________________________________
 
 ## Project Structure
 
@@ -89,14 +89,14 @@ modules/features/dev/editors/pi-coding-agent/
 
 ### 文件职责
 
-| 文件                | 职责                                                         |
+| 文件 | 职责 |
 | ------------------- | ------------------------------------------------------------ |
-| `AGENTS.md`         | agent 启动时自动加载的单一起源参考文档。**需重写为决策驱动** |
-| `_packages.nix`     | pi 的 packages 列表、context 提示词、模型和 compaction 配置  |
-| `_home-files.nix`   | 声明式部署 .pi/settings.json 等文件                          |
-| `.pi/settings.json` | 项目级 pi 设置（通过 Nix 部署）                              |
+| `AGENTS.md` | agent 启动时自动加载的单一起源参考文档。**需重写为决策驱动** |
+| `_packages.nix` | pi 的 packages 列表、context 提示词、模型和 compaction 配置 |
+| `_home-files.nix` | 声明式部署 .pi/settings.json 等文件 |
+| `.pi/settings.json` | 项目级 pi 设置（通过 Nix 部署） |
 
----
+______________________________________________________________________
 
 ## Code Style
 
@@ -154,17 +154,17 @@ modules/features/dev/editors/pi-coding-agent/
 }
 ```
 
----
+______________________________________________________________________
 
 ## Testing Strategy
 
 ### 验证层级
 
-| 层级       | 命令                             | 频次       | 说明                  |
+| 层级 | 命令 | 频次 | 说明 |
 | ---------- | -------------------------------- | ---------- | --------------------- |
-| 语法检查   | `nix-instantiate --parse <file>` | 每次编辑后 | 快速验证 Nix 语法     |
-| Flake 检查 | `nix flake check`                | 每次修改后 | CI 门禁，需先 git add |
-| 部署验证   | `nix run .#acer-swift -- switch` | 最终确认   | 实际部署到主机        |
+| 语法检查 | `nix-instantiate --parse <file>` | 每次编辑后 | 快速验证 Nix 语法 |
+| Flake 检查 | `nix flake check` | 每次修改后 | CI 门禁，需先 git add |
+| 部署验证 | `nix run .#acer-swift -- switch` | 最终确认 | 实际部署到主机 |
 
 ### 验证流程
 
@@ -184,7 +184,7 @@ graph LR
 - `.pi/settings.json`：通过 Nix 生成后检查 JSON 语法
 - 实际效果：启动 pi 验证提示词生效，重启会话确认没问题
 
----
+______________________________________________________________________
 
 ## Boundaries
 
@@ -212,9 +212,9 @@ graph LR
 - 不要移除 cc-safety-net（安全纵深防御）
 - 不要在 AGENTS.md 中添加超过 30 行的大段未分节文本（progressive disclosure）
 - 不要删除 git add 前运行 nix flake check 的步骤
-- 不要混用 `---` 和 ```` 分隔符导致 markdown 渲染异常
+- 不要混用 `---` 和 \`\`\`\` 分隔符导致 markdown 渲染异常
 
----
+______________________________________________________________________
 
 ## Open Questions
 
@@ -222,35 +222,35 @@ graph LR
 - [ ] 当前 `pi-permission-system` 和 `cc-safety-net` 功能有重叠，是否保留两者？
 - [ ] `superpowers-zh` 包是否也在使用？其提供的 20 个技能与 `@chankov/agent-skills` 的 27 个技能是否有冲突？
 
----
+______________________________________________________________________
 
 ## 附录 A：当前配置清单
 
 ### 已安装的 npm 包（11 个）
 
-| 包名                              | 用途                                | 来源              |
+| 包名 | 用途 | 来源 |
 | --------------------------------- | ----------------------------------- | ----------------- |
-| `pi-web-access`                   | 网页搜索与内容获取                  | settings.packages |
-| `context-mode`                    | FTS5 知识库 + 沙箱执行 + 上下文索引 | settings.packages |
-| `pi-mcp-adapter`                  | MCP 协议适配器                      | settings.packages |
-| `pi-powerline-footer`             | Powerline 风格状态栏                | settings.packages |
-| `@juicesharp/rpiv-todo`           | 跨压实任务管理                      | settings.packages |
-| `@tintinweb/pi-subagents`         | Agent 工具 + FleetView 导航         | settings.packages |
-| `pi-lens`                         | LSP 诊断 + AST 搜索 + 模块报告      | settings.packages |
-| `@chankov/agent-skills`           | 27 个工程化技能                     | settings.packages |
-| `@ayulab/pi-rewind`               | 检查点导航与回滚                    | settings.packages |
-| `cc-safety-net`                   | 破坏性命令语义拦截                  | settings.packages |
-| `@lynskylate/agent-md-management` | AGENTS.md 审计与改进                | settings.packages |
+| `pi-web-access` | 网页搜索与内容获取 | settings.packages |
+| `context-mode` | FTS5 知识库 + 沙箱执行 + 上下文索引 | settings.packages |
+| `pi-mcp-adapter` | MCP 协议适配器 | settings.packages |
+| `pi-powerline-footer` | Powerline 风格状态栏 | settings.packages |
+| `@juicesharp/rpiv-todo` | 跨压实任务管理 | settings.packages |
+| `@tintinweb/pi-subagents` | Agent 工具 + FleetView 导航 | settings.packages |
+| `pi-lens` | LSP 诊断 + AST 搜索 + 模块报告 | settings.packages |
+| `@chankov/agent-skills` | 27 个工程化技能 | settings.packages |
+| `@ayulab/pi-rewind` | 检查点导航与回滚 | settings.packages |
+| `cc-safety-net` | 破坏性命令语义拦截 | settings.packages |
+| `@lynskylate/agent-md-management` | AGENTS.md 审计与改进 | settings.packages |
 
 ### TS 扩展（3 个）
 
-| 扩展        | 用途         |
+| 扩展 | 用途 |
 | ----------- | ------------ |
 | `notify.ts` | 终端桌面通知 |
 
 ### MCP 服务器
 
-| 服务器  | 工具                              | 用途                      |
+| 服务器 | 工具 | 用途 |
 | ------- | --------------------------------- | ------------------------- |
 | `nixos` | `nixos_nix`, `nixos_nix_versions` | Nix 包/选项查询、版本历史 |
 

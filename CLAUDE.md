@@ -13,6 +13,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Claude Code 的 `context` 指令设置为「请用中文回复。参考 AGENTS.md 了解项目结构、约定和完整技能表。」——所有回复用中文，AGENTS.md 是权威参考。
 
 本环境加载了以下 Claude Code 插件/技能：
+
 - **claude-md-management** — CLAUDE.md/AGENTS.md 审计改进
 - **code-simplifier** — 代码简化审查
 - **code-review** — 代码审查（`/code-review`、`/review`）
@@ -33,13 +34,19 @@ nix run .#acer-swift -- switch
 # 重新生成 flake.nix（修改 dendritic.nix 后）
 nix run .#write-flake
 
+# 格式化所有文件（.nix .json .md .yaml）
+nix fmt
+
+# 仅检查格式（不修改文件）
+nix fmt -- --fail-on-change
+
 # CI 门禁 — 修改后必须通过
 nix flake check
 
 # 快速语法检查（不构建）
 nix-instantiate --parse <file>
 
-# 格式化 Nix 文件
+# 格式化单个 Nix 文件（快速，无需 flake 评估）
 nixfmt <file>
 
 # 更新 Den 框架
@@ -56,8 +63,9 @@ nix flake check --no-build
 | 命令 | 等同于 |
 |------|--------|
 | `flake-write` | `nix run .#write-flake` |
-| `fmt` | `nix fmt`（treefmt-nix 格式化） |
-| `check` | `nix flake check` |
+| `fmt` | `nix fmt`（treefmt-nix：nixfmt + jsonfmt + mdformat + yamlfmt） |
+| `fmt-check` | `nix fmt -- --fail-on-change`（CI 模式，仅检查不修改） |
+| `check` | `nix flake check`（含格式化检查） |
 | `build` | `nix run .#<hostname> --impure` |
 | `build-switch` | `nix run .#<hostname> -- switch --impure` |
 
@@ -93,7 +101,7 @@ user (homeManager) ──includes──→ dev, desktop, apps...
 | `flake.nix` | flake 入口 | **自动生成，勿手动编辑** |
 | `modules/dendritic.nix` | flake 输入声明 + flake-file 配置 | 修改后运行 `nix run .#write-flake` |
 | `modules/defaults.nix` | 全局默认值（stateVersion, strict schema） | |
-| `modules/treefmt.nix` | nixfmt 格式化配置 | |
+| `modules/treefmt.nix` | 多语言格式化（nixfmt + jsonfmt + mdformat + yamlfmt） | `docs/den/` 排除在外 |
 | `modules/hosts/acer-swift/acer-swift.nix` | 主机 aspect（硬件+系统） | |
 | `modules/hosts/acer-swift/xiaot_evo.nix` | 用户 aspect（应用+桌面+开发） | |
 | `modules/hosts/acer-swift/hardware.nix` | 硬件配置 | |
@@ -115,6 +123,7 @@ user (homeManager) ──includes──→ dev, desktop, apps...
 查询 Nix 包、NixOS/Home Manager 选项、flake、二进制缓存、store 路径。**优先于 `nix search` 或手动浏览 search.nixos.org。**
 
 常用场景：
+
 - 查包：`mcp__nixos__nix({ action: "search", query: "包名" })`
 - 查选项：`mcp__nixos__nix({ action: "search", query: "选项名", type: "options" })`
 - 查 Home Manager 选项：`mcp__nixos__nix({ action: "search", source: "home-manager", query: "..." })`
@@ -124,6 +133,7 @@ user (homeManager) ──includes──→ dev, desktop, apps...
 ### devenv 服务器
 
 管理 devenv 进程（查看日志、启停服务）：
+
 - `mcp__devenv__list_processes()` — 列出所有进程状态
 - `mcp__devenv__get_process_logs({ name: "进程名" })` — 查看进程日志
 
@@ -143,12 +153,15 @@ user (homeManager) ──includes──→ dev, desktop, apps...
 ## 开发工作流
 
 ```
-1. 编辑 .nix 文件
-2. nixfmt <file>                 # 格式化
+1. 编辑文件
+2. nix fmt                       # 格式化所有修改的文件（.nix .json .md .yaml）
 3. git add <file>                # 新建/删除后必做，否则 flake 评估看不到
-4. nix flake check               # CI 门禁
+4. nix flake check               # CI 门禁（含格式化检查）
 5. nix run .#acer-swift -- switch  # 部署
 ```
+
+> **快速格式检查：** `nix fmt -- --fail-on-change` 仅检查格式不修改，比 `nix flake check` 快。
+> **单文件格式化：** `nixfmt <file>` 直接格式化单个 `.nix` 文件，无需 flake 评估。
 
 ### 常见陷阱
 
@@ -185,10 +198,10 @@ user (homeManager) ──includes──→ dev, desktop, apps...
 ## 添加新 Feature
 
 1. 在 `modules/features/<domain>/` 下创建 `<name>.nix`
-2. 定义 `den.aspects.<domain>.<name>`（包含 `nixos` 和/或 `homeManager` 属性）
-3. 在 `modules/hosts/` 中对应主机/用户的 `includes` 列表里添加引用
-4. 如需新 flake 输入，在 `dendritic.nix` 中添加后运行 `nix run .#write-flake`
-5. import-tree 自动发现新文件，无需手动注册
+1. 定义 `den.aspects.<domain>.<name>`（包含 `nixos` 和/或 `homeManager` 属性）
+1. 在 `modules/hosts/` 中对应主机/用户的 `includes` 列表里添加引用
+1. 如需新 flake 输入，在 `dendritic.nix` 中添加后运行 `nix run .#write-flake`
+1. import-tree 自动发现新文件，无需手动注册
 
 ## CI
 
@@ -214,6 +227,7 @@ sudo nixos-rebuild switch --flake .#acer-swift
 ## Claude Code 自身配置
 
 本项目通过 `den.aspects.dev.editors.claude-code` aspect 管理 Claude Code 的声明式配置（`modules/features/dev/editors/claude-code.nix`），包括：
+
 - 权限白名单/黑名单
 - MCP 服务器（nixos）
 - LSP 服务器（nil）

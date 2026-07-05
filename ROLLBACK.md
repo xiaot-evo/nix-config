@@ -41,8 +41,8 @@ sudo nixos-rebuild switch --flake .#acer-swift
 ### 方式三：使用 NixOS 引导菜单
 
 1. 重启系统
-2. 在 systemd-boot 菜单中选择上一个 NixOS generation
-3. 系统将加载部署前的配置
+1. 在 systemd-boot 菜单中选择上一个 NixOS generation
+1. 系统将加载部署前的配置
 
 ## 数据库注意事项
 

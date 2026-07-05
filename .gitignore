@@ -24,3 +24,6 @@ nixos.qcow2
 
 # pi-subagents artifacts
 .pi-subagents
+
+# Claude Code session data
+.claude/

@@ -34,6 +34,9 @@ in
     fmt.exec = ''
       nix fmt
     '';
+    fmt-check.exec = ''
+      nix fmt -- --fail-on-change
+    '';
     check.exec = ''
       nix flake check
     '';

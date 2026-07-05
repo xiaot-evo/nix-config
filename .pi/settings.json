@@ -1,5 +1,7 @@
 {
-  "enabledModels": ["deepseek-v4*"],
+  "enabledModels": [
+    "deepseek-v4*"
+  ],
   "branchSummary": {
     "skipPrompt": true
   },
