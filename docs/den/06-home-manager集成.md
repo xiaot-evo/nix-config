@@ -529,11 +529,11 @@ den.aspects.igloo = {
 ## 最佳实践
 
 1. **优先使用主机管理**：`den.hosts.<host>.users` 比 `den.homes` 更便于统一管理
-2. **利用 `provides.to-users`**：主机提供的默认配置减少重复
-3. **合理设置 classes**：不需要 HM 的用户用 `classes = [ "user" ]`
-4. **Mutual Provider 已内置**：`provides.to-users` / `provides.to-hosts` 无需额外电池，直接在方面中使用
-5. **独立 HM 用于远程/无主机场景**：如 CI 环境、容器
-6. **同一实体避免多个 HM 源冲突**：通过 `den.lib.policy.for` 限定特定实体
+1. **利用 `provides.to-users`**：主机提供的默认配置减少重复
+1. **合理设置 classes**：不需要 HM 的用户用 `classes = [ "user" ]`
+1. **Mutual Provider 已内置**：`provides.to-users` / `provides.to-hosts` 无需额外电池，直接在方面中使用
+1. **独立 HM 用于远程/无主机场景**：如 CI 环境、容器
+1. **同一实体避免多个 HM 源冲突**：通过 `den.lib.policy.for` 限定特定实体
 
 ## 关联函数
 

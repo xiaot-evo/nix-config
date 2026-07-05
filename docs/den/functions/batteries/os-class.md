@@ -94,12 +94,13 @@ den.policies.os-to-host = { host, ... }:
 
 1. **守卫条件**：`builtins.elem host.class [ "nixos" "darwin" ]`——只在目标类为 nixos 或 darwin 时产生路由。WSL 或其他类的主机不会触发此策略。
 
-2. **`den.lib.policy.route`**：Den 策略库的核心函数，创建一个路由条目：
+1. **`den.lib.policy.route`**：Den 策略库的核心函数，创建一个路由条目：
+
    - `fromClass = "os"`：从 `os` 类读取内容
    - `intoClass = host.class`：写入主机的实际目标类（动态）
    - `path = [ ]`：同级合并，不嵌套。即 `os.foo` → `nixos.foo`（同级），而非 `nixos.os.foo`
 
-3. **`lib.optional`**：当守卫为假时返回空列表 `[]`，策略不产生任何效果。
+1. **`lib.optional`**：当守卫为假时返回空列表 `[]`，策略不产生任何效果。
 
 ### 默认加载机制
 

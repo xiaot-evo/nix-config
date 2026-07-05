@@ -19,11 +19,11 @@
 输入 `<den/X/Y>` 会触发解析：
 
 1. **`<den/电池名>`** → 如果 `X` 是 `den.batteries` 中的提供者（如 `forward`、`import-tree`），直接返回该电池
-2. **`<den/电池名/Y>`** → 返回电池的 `provides.Y` 子路径
-3. **`<den/X/Y>`** → 从 `config.den.X.Y` 读取
-4. **`<方面名>`** → 在 `den.aspects` 中查找
-5. **`<方面名/Y>`** → 返回方面的 `provides.Y` 或直接子键 `Y`
-6. **`<命名空间/X>`** → 在 `den.ful.<命名空间>` 中查找
+1. **`<den/电池名/Y>`** → 返回电池的 `provides.Y` 子路径
+1. **`<den/X/Y>`** → 从 `config.den.X.Y` 读取
+1. **`<方面名>`** → 在 `den.aspects` 中查找
+1. **`<方面名/Y>`** → 返回方面的 `provides.Y` 或直接子键 `Y`
+1. **`<命名空间/X>`** → 在 `den.ful.<命名空间>` 中查找
 
 ### 子路径解析的 provides 兼容
 
@@ -54,19 +54,19 @@
 ## 实现简析
 
 1. 将角度括号内容中的 `/` 替换为 `.`（`<den/batteries/hostname>` → `"den.batteries.hostname"`）
-2. 按点号分割路径
-3. 遍历 `findAspect`：
+1. 按点号分割路径
+1. 遍历 `findAspect`：
    - 如果首段是 `"den"`，检查下一段是否是电池提供者 → 通过 `den.batteries` 路由
    - 否则从 `config.den` 读取路径
    - 如果首段是方面名 → 在 `den.aspects` 中查找
    - 如果首段是命名空间 → 在 `den.ful` 中查找
-4. `__provider` 标记：裸 attrset 结果会被标记 `__provider` 路径，以便管道计算稳定身份
+1. `__provider` 标记：裸 attrset 结果会被标记 `__provider` 路径，以便管道计算稳定身份
 
 ### 为什么需要 `__provider` 标记？
 
 转发的内容包装器是裸 attrset，缺少 `__provider`。没有这个标记，它们会获得匿名身份，去重失败。
 
----
+______________________________________________________________________
 
 ## 关联函数
 

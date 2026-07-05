@@ -119,6 +119,6 @@ nix run .#my-neovim
 **Den 是通用方面组合引擎，不限 NixOS/达尔文/HM**。本模板展示了：
 
 1. 不声明实体，直接使用 `den.aspects.*`
-2. `den.batteries.forward` 将自定义类映射到外部 schema
-3. `den.lib.aspects.resolve` 直接编译方面为模块
-4. 产生纯应用包（非系统配置）
+1. `den.batteries.forward` 将自定义类映射到外部 schema
+1. `den.lib.aspects.resolve` 直接编译方面为模块
+1. 产生纯应用包（非系统配置）

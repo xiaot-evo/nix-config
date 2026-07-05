@@ -6,7 +6,7 @@
 
 过滤器对图 IR 进行剪枝和折叠操作。所有过滤器通过 `diag.graph.*` 访问，存在于 `filters/default.nix`（桶文件）中。
 
----
+______________________________________________________________________
 
 ## closure 家族 — 基于闭包的过滤
 
@@ -45,7 +45,7 @@ adapters = diag.graph.adaptersOnly graph;
 parametric = diag.graph.parametricOnly graph;
 ```
 
----
+______________________________________________________________________
 
 ## diff — 图差异
 
@@ -63,7 +63,7 @@ diffGraph = diag.graph.diff {
 # diffGraph.nodes[0].origin == "both" | "a" | "b"
 ```
 
----
+______________________________________________________________________
 
 ## fold 家族 — 折叠/重写
 
@@ -95,7 +95,7 @@ providersFolded = diag.graph.foldProviders graph;
 flat = diag.graph.flattenEntityKinds graph;
 ```
 
----
+______________________________________________________________________
 
 ## predicate 家族 — 谓词过滤
 
@@ -133,7 +133,7 @@ crossClass = diag.graph.crossClassOnly graph;
 lint = diag.graph.orphansAndLeaves graph;
 ```
 
----
+______________________________________________________________________
 
 ## presence 家族 — 存在性过滤
 
@@ -163,7 +163,7 @@ present = diag.graph.hasAspectPresentWith pathSet graph;
 present = diag.graph.hasAspectForAnyClass ["nixos" "homeManager"] graph;
 ```
 
----
+______________________________________________________________________
 
 ## reshape 家族 — 结构重写
 
@@ -209,7 +209,7 @@ decisions = diag.graph.decisionsView graph;
 resolved = diag.graph.providersResolved graph;
 ```
 
----
+______________________________________________________________________
 
 ## default.nix 中的组合过滤器
 
@@ -230,7 +230,7 @@ metrics = diag.graph.fanMetrics graph;
 # [{ id, label, fullLabel, entityKind, class, fanIn, fanOut, total }]
 ```
 
----
+______________________________________________________________________
 
 ## 关联
 

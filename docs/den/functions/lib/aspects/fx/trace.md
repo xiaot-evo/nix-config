@@ -6,11 +6,12 @@
 
 跟踪处理程序集合。提供两个层次的 FX 管道跟踪能力：`structuredTraceHandler`（最小跟踪——仅记录解析完成事件）和 `tracingHandler`（完整跟踪——记录解析、编译、类发射、管道效果注册和策略触发）。这些处理程序通过 `mkPipeline` 的 `extraHandlers` 参数接入，用于诊断、图表生成和调试。
 
----
+______________________________________________________________________
 
 ## `structuredTraceHandler`
 
 ### 签名
+
 ```nix
 structuredTraceHandler :: String -> Handler
 ```
@@ -28,6 +29,7 @@ structuredTraceHandler :: String -> Handler
 ### 条目结构
 
 通过 `mkBaseEntry` 构建，每个条目包含 `class`、`provider`、`excluded`、`excludedFrom`、`replacedBy`、`isProvider`、`handlers`、`hasClass`、`isParametric`、`fnArgNames`，再加上处理程序添加的 `name`、`parent`、`entityKind`：
+
 ```nix
 {
   name = "<anon>";
@@ -56,11 +58,12 @@ result.state.entries
 # → [ { name = "igloo"; entityKind = "host"; ... } ]
 ```
 
----
+______________________________________________________________________
 
 ## `tracingHandler`
 
 ### 签名
+
 ```nix
 tracingHandler :: String -> Handler
 ```
@@ -117,6 +120,7 @@ name =
 ```
 
 此外，状态中独立维护：
+
 - `state.pipeProducers` — `emit-class` 管道条目：`{ pipeName, aspectIdentity, scope }`
 - `state.pipeConsumers` — `register-pipe-effect` 条目：`{ pipeName, hasCollect, scope, stageTypes }`
 - `state.ctxTrace` — 按 entityKind 去重的上下文条目：`{ key, selfName, entityKind, ctxKeys }`
@@ -136,11 +140,12 @@ result.state.entries
 # → 包含所有解析、注册和触发事件的完整跟踪
 ```
 
----
+______________________________________________________________________
 
 ## `deriveEntityKind`
 
 ### 签名
+
 ```nix
 deriveEntityKind :: State -> (String | Null)
 ```
@@ -152,14 +157,15 @@ deriveEntityKind :: State -> (String | Null)
 ### 实现简析
 
 1. 从 `state.scopedIncludesChain` 中获取当前作用域的包含链
-2. 对链中每个身份：先查 `entityKindMap`，再在 entries 中按 `e.path or e.name` 匹配
-3. 返回链中第一个非空 entityKind（从叶子向上）
+1. 对链中每个身份：先查 `entityKindMap`，再在 entries 中按 `e.path or e.name` 匹配
+1. 返回链中第一个非空 entityKind（从叶子向上）
 
----
+______________________________________________________________________
 
 ## `chainParent`
 
 ### 签名
+
 ```nix
 chainParent :: [String] -> String -> (String | Null)
 ```
@@ -171,14 +177,15 @@ chainParent :: [String] -> String -> (String | Null)
 ### 实现简析
 
 1. 过滤掉 selfPath（避免自引用）
-2. 在剩余条目中查找有意义名称（通过 `isMeaningfulName`）且不含 `<anon>` 的
-3. 如有，返回最后一个（最近的）；如无，返回最后一个非 self 的；否则返回 `null`
+1. 在剩余条目中查找有意义名称（通过 `isMeaningfulName`）且不含 `<anon>` 的
+1. 如有，返回最后一个（最近的）；如无，返回最后一个非 self 的；否则返回 `null`
 
----
+______________________________________________________________________
 
 ## `mkBaseEntry`
 
 ### 签名
+
 ```nix
 mkBaseEntry :: String -> Param -> TraceEntry
 ```
@@ -214,13 +221,14 @@ mkBaseEntry "nixos" {
 # → { class = "nixos"; provider = [ "den" "aspects" "igloo" ]; excluded = false; ... }
 ```
 
----
+______________________________________________________________________
 
 ## 实现简析
 
 ### 处理程序结构
 
 两个跟踪处理程序都遵循标准 FX 处理程序签名：
+
 ```nix
 { param, state } -> { resume :: Any, state :: State }
 ```
@@ -247,7 +255,7 @@ mkBaseEntry "nixos" {
 
 每次事件触发时，将新条目追加到 `entries` 列表中。
 
----
+______________________________________________________________________
 
 ## 关联函数
 
@@ -257,5 +265,5 @@ mkBaseEntry "nixos" {
 
 ## 关联文档
 
-- [高级主题](../../../11-高级主题.md) — 代数效果管道的调试和诊断
-- [管道与 Quirks](../../../08-管道与quirks.md) — 管道执行流程的完整说明
+- [高级主题](../../../11-%E9%AB%98%E7%BA%A7%E4%B8%BB%E9%A2%98.md) — 代数效果管道的调试和诊断
+- [管道与 Quirks](../../../08-%E7%AE%A1%E9%81%93%E4%B8%8Equirks.md) — 管道执行流程的完整说明

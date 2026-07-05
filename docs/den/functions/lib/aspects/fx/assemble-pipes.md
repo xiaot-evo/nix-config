@@ -6,11 +6,12 @@
 
 `assemblePipes` 是后处理阶段中在模块包装之前的管道数据组装步骤。它从 `scopedClassImports` 收集弯曲（quirk）条目，应用策略注册的管道效果（过滤、变换、折叠、收集、暴露），并将结果注入到每个作用域的上下文中，以便通过 `wrapClassModule` 传递给类模块。
 
----
+______________________________________________________________________
 
 ## `assemblePipes`
 
 ### 签名
+
 ```nix
 assemblePipes : {
   scopeContexts :: AttrSet ScopeId Context,
@@ -23,9 +24,11 @@ assemblePipes : {
 ```
 
 ### 用途
+
 为每个作用域组装完整的管道承载上下文。将弯曲数据（来自 `den.quirks` 注册的键）和处理后的效果合并到作用域上下文中。
 
 ### 返回
+
 ```nix
 {
   "host=igloo" = {
@@ -45,7 +48,7 @@ assemblePipes : {
 }
 ```
 
----
+______________________________________________________________________
 
 ## 管道效果阶段类型
 
@@ -62,7 +65,7 @@ assemblePipes : {
 | `as` | `__pipeStage = "as"` | 重命名管道 |
 | `expose` | `__pipeStage = "expose"` | 向上暴露到父作用域 |
 
----
+______________________________________________________________________
 
 ## 主要阶段
 
@@ -114,7 +117,7 @@ collectAllExposed = { scopeContexts, scopedClassImports, scopedPipeEffects, scop
   builtins.foldl' processTree { } rootScopes;
 ```
 
----
+______________________________________________________________________
 
 ## 值解析
 
@@ -164,7 +167,7 @@ resolveEntry = hostConfigs: scopeContexts: sourceScopeId: entry:
   else [ entry ];
 ```
 
----
+______________________________________________________________________
 
 ## 效果应用
 
@@ -205,7 +208,7 @@ buildTargetedData = { ... }: baseValues: effects:
   ) { } pairs;
 ```
 
----
+______________________________________________________________________
 
 ## `pipe.as` 重命名
 
@@ -235,7 +238,7 @@ assertNoSelfAs = effect:
   else true;
 ```
 
----
+______________________________________________________________________
 
 ## 完整示例
 
@@ -266,7 +269,7 @@ scopedPipeEffects."host=igloo" = [
 # myPipe = [ { addr = "10.0.0.2"; resolved = true; } ];
 ```
 
----
+______________________________________________________________________
 
 ## 关联函数
 
@@ -278,5 +281,5 @@ scopedPipeEffects."host=igloo" = [
 
 ## 关联文档
 
-- [管道与 Quirks](../../../08-管道与quirks.md) — 管道数据流的概念说明和使用场景
-- [方面配置指南](../../../04-方面配置指南.md) — 方面中的怪癖（quirk）数据声明
+- [管道与 Quirks](../../../08-%E7%AE%A1%E9%81%93%E4%B8%8Equirks.md) — 管道数据流的概念说明和使用场景
+- [方面配置指南](../../../04-%E6%96%B9%E9%9D%A2%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97.md) — 方面中的怪癖（quirk）数据声明

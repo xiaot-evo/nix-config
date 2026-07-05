@@ -7,6 +7,7 @@
 Hjem（Rust 实现的 Home Manager 替代方案）集成电池。与 `home-manager` (自动注册模块) 类似，但将用户配置转发到 Hjem 模块系统。
 
 关键行为：
+
 - 注册 `hjem` 类，描述为 "Hjem user environment"
 - 通过 `den.lib.home-env.makeHomeEnv` 构建
 - `className = "hjem"`，`optionPath = "hjem"`
@@ -71,5 +72,5 @@ makeHomeEnv {
 
 ## 关联文档
 
-- [内置电池](../../../05-内置电池.md) — hjem 电池的快速参考
-- [Home Manager 集成](../../../06-home-manager集成.md) — hjem 集成的详细指南和多家庭环境示例
+- [内置电池](../../../05-%E5%86%85%E7%BD%AE%E7%94%B5%E6%B1%A0.md) — hjem 电池的快速参考
+- [Home Manager 集成](../../../06-home-manager%E9%9B%86%E6%88%90.md) — hjem 集成的详细指南和多家庭环境示例

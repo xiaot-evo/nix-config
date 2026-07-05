@@ -176,6 +176,7 @@ lib.genAttrs (user.classes or [ "homeManager" ]) (
 ### 关于 `den.lib.aspects.resolveImports`
 
 这是 Den 框架的内部函数，用于将方面树解析为指定类的模块列表。它处理：
+
 - `includes` 展开
 - 函数调用（传入上下文参数）
 - `meta.__forward` 处理

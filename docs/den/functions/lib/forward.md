@@ -6,7 +6,7 @@
 
 转发方面（Forward Aspect）构建器。转发是将一个类的模块内容传递到另一个类的机制——例如把 `homeManager` 类的内容转发到 `nixos` 类中。转发方面通过 `meta.__forward` 标记，由管道中的 `compile-forward` 处理器处理。
 
----
+______________________________________________________________________
 
 ## den.lib.forward.forwardItem
 
@@ -68,7 +68,7 @@ den.lib.forward.forwardItem {
 
 构建一个复杂 `meta.__forward` attrset，包含源类、目标类、路径、守卫函数、适配器等。转发方面本身不含直接内容（`includes = []`），仅携带转发元数据。
 
----
+______________________________________________________________________
 
 ## den.lib.forward.forwardEach
 
@@ -110,7 +110,7 @@ den.lib.forward.forwardEach {
 
 对 `each` 列表执行 `map`，将 `fwd` 参数与每个 `item` 合并后传递给 `forwardItem`。
 
----
+______________________________________________________________________
 
 ## 关联函数
 

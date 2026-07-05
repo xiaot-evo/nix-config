@@ -7,6 +7,7 @@
 Home Manager 集成的核心电池。自动将声明了 `homeManager` 类的用户转发到 Home Manager 模块系统，完成 Host→User 的配置路由。
 
 关键行为：
+
 - 注册 `homeManager` 类，描述为 "Home Manager user environment"
 - 通过 `den.lib.home-env.makeHomeEnv` 构建
 - `className = "homeManager"`，`optionPath = "home-manager"`
@@ -67,5 +68,5 @@ makeHomeEnv {
 
 ## 关联文档
 
-- [内置电池](../../../05-内置电池.md) — home-manager 电池的快速参考
-- [Home Manager 集成](../../../06-home-manager集成.md) — home-manager 集成的详细指南和完整示例
+- [内置电池](../../../05-%E5%86%85%E7%BD%AE%E7%94%B5%E6%B1%A0.md) — home-manager 电池的快速参考
+- [Home Manager 集成](../../../06-home-manager%E9%9B%86%E6%88%90.md) — home-manager 集成的详细指南和完整示例

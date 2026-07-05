@@ -18,6 +18,7 @@
 ## 返回值说明
 
 返回一个方面 attrset，包含：
+
 - `name` — 实体名称
 - `meta.handleWith` — 处理方式（`null`）
 - `meta.provider` — 提供者路径（`[]`）
@@ -56,10 +57,10 @@ den.lib.resolveEntity "default" { }
 ## 实现简析
 
 1. 读取 `den.schema.${name}` 获取 schema 级别的 includes/excludes/collisionPolicy
-2. 提取相关实体绑定（如 `home.host`、`home.user`）
-3. 创建常量处理器携带增强上下文
-4. 对 schema 实体类型（host/user/home 等）添加自提供（`__fn = c: c.${name}.aspect`）
-5. "default" 类型特殊处理，提供 `den.default` 作为自提供
+1. 提取相关实体绑定（如 `home.host`、`home.user`）
+1. 创建常量处理器携带增强上下文
+1. 对 schema 实体类型（host/user/home 等）添加自提供（`__fn = c: c.${name}.aspect`）
+1. "default" 类型特殊处理，提供 `den.default` 作为自提供
 
 ## 关联函数
 

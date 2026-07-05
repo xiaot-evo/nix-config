@@ -7,6 +7,7 @@
 [nix-maid](https://github.com/nix-community/nix-maid) 声明式家政服务集成电池。nix-maid 是一个用于管理 systemd timer 定时任务的家政服务工具。
 
 关键行为：
+
 - 注册 `maid` 类，描述为 "nix-maid user environment"
 - 通过 `den.lib.home-env.makeHomeEnv` 构建
 - `className = "maid"`，`optionPath = "nix-maid"`
@@ -74,5 +75,5 @@ makeHomeEnv {
 
 ## 关联文档
 
-- [内置电池](../../../05-内置电池.md) — maid 电池的快速参考
-- [Home Manager 集成](../../../06-home-manager集成.md) — maid 集成的详细指南
+- [内置电池](../../../05-%E5%86%85%E7%BD%AE%E7%94%B5%E6%B1%A0.md) — maid 电池的快速参考
+- [Home Manager 集成](../../../06-home-manager%E9%9B%86%E6%88%90.md) — maid 集成的详细指南

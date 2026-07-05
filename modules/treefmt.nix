@@ -17,11 +17,6 @@
 
         # ── YAML ────────────────────────────────────
         programs.yamlfmt.enable = true;
-
-        # ── 排除外部文档（非本项目维护内容）────────
-        settings.global.excludes = [
-          "docs/den/**" # Den 框架文档（上游维护）
-        ];
       };
     in
     {

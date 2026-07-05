@@ -7,6 +7,7 @@
 物理 TTY 自动登录电池，直接作用于 NixOS 系统配置，实现指定用户的自动登录。
 
 关键行为：
+
 - 签名：`den.batteries.tty-autologin "username"`
 - 直接作用在 `nixos` 类上，不经过 `vmVariant`
 - 修改 `systemd.services."getty@tty1"` 实现自动登录
@@ -66,4 +67,4 @@ __functor = _self: username: {
 
 ## 关联文档
 
-- [内置电池](../../../05-内置电池.md) — tty-autologin 电池的快速参考
+- [内置电池](../../../05-%E5%86%85%E7%BD%AE%E7%94%B5%E6%B1%A0.md) — tty-autologin 电池的快速参考

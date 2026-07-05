@@ -6,11 +6,12 @@
 
 内容工具函数。提供方面内容的底层展开和转换操作，用于管道中类发射、键分类和 provide 处理。主要处理 `__contentValues` 包装器、`__fn`/`__functor` 包装函数以及 `includes` 属性集的展开。
 
----
+______________________________________________________________________
 
 ## `unwrapContentValuesList`
 
 ### 签名
+
 ```nix
 unwrapContentValuesList :: Any -> [Any]
 ```
@@ -63,14 +64,15 @@ unwrapContentValuesList = rawValue:
 ```
 
 1. 首先检查是否为列表——直接返回
-2. 检查是否为带有 `__contentValues` 属性的 attrset——提取每个元素的 `.value` 字段，过滤空 attrset；0 条返回 `[{}]`、1 条返回单元素、多条包装为 `[{ imports = ... }]`
-3. 其他所有值——包装在单元素列表中
+1. 检查是否为带有 `__contentValues` 属性的 attrset——提取每个元素的 `.value` 字段，过滤空 attrset；0 条返回 `[{}]`、1 条返回单元素、多条包装为 `[{ imports = ... }]`
+1. 其他所有值——包装在单元素列表中
 
----
+______________________________________________________________________
 
 ## `unwrapContentValuesForClassification`
 
 ### 签名
+
 ```nix
 unwrapContentValuesForClassification :: Any -> Any
 ```
@@ -106,11 +108,12 @@ unwrapContentValuesForClassification "hello"
 
 此函数专为 `key-classification.nix` 中的 `isNestedKey` 检测设计。当方面键的值通过 `__contentValues` 包装时，分类系统需要"透视"这个包装来检测内部是否有注册的子键。合并而不是去重保留了所有子键信息。
 
----
+______________________________________________________________________
 
 ## `applyProvide`
 
 ### 签名
+
 ```nix
 applyProvide :: Any -> AttrSet -> Any
 ```
@@ -173,10 +176,10 @@ applyProvide = value: ctx:
 ```
 
 1. attrset 值按形状分派：`__fn` → 调用（无 `__args` 合并）、`includes` → 直接返回、`__functor` → functor 自调用后传 ctx、其他 → 原样返回
-2. 函数值直接调用上下文
-3. 非 attrset 非函数值原样返回
+1. 函数值直接调用上下文
+1. 非 attrset 非函数值原样返回
 
----
+______________________________________________________________________
 
 ## 关联函数
 
@@ -187,4 +190,4 @@ applyProvide = value: ctx:
 
 ## 关联文档
 
-- [方面配置指南](../../../04-方面配置指南.md) — provides 和 __contentValues 的概念说明
+- [方面配置指南](../../../04-%E6%96%B9%E9%9D%A2%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97.md) — provides 和 \_\_contentValues 的概念说明

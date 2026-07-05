@@ -117,10 +117,10 @@ den.hosts.x86_64-linux.server            # 宿主机
 ## 关键模式
 
 1. **`intoAttr = []`**：guest VM 不产生任何 flake 输出，仅作为路由配置存在于宿主机内
-2. **三层策略链**：`host → microvm-host → microvm-guest`，每层增加解析深度
-3. **隔离解析**：guest 在独立管道中解析，防止模块泄漏
-4. **跨实体提供**：resolved config 通过 `policy.provide` 注入宿主机
-5. **自定义类**：`microvm` 类将 guest 元数据与 OS 配置分离
+1. **三层策略链**：`host → microvm-host → microvm-guest`，每层增加解析深度
+1. **隔离解析**：guest 在独立管道中解析，防止模块泄漏
+1. **跨实体提供**：resolved config 通过 `policy.provide` 注入宿主机
+1. **自定义类**：`microvm` 类将 guest 元数据与 OS 配置分离
 
 ## 与其他模板对比
 

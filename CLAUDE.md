@@ -101,7 +101,7 @@ user (homeManager) ──includes──→ dev, desktop, apps...
 | `flake.nix` | flake 入口 | **自动生成，勿手动编辑** |
 | `modules/dendritic.nix` | flake 输入声明 + flake-file 配置 | 修改后运行 `nix run .#write-flake` |
 | `modules/defaults.nix` | 全局默认值（stateVersion, strict schema） | |
-| `modules/treefmt.nix` | 多语言格式化（nixfmt + jsonfmt + mdformat + yamlfmt） | `docs/den/` 排除在外 |
+| `modules/treefmt.nix` | 多语言格式化（nixfmt + jsonfmt + mdformat + yamlfmt） | |
 | `modules/hosts/acer-swift/acer-swift.nix` | 主机 aspect（硬件+系统） | |
 | `modules/hosts/acer-swift/xiaot_evo.nix` | 用户 aspect（应用+桌面+开发） | |
 | `modules/hosts/acer-swift/hardware.nix` | 硬件配置 | |

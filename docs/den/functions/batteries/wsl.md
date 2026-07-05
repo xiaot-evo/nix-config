@@ -90,6 +90,7 @@ hostConf.options.wsl = {
 ```
 
 定义了两个主机级选项：
+
 - `enable`：开关，控制是否加载 WSL 模块
 - `module`：可插拔的模块引用，默认使用 `inputs.nixos-wsl` 提供的模块
 
@@ -119,12 +120,14 @@ den.policies.host-to-wsl-host = { host, ... }:
 ```
 
 守卫条件：
+
 1. `host.class == "nixos"`——WSL 只在 NixOS 上支持
-2. `(host.wsl or {}).enable or false`——用户显式启用了 WSL
+1. `(host.wsl or {}).enable or false`——用户显式启用了 WSL
 
 当条件满足时，触发两个操作：
+
 1. `den.lib.policy.resolve.to "wsl-host"`：解析 `wsl-host-aspect` 方面
-2. `den.lib.policy.include wsl-host-aspect`：包含该方面
+1. `den.lib.policy.include wsl-host-aspect`：包含该方面
 
 该策略通过 `den.schema.host.includes` 注册，在主机 schema 层面生效。
 

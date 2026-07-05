@@ -7,6 +7,7 @@
 类通用的参数化方面（parametrized aspect），按包名启用不自由（unfree）软件包。可在 Host、User、Home 任意上下文中使用。
 
 关键行为：
+
 - 签名：`den.batteries.unfree [ "pkg1" "pkg2" ... ]`
 - 使用参数化方面（`__args = { class = true; host = true; }`）
 - 对每种有效类（`nixos`/`darwin`/`homeManager`）动态生成 `{class}.unfree.packages`
@@ -67,4 +68,4 @@ __functor = _self: allowed-names: {
 
 ## 关联文档
 
-- [内置电池](../../../05-内置电池.md) — unfree 电池的快速参考和完整示例
+- [内置电池](../../../05-%E5%86%85%E7%BD%AE%E7%94%B5%E6%B1%A0.md) — unfree 电池的快速参考和完整示例

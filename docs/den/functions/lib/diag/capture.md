@@ -8,7 +8,7 @@
 
 收集方面解析过程中的结构化跟踪条目。通过 fx 管道的 `tracingHandler`，框架在执行过程中记录每个步骤的输出，支持后续的图分析和渲染。
 
----
+______________________________________________________________________
 
 ## capture — 捕获单个类的跟踪
 
@@ -34,10 +34,10 @@ entries = diag.capture "nixos" rootAspect;
 ### 实现过程
 
 1. 创建 fx 计算：`nxFx.send "resolve" { aspect = root; identity = ...; ctx = {}; }`
-2. 用 `tracingHandler` 组合默认处理器
-3. 执行计算，收集 `state.entries`
+1. 用 `tracingHandler` 组合默认处理器
+1. 执行计算，收集 `state.entries`
 
----
+______________________________________________________________________
 
 ## captureAll — 捕获多个类的条目
 
@@ -67,7 +67,7 @@ captureAll = classes: root:
 lib.concatMap (class: capture class root) classes;
 ```
 
----
+______________________________________________________________________
 
 ## captureWithPaths — 带路径集的捕获
 
@@ -89,7 +89,7 @@ result = diag.captureWithPaths ["nixos"] rootAspect;
 # result.pathsByClass.nixos — 该类的路径集
 ```
 
----
+______________________________________________________________________
 
 ## captureWithPathsWith — 带选项的捕获
 
@@ -114,7 +114,7 @@ result = diag.captureWithPathsWith {
 };
 ```
 
----
+______________________________________________________________________
 
 ## captureFleet — 舰队级捕获
 
@@ -153,7 +153,7 @@ fleetData = diag.captureFleet {};
 # 完整的 flake 范围管道跟踪
 ```
 
----
+______________________________________________________________________
 
 ## 结构化跟踪条目字段
 
@@ -176,7 +176,7 @@ fleetData = diag.captureFleet {};
 | `entityKind` | `nullOr string` | 实体类型 |
 | `entityInstance` | `nullOr string` | 实体实例 |
 
----
+______________________________________________________________________
 
 ## 关联
 

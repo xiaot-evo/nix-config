@@ -117,8 +117,8 @@ userToHostContext = { user, host, ... }: {
 三个关键行为：
 
 1. **NixOS**: 将用户加入 `wheel`（sudo 权限）和 `networkmanager`（网络管理）组
-2. **Darwin/macOS**: 使用 `system.primaryUser` 标记主用户（macOS 特定的系统选项）
-3. **WSL**: 设置 `wsl.defaultUser`，使 WSL 默认以该用户登录
+1. **Darwin/macOS**: 使用 `system.primaryUser` 标记主用户（macOS 特定的系统选项）
+1. **WSL**: 设置 `wsl.defaultUser`，使 WSL 默认以该用户登录
 
 注意：NixOS 下 `extraGroups` 与 `define-user` 中的 `isNormalUser = true` 是兼容的——`define-user` 已经创建了用户条目，`primary-user` 只需补充 `extraGroups`。Den 的方面合并机制会正确处理两个来源的同一个 `users.users.<name>` 属性集的内容合并。
 

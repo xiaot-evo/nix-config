@@ -17,6 +17,7 @@
 ## 返回值说明
 
 当前导出的类型：
+
 - `hostsOption` — 来自 `entities/host.nix`，包含 `den.hosts` 选项的类型定义
 - `homesOption` — 来自 `entities/home.nix`，包含 `den.homes` 选项的类型定义
 
@@ -46,11 +47,11 @@ in
 
 定义 `homesOption`——`den.homes` 的类型定义。包含家庭实体 schema。
 
-### entities/_types.nix
+### entities/\_types.nix
 
 共享类型定义。
 
----
+______________________________________________________________________
 
 ## 关联函数
 

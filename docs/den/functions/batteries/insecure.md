@@ -7,6 +7,7 @@
 类通用的参数化方面，按包名+版本启用不安全（insecure）软件包。与 `den.batteries.unfree` 结构相同，但操作为 `permittedInsecurePackages`。
 
 关键行为：
+
 - 签名：`den.batteries.insecure [ "pkg-1.0.0" "pkg-2.0.0" ... ]`
 - 使用参数化方面（`__args = { class = true; host = true; }`）
 - 对每种有效类（`nixos`/`darwin`/`homeManager`）动态生成 `{class}.permittedInsecurePackages.packages`
@@ -65,4 +66,4 @@ __functor = _self: allowed-names: {
 
 ## 关联文档
 
-- [内置电池](../../../05-内置电池.md) — insecure 电池的快速参考
+- [内置电池](../../../05-%E5%86%85%E7%BD%AE%E7%94%B5%E6%B1%A0.md) — insecure 电池的快速参考

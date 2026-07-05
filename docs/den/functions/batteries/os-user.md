@@ -114,9 +114,9 @@ den.policies.user-to-host = { user, host, ... }: [
 
 1. **路径嵌套**：`path = [ "users" "users" user.userName ]`——`user` 类的内容被完全嵌套写入 `users.users.<userName>` 下。即 `user.packages` → `nixos.users.users.alice.packages`
 
-2. **`adaptArgs`**：通过 `adaptArgs` 注入 `osConfig`，使得 `user` 类模块中可以使用 `osConfig` 引用父级 NixOS/Darwin 配置（例如读取 `networking.hostName` 等）
+1. **`adaptArgs`**：通过 `adaptArgs` 注入 `osConfig`，使得 `user` 类模块中可以使用 `osConfig` 引用父级 NixOS/Darwin 配置（例如读取 `networking.hostName` 等）
 
-3. **`ensureEntry` 机制**：Den 的 `route` 有一个 `ensureEntry` 机制（由 Den 的路由实现保证），即使 `user` 类中没有内容，也会创建 `users.users.<name>` 条目。这允许 home-manager 模块引用的用户条目存在。
+1. **`ensureEntry` 机制**：Den 的 `route` 有一个 `ensureEntry` 机制（由 Den 的路由实现保证），即使 `user` 类中没有内容，也会创建 `users.users.<name>` 条目。这允许 home-manager 模块引用的用户条目存在。
 
 ### 执行流程
 

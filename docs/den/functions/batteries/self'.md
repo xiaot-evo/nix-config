@@ -7,6 +7,7 @@
 提供 flake-parts 风格的 `self'`（预选了 system 参数的 flake self 输出）作为顶层模块参数 `_module.args.self'`。允许模块直接访问当前系统的 flake 输出，无需手动推导 `pkgs.stdenv.hostPlatform.system`。
 
 三类上下文感知：
+
 - **Host 上下文**：注入 `host.class._module.args.self'`
 - **User 上下文**：为用户的每个类注入 `self'`
 - **Home 上下文**：为 home 的类注入 `self'`
@@ -70,4 +71,4 @@ homeAspect = { home }: {
 
 ## 关联文档
 
-- [内置电池](../../../05-内置电池.md) — self' 电池的快速参考
+- [内置电池](../../../05-%E5%86%85%E7%BD%AE%E7%94%B5%E6%B1%A0.md) — self' 电池的快速参考

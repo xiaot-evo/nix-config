@@ -6,11 +6,12 @@
 
 类模块封装备是 Den 方面引擎与 NixOS 模块系统之间的关键桥梁。它将 Den 上下文参数（如 `pkgs`、`lib`、`inputs`）注入到类模块中，同时处理与模块系统参数的碰撞。
 
----
+______________________________________________________________________
 
 ## `wrapClassModule`
 
 ### 签名
+
 ```nix
 wrapClassModule : {
   module :: AspectModule,
@@ -29,6 +30,7 @@ wrapClassModule : {
 ```
 
 ### 用途
+
 用 Den 上下文参数封装类模块（函数或 attrset-with-imports）。这是后处理包装阶段的主要入口。
 
 ### 参数
@@ -52,11 +54,12 @@ wrapClassModule = args:
     wrapFunctionModule args   # 函数模块路径
 ```
 
----
+______________________________________________________________________
 
 ## `wrapFunctionModule`
 
 ### 签名
+
 ```nix
 wrapFunctionModule : {
   module :: Function,
@@ -69,13 +72,13 @@ wrapFunctionModule : {
 ### 流程
 
 1. **检测 Den 参数**：列出函数请求且上下文存在的参数
-2. **检测缺失参数**：检查标准模式参数（host、user、pkgs 等）是否存在——如果缺失，发出警告
-3. **未满足的参数**：如果任何模式参数缺失且没有默认值，标记为 `unsatisfied = true`
-4. **没有 Den 参数**：如果函数不请求任何 Den 参数，传递 `wrapped: false`
-5. **部分应用**：如果函数只请求可立即满足的 Den 参数，调用函数并传递 `wrapped: true`
-6. **碰撞路径**：如果函数既有 Den 参数又有模块系统参数，创建一个包装器，在模块评估时用冲突解决策略注入 Den 参数
+1. **检测缺失参数**：检查标准模式参数（host、user、pkgs 等）是否存在——如果缺失，发出警告
+1. **未满足的参数**：如果任何模式参数缺失且没有默认值，标记为 `unsatisfied = true`
+1. **没有 Den 参数**：如果函数不请求任何 Den 参数，传递 `wrapped: false`
+1. **部分应用**：如果函数只请求可立即满足的 Den 参数，调用函数并传递 `wrapped: true`
+1. **碰撞路径**：如果函数既有 Den 参数又有模块系统参数，创建一个包装器，在模块评估时用冲突解决策略注入 Den 参数
 
----
+______________________________________________________________________
 
 ## 碰撞处理策略
 
@@ -120,7 +123,7 @@ mkCollisionValidator = policy: denArgNames: moduleArgs:
   in { warnings = collisionChecks; };
 ```
 
----
+______________________________________________________________________
 
 ## 上下文参数注入
 
@@ -146,11 +149,12 @@ else
 
 参数注入顺序：`class-wins` Den 参数 → 模块系统参数 → `den-wins` Den 参数
 
----
+______________________________________________________________________
 
 ## `wrapImportsModule`
 
 ### 签名
+
 ```nix
 wrapImportsModule : {
   module :: AttrSet,  # 必须有 imports
@@ -198,11 +202,12 @@ wrapDeferredImports = args: imports:
   in { ... };
 ```
 
----
+______________________________________________________________________
 
 ## `resolveCollisionPolicy`
 
 ### 签名
+
 ```nix
 resolveCollisionPolicy : {
   ctx :: Context,
@@ -214,11 +219,11 @@ resolveCollisionPolicy : {
 ### 策略解析顺序
 
 1. **方面级**（`aspectPolicy != null`）：使用 `aspect.meta.collisionPolicy`
-2. **实体级**（`ctx.{name}.collisionPolicy`）：如 `host.collisionPolicy`
-3. **预计算策略**（`ctx.__collisionPolicies.{name}`）：来自 `resolveEntity` 的模式条目
-4. **全局策略**（`globalPolicy`）：`den.config.classModuleCollisionPolicy`
+1. **实体级**（`ctx.{name}.collisionPolicy`）：如 `host.collisionPolicy`
+1. **预计算策略**（`ctx.__collisionPolicies.{name}`）：来自 `resolveEntity` 的模式条目
+1. **全局策略**（`globalPolicy`）：`den.config.classModuleCollisionPolicy`
 
----
+______________________________________________________________________
 
 ## 配置 thunk 解析
 
@@ -244,7 +249,7 @@ resolveMarkers = config: values:
 
 这打破了循环依赖：管道值在模块系统内部被解析，此时 `evalModules` 的定点 `config` 可用。
 
----
+______________________________________________________________________
 
 ## 关联函数
 
@@ -256,6 +261,6 @@ resolveMarkers = config: values:
 
 ## 关联文档
 
-- [核心概念](../../../02-核心概念.md) — 扁平形式的类模块参数说明（含 `host`、`user` 等 Den 参数）
-- [方面配置指南](../../../04-方面配置指南.md) — 类模块编写规范
-- [自定义类](../../../10-自定义类.md) — 碰撞策略在自定义类中的应用
+- [核心概念](../../../02-%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5.md) — 扁平形式的类模块参数说明（含 `host`、`user` 等 Den 参数）
+- [方面配置指南](../../../04-%E6%96%B9%E9%9D%A2%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97.md) — 类模块编写规范
+- [自定义类](../../../10-%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB.md) — 碰撞策略在自定义类中的应用
