@@ -1,4 +1,11 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+let
+  commonCompat = {
+    supportsLongCacheRetention = true;
+    sendSessionAffinityHeaders = true;
+  };
+in
+{
   programs.pi-coding-agent = {
     enable = true;
     extraPackages = with pkgs; [
@@ -58,13 +65,8 @@
         maxRetries = 3;
       };
     };
-    models.providers.deepseek.compat = {
-      supportsLongCacheRetention = true;
-      sendSessionAffinityHeaders = true;
-    };
-    models.providers.opencode.compat = {
-      supportsLongCacheRetention = true;
-      sendSessionAffinityHeaders = true;
+    models.providers.deepseek.compat = commonCompat;
+    models.providers.opencode.compat = commonCompat // {
       requiresReasoningContentOnAssistantMessages = true;
       thinkingFormat = "deepseek";
     };

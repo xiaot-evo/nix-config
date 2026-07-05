@@ -1,28 +1,43 @@
 { den, ... }:
 let
-  # Common librarian preset (shared across all presets)
-  librarianAgent = {
+  # Shared defaults to reduce repetition across agent configs
+  defaultAgent = {
+    skills = [ ];
+    mcps = [ ];
+  };
+  librarianAgent = defaultAgent // {
     model = "opencode/big-pickle";
     variant = "low";
-    skills = [ ];
     mcps = [
       "websearch"
       "context7"
       "gh_grep"
     ];
   };
+  # Agents that share the same config across all presets
+  defaultExplorer = defaultAgent // {
+    model = "opencode/north-mini-code-free";
+    variant = "low";
+  };
+  defaultDesigner = defaultAgent // {
+    model = "opencode/mimo-v2.5-free";
+    variant = "medium";
+  };
 
   # Build a complete preset from per-agent model/variant configs.
-  # Each agent gets common skills/mcps merged with its unique model/variant.
+  # Omitted agents fall back to defaults; callers only specify what differs.
   mkPreset =
     {
       orchestrator,
       oracle,
       council,
-      explorer,
-      designer,
       fixer,
-    }:
+      ...
+    }@args:
+    let
+      explorer = defaultExplorer // (args.explorer or { });
+      designer = defaultDesigner // (args.designer or { });
+    in
     {
       orchestrator = orchestrator // {
         skills = [ "*" ];
@@ -35,23 +50,10 @@ let
         skills = [ "simplify" ];
         mcps = [ ];
       };
-      council = council // {
-        skills = [ ];
-        mcps = [ ];
-      };
+      council = council // defaultAgent;
       librarian = librarianAgent;
-      explorer = explorer // {
-        skills = [ ];
-        mcps = [ ];
-      };
-      designer = designer // {
-        skills = [ ];
-        mcps = [ ];
-      };
-      fixer = fixer // {
-        skills = [ ];
-        mcps = [ ];
-      };
+      inherit explorer designer;
+      fixer = fixer // defaultAgent;
     };
 in
 {
@@ -126,14 +128,6 @@ in
                 model = "opencode/north-mini-code-free";
                 variant = "low";
               };
-              explorer = {
-                model = "opencode/north-mini-code-free";
-                variant = "low";
-              };
-              designer = {
-                model = "opencode/mimo-v2.5-free";
-                variant = "medium";
-              };
               fixer = {
                 model = [
                   "opencode/north-mini-code-free"
@@ -155,14 +149,6 @@ in
                 model = "opencode/nemotron-3-ultra-free";
                 variant = "medium";
               };
-              explorer = {
-                model = "opencode/north-mini-code-free";
-                variant = "low";
-              };
-              designer = {
-                model = "opencode/mimo-v2.5-free";
-                variant = "medium";
-              };
               fixer = {
                 model = "deepseek/deepseek-v4-flash";
                 variant = "low";
@@ -180,14 +166,6 @@ in
               council = {
                 model = "opencode/north-mini-code-free";
                 variant = "low";
-              };
-              explorer = {
-                model = "opencode/north-mini-code-free";
-                variant = "low";
-              };
-              designer = {
-                model = "opencode/mimo-v2.5-free";
-                variant = "medium";
               };
               fixer = {
                 model = [
