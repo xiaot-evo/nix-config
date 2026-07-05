@@ -9,14 +9,15 @@ let
   hostname = builtins.replaceStrings [ "\n" ] [ "" ] (builtins.readFile /etc/hostname);
 in
 {
-  # https://devenv.sh/basics/
-  # env.GREET = "devenv";
+  # ── 基础工具 ─────────────────────────────────
+  packages = [
+    pkgs.git
+    pkgs.gh
+    pkgs.nixfmt
+    pkgs.fish
+  ];
 
-  # https://devenv.sh/packages/
-  packages = [ pkgs.gh ];
-
-  # https://devenv.sh/languages/
-  # languages.rust.enable = true;
+  # ── Nix 语言支持 ─────────────────────────────
   languages.nix = {
     enable = true;
     lsp = {
@@ -25,43 +26,41 @@ in
     };
   };
 
-  # https://devenv.sh/processes/
-  # processes.dev.exec = "${lib.getExe pkgs.watchexec} -n -- ls -la";
-
-  # https://devenv.sh/services/
-  # services.postgres.enable = true;
-
-  # https://devenv.sh/scripts/
+  # ── 快捷脚本 ─────────────────────────────────
   scripts = {
     flake-write.exec = ''
       nix run .#write-flake
     '';
+    fmt.exec = ''
+      nix fmt
+    '';
+    check.exec = ''
+      nix flake check
+    '';
     build.exec = ''
-      nix run  .#${hostname}  --impure
+      nix run .#${hostname} --impure
     '';
     build-switch.exec = ''
-      nix run  .#${hostname}  -- switch --impure
+      nix run .#${hostname} -- switch --impure
     '';
   };
-  # https://devenv.sh/basics/
-  enterShell = ''
-    git --version # Use packages
-  '';
 
-  # https://devenv.sh/tasks/
-  # tasks = {
-  #   "myproj:setup".exec = "mytool build";
-  #   "devenv:enterShell".after = [ "myproj:setup" ];
-  # };
+  # ── Claude Code 集成 ─────────────────────────
+  claude.code = {
+    enable = true;
+    mcpServers = {
+      devenv = {
+        type = "stdio";
+        command = "devenv";
+        args = [ "mcp" ];
+        env = {
+          DEVENV_ROOT = config.devenv.root;
+        };
+      };
+    };
+  };
 
-  # https://devenv.sh/tests/
   enterTest = ''
-    echo "Running tests"
-    git --version | grep --color=auto "${pkgs.git.version}"
+    nix flake check
   '';
-
-  # https://devenv.sh/git-hooks/
-  # git-hooks.hooks.shellcheck.enable = true;
-
-  # See full reference at https://devenv.sh/reference/options/
 }
