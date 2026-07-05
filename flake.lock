@@ -90,6 +90,22 @@
         "type": "github"
       }
     },
+    "claude-plugins-official": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1783102433,
+        "narHash": "sha256-/P8R5cvb40tt+QdvFfw7HwuyqrlknsvBaSTjh0HtjhQ=",
+        "owner": "anthropics",
+        "repo": "claude-plugins-official",
+        "rev": "f3f92ab0303fbcc6f38a6e82d02c006311f9c557",
+        "type": "github"
+      },
+      "original": {
+        "owner": "anthropics",
+        "repo": "claude-plugins-official",
+        "type": "github"
+      }
+    },
     "daeuniverse": {
       "inputs": {
         "flake-parts": "flake-parts",
@@ -540,6 +556,7 @@
     },
     "root": {
       "inputs": {
+        "claude-plugins-official": "claude-plugins-official",
         "daeuniverse": "daeuniverse",
         "den": "den",
         "dms": "dms",
@@ -553,8 +570,25 @@
         "nix-cachyos-kernel": "nix-cachyos-kernel",
         "nixpkgs": "nixpkgs_4",
         "noctalia": "noctalia",
+        "superpowers": "superpowers",
         "treefmt-nix": "treefmt-nix_2",
         "zen-browser": "zen-browser"
+      }
+    },
+    "superpowers": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1760646076,
+        "narHash": "sha256-qPdNalUMHhKvfl4FFuUmdwdrJENo7ANczFH2olRW63A=",
+        "owner": "dorucioclea",
+        "repo": "superpowers",
+        "rev": "d6ca4d6213ab6fb6fb51fd326d49e66516b04de3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dorucioclea",
+        "repo": "superpowers",
+        "type": "github"
       }
     },
     "systems": {
