@@ -56,6 +56,18 @@
         url = "github:numtide/llm-agents.nix";
         inputs.nixpkgs.follows = "nixpkgs";
       };
+
+      # Claude Code 官方插件集（非 flake）
+      claude-plugins-official = {
+        url = "github:anthropics/claude-plugins-official";
+        flake = false;
+      };
+
+      # Claude Code Superpowers 技能库（非 flake）
+      superpowers = {
+        url = "github:dorucioclea/superpowers";
+        flake = false;
+      };
       treefmt-nix = {
         url = "github:numtide/treefmt-nix";
         inputs.nixpkgs.follows = "nixpkgs";
