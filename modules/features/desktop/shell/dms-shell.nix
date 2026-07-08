@@ -2,7 +2,12 @@
 {
   den.aspects.desktop.shell.dms-shell = {
     homeManager =
-      { lib, config, themePrefs, ... }:
+      {
+        lib,
+        config,
+        themePrefs,
+        ...
+      }:
       let
         # 从 theme.nix 的 quirk 获取统一主题配置
         tp = if themePrefs != [ ] then builtins.head themePrefs else { };
