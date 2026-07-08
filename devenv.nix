@@ -10,11 +10,12 @@ let
 in
 {
   # ── 基础工具 ─────────────────────────────────
-  packages = [
-    pkgs.git
-    pkgs.gh
-    pkgs.nixfmt
-    pkgs.fish
+  packages = with pkgs; [
+    git
+    gh
+    nh
+    nixfmt
+    fish
   ];
 
   # ── Nix 语言支持 ─────────────────────────────
@@ -22,7 +23,7 @@ in
     enable = true;
     lsp = {
       enable = true;
-      package = pkgs.nil;
+      package = pkgs.nixd;
     };
   };
 
