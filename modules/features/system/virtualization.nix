@@ -10,7 +10,7 @@
             enable = true;
             qemu.package = pkgs.qemu_kvm;
           };
-          environment.systemPackages = [ pkgs.virt-manager ];
+          programs.virt-manager.enable = true;
           users.groups.libvirtd.members = builtins.attrNames host.users;
         };
     };
