@@ -11,21 +11,17 @@
     nixConfig = {
       extra-substituters = [
         "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
-        "https://nix-community.cachix.org"
         "https://cache.nixos.org"
         "https://cache.numtide.com"
         "https://niri-nix.cachix.org"
         "https://cache.garnix.io"
-        "https://cache.nixos-cuda.org"
         "https://attic.xuyh0120.win/lantian"
         "https://noctalia.cachix.org"
       ];
       extra-trusted-public-keys = [
-        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
         "niri-nix.cachix.org-1:SvFtqpDcf7Sm1SMJdby1/+Y+6f3Yt3/3PMcSTKPJNJ0="
         "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
-        "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
         "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
         "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
       ];
@@ -51,23 +47,12 @@
         url = "github:AvengeMedia/dms-plugin-registry";
         inputs.nixpkgs.follows = "nixpkgs";
       };
-      # AI coding agent packages（pi, claude-code, opencode, crush 等）
+      # AI coding agent packages（pi, claude-code 等）
       llm-agents-nix = {
         url = "github:numtide/llm-agents.nix";
         inputs.nixpkgs.follows = "nixpkgs";
       };
 
-      # Claude Code 官方插件集（非 flake）
-      claude-plugins-official = {
-        url = "github:anthropics/claude-plugins-official";
-        flake = false;
-      };
-
-      # Claude Code Superpowers 技能库（非 flake）
-      superpowers = {
-        url = "github:dorucioclea/superpowers";
-        flake = false;
-      };
       treefmt-nix = {
         url = "github:numtide/treefmt-nix";
         inputs.nixpkgs.follows = "nixpkgs";

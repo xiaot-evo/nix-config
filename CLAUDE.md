@@ -12,13 +12,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Claude Code 的 `context` 指令设置为「请用中文回复。参考 AGENTS.md 了解项目结构、约定和完整技能表。」——所有回复用中文，AGENTS.md 是权威参考。
 
-本环境加载了以下 Claude Code 插件/技能：
+本环境加载了以下 Claude Code 插件：
 
 - **claude-md-management** — CLAUDE.md/AGENTS.md 审计改进
 - **code-simplifier** — 代码简化审查
 - **code-review** — 代码审查（`/code-review`、`/review`）
 - **skill-creator** — 技能创建与管理
-- **superpowers** — 20 个工程化技能（brainstorming、TDD、debugging、code-review 等）
 
 插件市场 `claude-plugins-official` 已注册，可通过 `/plugin` 发现和安装更多插件。
 
@@ -116,20 +115,6 @@ user (homeManager) ──includes──→ dev, desktop, apps...
 
 ## 可用的 MCP 工具
 
-本环境配置了两个 MCP 服务器，提供比手动搜索更高效的工具：
-
-### nixos 服务器
-
-查询 Nix 包、NixOS/Home Manager 选项、flake、二进制缓存、store 路径。**优先于 `nix search` 或手动浏览 search.nixos.org。**
-
-常用场景：
-
-- 查包：`mcp__nixos__nix({ action: "search", query: "包名" })`
-- 查选项：`mcp__nixos__nix({ action: "search", query: "选项名", type: "options" })`
-- 查 Home Manager 选项：`mcp__nixos__nix({ action: "search", source: "home-manager", query: "..." })`
-- 查二进制缓存：`mcp__nixos__nix({ action: "cache", query: "包名" })`
-- 读 `/nix/store` 路径：`mcp__nixos__nix({ action: "store", type: "read", query: "/nix/store/..." })`
-
 ### devenv 服务器
 
 管理 devenv 进程（查看日志、启停服务）：
@@ -193,7 +178,6 @@ user (homeManager) ──includes──→ dev, desktop, apps...
 | `daeuniverse` | dae 代理 |
 | `noctalia` | Noctalia 桌面环境（备选） |
 | `claude-plugins-official` | Claude Code 官方插件集（非 flake） |
-| `superpowers` | Claude Code Superpowers 技能库（非 flake） |
 
 ## 添加新 Feature
 
@@ -228,11 +212,14 @@ sudo nixos-rebuild switch --flake .#acer-swift
 
 本项目通过 `den.aspects.dev.editors.claude-code` aspect 管理 Claude Code 的声明式配置（`modules/features/dev/editors/claude-code.nix`），包括：
 
-- 权限白名单/黑名单
-- MCP 服务器（nixos）
+- 权限白名单/黑名单（含 deny 敏感文件、`defaultMode`）
+- PostToolUse Hook：编辑 `.nix` 文件后自动 `nixfmt` 格式化
+- StatusLine：显示当前模型和工作目录
+- `includeCoAuthoredBy`：匹配项目提交规范
 - LSP 服务器（nil）
+- 自定义命令：`/check`（flake check）、`/build`（构建）、`/deploy`（部署）
 - 包来源：`llm-agents-nix` 输入
-- 插件：claude-md-management、code-simplifier、code-review、skill-creator、superpowers
+- 插件：claude-md-management、code-simplifier、code-review、skill-creator
 - 插件市场：claude-plugins-official
 - `cc-switch-cli` 切换 CLI 版本
 - `cc-ds` DeepSeek 一键启动（通过 `ANTHROPIC_BASE_URL` 指向 DeepSeek API）
