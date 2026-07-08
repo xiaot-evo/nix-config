@@ -16,9 +16,6 @@
           "modrinth-app"
           "modrinth-app-unwrapped"
         ])
-        (insecure [
-          # "ventoy-1.1.12"
-        ])
       ])
       ++ (with den.aspects; [
         security.gnome-keyring
@@ -67,7 +64,7 @@
             android-tools
             trash-cli
 
-            ## guio
+            ## gui
             (warp-terminal.overrideAttrs (old: {
               nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ makeWrapper ];
               postFixup = (old.postFixup or "") + ''
