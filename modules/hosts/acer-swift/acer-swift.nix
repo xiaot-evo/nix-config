@@ -19,6 +19,7 @@
         system.nix
         system.network
         system.sound
+        system.virtualization
         services.powermanagement
       ]);
     nixos =

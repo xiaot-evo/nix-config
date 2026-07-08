@@ -38,6 +38,7 @@ system.boot
 system.nix
 system.network
 system.sound
+system.virtualization
 services.powermanagement
 ```
 
@@ -191,3 +192,4 @@ ______________________________________________________________________
 | `system.nh` | `system/nh.nix` | ❌ |
 | `system.nix` | `system/nix.nix` | ✅ |
 | `system.sound` | `system/sound.nix` | ✅ |
+| `system.virtualization` | `system/virtualization.nix` | ✅ |

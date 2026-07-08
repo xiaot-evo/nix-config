@@ -28,7 +28,6 @@
         services.udiskie
         services.printing
         services.kdeconnect
-        system.virtualization
         system.fonts
         desktop.wm.niri
         desktop.shell.dms-shell
