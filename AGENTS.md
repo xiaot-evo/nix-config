@@ -95,6 +95,7 @@ ______________________________________________________________________
 nix-instantiate --parse <file>      # 仅语法检查
 nix fmt -- --fail-on-change         # 格式检查（比 flake check 快）
 nix flake check --no-build          # 只评估不构建
+nix eval .#nixosConfigurations.<host>.config.<path>  # 查询 NixOS 配置值（调试用）
 ```
 
 ### 包搜索
