@@ -12,7 +12,7 @@
           enable = true;
           package = pkgs.zed-editor;
           extraPackages = with pkgs; [
-            nil
+            nixd
             nixfmt
             package-version-server
             yaml-language-server

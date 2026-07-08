@@ -3,23 +3,30 @@
   languages = {
     Nix = {
       language_servers = [
-        "nil"
+        "nixd"
       ];
     };
   };
   lsp = {
-    nil = {
+    nixd = {
       settings = {
-        formatting = {
-          command = [ "nixfmt" ];
-        };
-        diagnostics = {
-          ignored = [ "unused_binding" ];
-        };
-        nix = {
-          flake = {
-            autoEvalInputs = true;
-            nixpkgsInputName = "nixpkgs";
+        nixd = {
+          nixpkgs = {
+            expr = "import <nixpkgs> {}";
+          };
+          formatting = {
+            command = [ "nixfmt" ];
+          };
+          diagnostic = {
+            suppress = [ ];
+          };
+          options = {
+            nixos = {
+              expr = "(builtins.getFlake (builtins.toString ./.)).nixosConfigurations.acer-swift.options";
+            };
+            home-manager = {
+              expr = "(builtins.getFlake (builtins.toString ./.)).nixosConfigurations.acer-swift.options.home-manager.users.type.getSubOptions []";
+            };
           };
         };
       };

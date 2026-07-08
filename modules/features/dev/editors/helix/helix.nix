@@ -12,7 +12,7 @@
           enable = true;
           # defaultEditor = true;
           extraPackages = with pkgs; [
-            nil
+            nixd
             nixfmt
             # go
             gopls

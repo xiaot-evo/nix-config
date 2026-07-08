@@ -6,7 +6,7 @@
         name = "nix";
         auto-format = true;
         formatter.command = "${pkgs.nixfmt}/bin/nixfmt";
-        language-servers = [ "nil" ];
+        language-servers = [ "nixd" ];
       }
       {
         name = "go";
@@ -15,20 +15,25 @@
       }
     ];
     language-server = {
-      nil = {
-        command = "${pkgs.nil}/bin/nil";
+      nixd = {
+        command = "${pkgs.nixd}/bin/nixd";
         config = {
-          nil = {
+          nixd = {
+            nixpkgs = {
+              expr = "import <nixpkgs> {}";
+            };
             formatting = {
               command = [ "nixfmt" ];
             };
-            diagnostics = {
-              ignored = [ "unused_binding" ];
+            diagnostic = {
+              suppress = [ ];
             };
-            nix = {
-              flake = {
-                autoEvalInputs = true;
-                nixpkgsInputName = "nixpkgs";
+            options = {
+              nixos = {
+                expr = "(builtins.getFlake (builtins.toString ./.)).nixosConfigurations.acer-swift.options";
+              };
+              home-manager = {
+                expr = "(builtins.getFlake (builtins.toString ./.)).nixosConfigurations.acer-swift.options.home-manager.users.type.getSubOptions []";
               };
             };
           };
