@@ -99,8 +99,9 @@ dev.shell.fish
 dev.shell.starship
 dev.tools.git
 dev.tools.yazi
-dev.editors.claude-code
-dev.editors.pi-coding-agent
+dev.ai.ollama
+dev.ai.claude-code
+dev.ai.pi-coding-agent
 dev.editors.zed-editor
 dev.editors.helix
 
@@ -142,9 +143,10 @@ ______________________________________________________________________
 
 | Aspect | 文件 | 已引入 |
 |---|---|---|
-| `dev.editors.claude-code` | `dev/editors/claude-code.nix` | ✅ |
+| `dev.ai.claude-code` | `dev/ai/claude-code.nix` | ✅ |
+| `dev.ai.ollama` | `dev/ai/ollama.nix` | ✅ |
+| `dev.ai.pi-coding-agent` | `dev/ai/pi-coding-agent/` | ✅ |
 | `dev.editors.helix` | `dev/editors/helix/` | ✅ |
-| `dev.editors.pi-coding-agent` | `dev/editors/pi-coding-agent/` | ✅ |
 | `dev.editors.zed-editor` | `dev/editors/zed-editor/` | ✅ |
 | `dev.shell.fish` | `dev/shell/fish.nix` | ✅ |
 | `dev.shell.starship` | `dev/shell/starship.nix` | ✅ |
