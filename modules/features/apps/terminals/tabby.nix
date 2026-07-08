@@ -14,6 +14,7 @@ let
       appimageTools,
       fetchurl,
       asar,
+      extraPkgs ? (pkgs: [ pkgs.hidapi ]),
     }:
     let
       src =
@@ -44,7 +45,7 @@ let
       inherit pname version;
       src = appimageContents;
 
-      extraPkgs = pkgs: [ pkgs.hidapi ];
+      extraPkgs = extraPkgs;
 
       extraInstallCommands = ''
         # Add desktop convenience stuff
@@ -70,15 +71,13 @@ let
     };
 in
 {
-  # Expose as perSystem package: nix run .#tabby-terminal-bin
-  perSystem = { pkgs, ... }: {
-    packages.tabby-terminal-bin = pkgs.callPackage package { };
-  };
 
-  # Aspect for optional home-manager inclusion
-  den.aspects.apps.terminals.tabby = {
+  # Parametric aspect: (den.aspects.apps.terminals.tabby (p: [ p.hidapi p.maple-mono.NF-CN ]))
+  den.aspects.apps.terminals.tabby = extraPkgs: {
     homeManager = { pkgs, ... }: {
-      home.packages = [ (pkgs.callPackage package { }) ];
+      home.packages = [
+        (pkgs.callPackage package { inherit extraPkgs; })
+      ];
     };
   };
 }

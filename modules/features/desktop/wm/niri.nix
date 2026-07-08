@@ -207,6 +207,11 @@
                 NIXOS_OZONE_WL = "1";
                 ELECTRON_OZONE_PLATFORM_HINT = "auto";
                 EDITOR = "hx";
+                GTK_IM_MODULE = "fcitx5";
+                QT_IM_MODULE = "fcitx5";
+                XMODIFIERS = "@im=fcitx5";
+                SDL_IM_MODULE = "fcitx5";
+                GLFW_IM_MODULE = "ibus";
               };
               spawn-sh-at-startup = [
                 [ "${pkgs.fcitx5}/usr/bin/fcitx5 -d" ]
