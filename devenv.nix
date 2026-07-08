@@ -52,16 +52,18 @@ in
   # ── Claude Code 集成 ─────────────────────────
   claude.code = {
     enable = true;
-    mcpServers = {
-      devenv = {
-        type = "stdio";
-        command = "devenv";
-        args = [ "mcp" ];
-        env = {
-          DEVENV_ROOT = config.devenv.root;
-        };
-      };
-    };
+    # 暂时禁用 devenv MCP 以减少内存占用
+    # mcpServers = {
+    #   devenv = {
+    #     type = "stdio";
+    #     command = "devenv";
+    #     args = [ "mcp" ];
+    #     env = {
+    #       DEVENV_ROOT = config.devenv.root;
+    #     };
+    #   };
+    # };
+    mcpServers = { };
   };
 
   enterTest = ''
