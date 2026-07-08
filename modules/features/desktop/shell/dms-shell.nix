@@ -2,7 +2,11 @@
 {
   den.aspects.desktop.shell.dms-shell = {
     homeManager =
-      { lib, config, ... }:
+      { lib, config, themePrefs, ... }:
+      let
+        # 从 theme.nix 的 quirk 获取统一主题配置
+        tp = if themePrefs != [ ] then builtins.head themePrefs else { };
+      in
       {
         imports = [
           inputs.dms.homeModules.dank-material-shell
@@ -28,7 +32,16 @@
           enableCalendarEvents = true; # Calendar integration (khal)
           enableClipboardPaste = true; # Pasting items from the clipboard (wtype)
 
-          settings = builtins.fromJSON (lib.readFile ./settings.json);
+          settings = lib.recursiveUpdate (builtins.fromJSON (lib.readFile ./settings.json)) {
+            # 全部从 theme.nix 的 quirk 引用，保持单一配置源
+            iconTheme = tp.iconTheme or "WhiteSur-light";
+            cursorSettings = {
+              size = tp.cursorSize or 24;
+              theme = tp.cursorTheme or "Bibata-Modern-Classic";
+            };
+            fontFamily = tp.fontFamily or "LXGW WenKai";
+            monoFontFamily = tp.monoFontFamily or "Maple Mono NF CN";
+          };
           session = builtins.fromJSON (lib.readFile ./session.json);
           clipboardSettings = {
             maxHistory = 25;
