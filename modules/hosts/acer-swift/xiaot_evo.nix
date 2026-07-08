@@ -32,8 +32,7 @@
         desktop.wm.niri
         desktop.shell.dms-shell
         desktop.input-method.fcitx5
-        preference.cursor-theme
-        preference.icon-theme
+        preference.theme
         dev.shell.fish
         dev.shell.starship
         dev.tools.git
