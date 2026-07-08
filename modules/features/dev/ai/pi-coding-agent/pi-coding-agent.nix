@@ -1,5 +1,5 @@
 { den, ... }: {
-  den.aspects.dev.editors.pi-coding-agent = {
+  den.aspects.dev.ai.pi-coding-agent = {
     includes = [
       den.batteries.inputs'
     ];

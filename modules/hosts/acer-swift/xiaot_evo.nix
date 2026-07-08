@@ -28,6 +28,7 @@
         services.udiskie
         services.printing
         services.kdeconnect
+        system.virtualization
         system.fonts
         desktop.wm.niri
         desktop.shell.dms-shell
@@ -38,12 +39,18 @@
         dev.shell.starship
         dev.tools.git
         dev.tools.yazi
-        dev.editors.claude-code
-        dev.editors.pi-coding-agent
+        dev.ai.ollama
+        dev.ai.claude-code
+        dev.ai.pi-coding-agent
         dev.editors.zed-editor
         dev.editors.helix
         apps.terminals.ghostty
-        apps.terminals.tabby
+        (apps.terminals.tabby (
+          p: with p; [
+            hidapi
+            maple-mono.NF-CN
+          ]
+        ))
         apps.browsers.zen-browser
         apps.notes.obsidian
         apps.gaming.steam
@@ -63,7 +70,13 @@
             trash-cli
 
             ## guio
-            warp-terminal
+            (warp-terminal.overrideAttrs (old: {
+              nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ makeWrapper ];
+              postFixup = (old.postFixup or "") + ''
+                wrapProgram $out/bin/warp-terminal \
+                  --prefix LD_LIBRARY_PATH : ${wayland}/lib
+              '';
+            }))
             bilibili
             resources
             marktext
