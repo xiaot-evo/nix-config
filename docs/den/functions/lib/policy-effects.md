@@ -8,7 +8,7 @@
 
 每一种效果构造器代表一种可以在策略中发出的信号：创建新作用域、包含/排除方面、路由内容、注入模块等。
 
----
+______________________________________________________________________
 
 ## den.lib.policy.resolve
 
@@ -35,7 +35,7 @@
 ) (lib.attrValues host.users)
 ```
 
----
+______________________________________________________________________
 
 ## den.lib.policy.resolve.to
 
@@ -56,7 +56,7 @@
 den.lib.policy.resolve.to "user" { user = someUser; }
 ```
 
----
+______________________________________________________________________
 
 ## den.lib.policy.resolve.shared
 
@@ -74,7 +74,7 @@ den.lib.policy.resolve.shared { user = someUser; }
 den.lib.policy.resolve.shared.to "user" { user = someUser; }
 ```
 
----
+______________________________________________________________________
 
 ## den.lib.policy.include
 
@@ -102,7 +102,7 @@ den.lib.policy.include { nixos.services.openssh.enable = true; }
 den.lib.policy.include den.batteries.hostname
 ```
 
----
+______________________________________________________________________
 
 ## den.lib.policy.exclude
 
@@ -127,7 +127,7 @@ den.lib.policy.include den.batteries.hostname
 den.lib.policy.exclude den.batteries.unfree
 ```
 
----
+______________________________________________________________________
 
 ## den.lib.policy.route
 
@@ -154,7 +154,7 @@ den.lib.policy.route {
 }
 ```
 
----
+______________________________________________________________________
 
 ## den.lib.policy.instantiate
 
@@ -172,7 +172,7 @@ den.lib.policy.route {
 
 `{ __policyEffect = "instantiate"; value = spec; }`
 
----
+______________________________________________________________________
 
 ## den.lib.policy.provide
 
@@ -199,7 +199,7 @@ den.lib.policy.provide {
 }
 ```
 
----
+______________________________________________________________________
 
 ## den.lib.policy.pipe.from
 
@@ -227,7 +227,7 @@ den.lib.policy.pipe.from "my-quirk" [
 ]
 ```
 
----
+______________________________________________________________________
 
 ## den.lib.policy.pipelineOnly
 
@@ -243,7 +243,7 @@ den.lib.policy.pipe.from "my-quirk" [
 den.lib.policy.pipelineOnly ({ host, ... }: { ... })
 ```
 
----
+______________________________________________________________________
 
 ## den.lib.policy.for
 
@@ -269,7 +269,7 @@ den.lib.policy.for hostA (den.lib.policy.include someAspect)
 # → 只在 hostA 上下文中触发的策略
 ```
 
----
+______________________________________________________________________
 
 ## den.lib.policy.when
 
@@ -292,7 +292,7 @@ den.lib.policy.when
   (den.lib.policy.include iglooOnlyModule)
 ```
 
----
+______________________________________________________________________
 
 ## den.lib.policy.mkPolicy
 
@@ -323,7 +323,7 @@ den.default.includes = [
 ];
 ```
 
----
+______________________________________________________________________
 
 ## 关联函数
 

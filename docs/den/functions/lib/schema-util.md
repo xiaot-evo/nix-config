@@ -6,7 +6,7 @@
 
 模式（Schema）工具函数。提供实体类型的分类信息——哪些 schema 键被视为实体，哪些是参数键等。
 
----
+______________________________________________________________________
 
 ## den.lib.schemaUtil.schemaEntityKinds
 
@@ -19,6 +19,7 @@
 ### 过滤规则
 
 排除了以下类型的 schema 键：
+
 - `"conf"` — 配置项
 - 以 `_` 开头的私有键
 - `den.schema.${k}.isEntity` 不为 `true` 的条目
@@ -34,18 +35,19 @@ den.lib.schemaUtil.schemaEntityKinds
 # → ["host", "user", "home", ...]
 ```
 
----
+______________________________________________________________________
 
 ## den.lib.schemaUtil.schemaEntityKindsSet
 
 **签名**: `(自动计算) → attrset`
 
 将 `schemaEntityKinds` 转为 attrset 用于快速查询：
+
 ```nix
 { host = true; user = true; home = true; ... }
 ```
 
----
+______________________________________________________________________
 
 ## den.lib.schemaUtil.schemaArgKinds
 
@@ -57,7 +59,7 @@ den.lib.schemaUtil.schemaEntityKinds
 
 字符串列表，比 `schemaEntityKinds` 更宽松。
 
----
+______________________________________________________________________
 
 ## 使用示例
 
@@ -76,7 +78,7 @@ in
 # ...
 ```
 
----
+______________________________________________________________________
 
 ## 关联函数
 

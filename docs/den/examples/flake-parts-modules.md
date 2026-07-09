@@ -50,9 +50,9 @@ templates/flake-parts-modules/
 每个 `modules/classes/*.nix` 文件都执行以下步骤：
 
 1. **注册新类**：`den.classes.<name> = { };`
-2. **导入 flake-parts 模块**：`imports = [ inputs.<module>.flakeModule ];`
-3. **定义路由策略**：`den.policies.<name>-to-flake-parts` 使用 `den.lib.policy.route`
-4. **激活策略**：`den.schema.flake-parts.includes = [ den.policies.<name>-to-flake-parts ];`
+1. **导入 flake-parts 模块**：`imports = [ inputs.<module>.flakeModule ];`
+1. **定义路由策略**：`den.policies.<name>-to-flake-parts` 使用 `den.lib.policy.route`
+1. **激活策略**：`den.schema.flake-parts.includes = [ den.policies.<name>-to-flake-parts ];`
 
 ### route 原语
 

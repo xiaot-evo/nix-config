@@ -100,7 +100,7 @@ userShell = shell: user:
 两个关键点：
 
 1. **NixOS/Darwin 共享实现**：`darwin = nixos` 因为两者使用同一套 Nixpkgs 模块系统，`programs.<shell>` 和 `users.users` 在这两个平台上都可用
-2. **Home Manager 只启用**：HM 侧只做 `programs.<shell>.enable`，不设置登录 shell（因为登录 shell 是 OS 层的概念）
+1. **Home Manager 只启用**：HM 侧只做 `programs.<shell>.enable`，不设置登录 shell（因为登录 shell 是 OS 层的概念）
 
 ### 电池注册与柯里化
 
@@ -117,12 +117,14 @@ den.batteries.user-shell = shell: {
 `user-shell` 是一个**柯里化函数**：`shell -> aspect`。调用 `den.batteries.user-shell "fish"` 产生一个具体的方面实例。这是因为 shell 必须在引用时由用户指定，不能硬编码。
 
 两个 includes 分别处理：
+
 - **主机上下文**（`{ host, user }`）：OS 层设置 + HM 层设置
 - **Home 上下文**（`{ home }`）：仅 HM 层设置（standalone HM 场景）
 
 ### 关于 `pkgs.${shell}` 的查找
 
 `nixos` 模块中的 `pkgs.${shell}` 使用 Nixpkgs 属性名查找。这意味着：
+
 - `"fish"` 对应 `pkgs.fish`
 - `"zsh"` 对应 `pkgs.zsh`
 - `"bash"` 对应 `pkgs.bash`

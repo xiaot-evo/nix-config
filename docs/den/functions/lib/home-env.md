@@ -6,7 +6,7 @@
 
 家庭环境集成电池。提供了一套完整的模式来将 home-manager 或类似服务集成到 Den 的主机配置中——包括主机级别开关、用户级别的自动路由和策略。
 
----
+______________________________________________________________________
 
 ## den.lib.home-env.makeHomeEnv
 
@@ -15,6 +15,7 @@
 ### 用途
 
 创建 home-manager 风格服务的集成电池。自动处理：
+
 - 主机级别的开关（enable + module 选项）
 - 用户级别的自动检测和转发
 - 主机作用域和用户作用域的策略分发
@@ -32,6 +33,7 @@
 ### 返回值说明
 
 返回一个 attrset：
+
 - `battery` — 主机作用域的电池方面（包含策略和 includes）
 - `userDetect` — 用户作用域的策略方面
 - `hostConf` — 主机级别选项（enable + module）
@@ -61,21 +63,23 @@ den.lib.home-env.makeHomeEnv {
 ### 实现简析
 
 1. 创建主机级别的策略函数：检测用户、为每个匹配用户发出 `resolve` 效果
-2. 创建用户级别的策略函数：在用户作用域内检测并发出转发
-3. 创建主机选项（enable + module）
-4. 返回三部分供 `den.schema.host.includes` 和 `den.schema.user.includes` 分别使用
+1. 创建用户级别的策略函数：在用户作用域内检测并发出转发
+1. 创建主机选项（enable + module）
+1. 返回三部分供 `den.schema.host.includes` 和 `den.schema.user.includes` 分别使用
 
 ### 辅助函数
 
 `mkDetectHost` — 检测主机是否应该启用服务：
+
 - 检查操作系统是否支持
 - 检查 `host.${optionPath}.enable`
 - 检查主机是否有用户属于目标类
 
 `mkIntoClassUsers` — 获取主机中属于目标类的用户列表：
+
 - 签名：`(className: string) → ({ host }) → [{ host, user }]`
 
----
+______________________________________________________________________
 
 ## 关联函数
 

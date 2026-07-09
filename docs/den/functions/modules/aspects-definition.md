@@ -6,7 +6,7 @@
 
 Den 的方面定义基础设施自动管理 `den.aspects`、`den.default` 和 `den.batteries` 选项的类型和注入。本页涵盖框架如何自动创建方面条目、注入默认方面以及定义电池选项类型。
 
----
+______________________________________________________________________
 
 ## aspectsType — 方面选项类型
 
@@ -36,7 +36,7 @@ options.den.aspects = lib.mkOption {
 - `.provides`（`.` 的同义词）：子方面命名空间
 - 在 `deploy` 环境下使用避免重复
 
----
+______________________________________________________________________
 
 ## 自动创建 den.aspects 条目
 
@@ -70,7 +70,7 @@ den.hosts."x86_64-linux".igloo = {
 - 用户名匹配：`den.aspects.tux` → `host.users.tux`
 - 家庭名匹配：`den.aspects.myHome` → `den.homes.<system>.myHome`
 
----
+______________________________________________________________________
 
 ## den.default 注入
 
@@ -111,7 +111,7 @@ den.default.includes = [
 ];
 ```
 
----
+______________________________________________________________________
 
 ## den.batteries 选项类型
 
@@ -149,11 +149,12 @@ options.den.batteries = lib.mkOption {
 ### 电池类型
 
 电池可以是：
-1. **简单的 attrset**：`{ name, description, includes }`
-2. **参数化函数**：`{ __functor = _self: (arg: { ... }); }`（如 `den.batteries.unfree ["pkg"]`）
-3. **方面注入**：直接方面值（如 `den.batteries.primary-user`）
 
----
+1. **简单的 attrset**：`{ name, description, includes }`
+1. **参数化函数**：`{ __functor = _self: (arg: { ... }); }`（如 `den.batteries.unfree ["pkg"]`）
+1. **方面注入**：直接方面值（如 `den.batteries.primary-user`）
+
+______________________________________________________________________
 
 ## 完整流程
 
@@ -167,7 +168,7 @@ options.den.batteries = lib.mkOption {
   → 类模块输出
 ```
 
----
+______________________________________________________________________
 
 ## 关联
 

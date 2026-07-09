@@ -9,6 +9,7 @@
 用于创建自定义类的转发（forwarding）方面。当需要将某个类中的所有内容转发到另一个类的指定路径时，使用 `den.batteries.forward`。
 
 典型应用场景：
+
 - `homeManager` 类（官方实现）
 - `os-user` 类的 `user` → `users.users.<name>` 转发
 - 自定义用户环境类（如 `nix-maid`、`hjem`）
@@ -139,14 +140,16 @@ meta.__forward = {
 ```
 
 Den 的方面解析器在遇到 `meta.__forward` 时会根据这些元数据执行：
+
 1. 从 `fromClass` 读取源方面
-2. 调用 `guardFn` 检查守卫条件
-3. 使用 `adaptArgsFn` 调整参数
-4. 将源模块通过 `intoPath` 写入目标类
+1. 调用 `guardFn` 检查守卫条件
+1. 使用 `adaptArgsFn` 调整参数
+1. 将源模块通过 `intoPath` 写入目标类
 
 ### 关于 `guard` 的设计
 
 `guard` 参数可以是：
+
 - **函数**：接收 `{ options, config, ... }`，返回 `bool`
 - **null**：不设守卫
 

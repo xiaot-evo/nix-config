@@ -6,7 +6,7 @@
 
 将结构化跟踪条目转换为格式无关的图中间表示（IR）。IR 包含节点、边、实体类型和实体类型转换信息。所有视觉相关的内容（主题、颜色、布局）在渲染器中处理，不在 IR 中。
 
----
+______________________________________________________________________
 
 ## graph.build — 从条目构建图 IR
 
@@ -52,11 +52,13 @@ g = diag.graph.build {
 **作用域限定**：当同一方面名在不同实体作用域中出现时，使用 `fullName|entityInstance` 作为去重键。跨作用域节点通过 `@entityInstance` 后缀在 ID 中区分。
 
 **节点形状分类**：
+
 - `rect`（矩形）— 普通方面
 - `hexagon`（六边形）— 参数化方面
 - `trapezoid`（梯形）— 提供者方面
 
 **节点样式分类**：
+
 - `default`— 默认
 - `replaced`— 被替换
 - `excluded`— 被排除
@@ -64,7 +66,7 @@ g = diag.graph.build {
 - `policy`— 策略调度点
 - `terminal`— 解析产物（叶子节点）
 
----
+______________________________________________________________________
 
 ## graph.ofHost — 从主机构建图
 
@@ -76,12 +78,13 @@ g = builtins.removeAttrs (diag.hostContext { inherit host; }) [ "rootAspect" "pa
 ```
 
 简便调用，自动封装：
-1. 调用 `resolveEntity "host" { inherit host; }`
-2. 调用 `captureWithPathsWith` 捕获所有类及路径集
-3. 调用 `buildGraph` 构建 IR
-4. 去除辅助字段后返回纯图
 
----
+1. 调用 `resolveEntity "host" { inherit host; }`
+1. 调用 `captureWithPathsWith` 捕获所有类及路径集
+1. 调用 `buildGraph` 构建 IR
+1. 去除辅助字段后返回纯图
+
+______________________________________________________________________
 
 ## graph.ofNamespace — 命名空间图
 
@@ -93,7 +96,7 @@ g = builtins.removeAttrs (diag.hostContext { inherit host; }) [ "rootAspect" "pa
 g = diag.graph.ofNamespace namespaceAspect;
 ```
 
----
+______________________________________________________________________
 
 ## graph.filterUserAspects — 过滤用户方面
 
@@ -103,7 +106,7 @@ g = diag.graph.ofNamespace namespaceAspect;
 filtered = diag.graph.filterUserAspects graph;
 ```
 
----
+______________________________________________________________________
 
 ## 节点数据结构
 
@@ -134,7 +137,7 @@ filtered = diag.graph.filterUserAspects graph;
 }
 ```
 
----
+______________________________________________________________________
 
 ## 边数据结构
 
@@ -147,7 +150,7 @@ filtered = diag.graph.filterUserAspects graph;
 }
 ```
 
----
+______________________________________________________________________
 
 ## 关联
 

@@ -7,6 +7,7 @@
 **惰性兼容垫片（inert compat shim）** — 跨实体路由（`to-users`、`to-hosts`、命名目标）已内置到 `emitAspectPolicies` 中。此电池保留下仅为避免已有配置中引用了 `den.batteries.mutual-provider` 的配置出错。
 
 关键行为：
+
 - 求值后产生一个不产生任何效果的惰性方面
 - 不需要显式启用（包含它等于什么都没做）
 - 真正实现双向配置提供的方式：直接使用 `den.lib.policy.include` 在策略中定义
@@ -86,5 +87,5 @@
 
 ## 关联文档
 
-- [核心概念](../../02-核心概念.md) — "前置方面（Forward）"一节描述双向配置（参见 `policies.<target>` 与 `den.lib.policy.include`）
-- [方面配置指南](../../04-方面配置指南.md) — provides 与策略机制的详细说明
+- [核心概念](../../02-%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5.md) — "前置方面（Forward）"一节描述双向配置（参见 `policies.<target>` 与 `den.lib.policy.include`）
+- [方面配置指南](../../04-%E6%96%B9%E9%9D%A2%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97.md) — provides 与策略机制的详细说明

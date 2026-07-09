@@ -21,7 +21,7 @@ trace capture → graph IR → filter → render
                                     c4.nix
 ```
 
----
+______________________________________________________________________
 
 ## 架构说明
 
@@ -41,7 +41,7 @@ trace capture → graph IR → filter → render
 
 将图 IR 输出为特定格式的字符串。每个渲染器接收主题记录和可选的渲染配置。
 
----
+______________________________________________________________________
 
 ## 快速入门
 
@@ -70,7 +70,7 @@ g = diag.graph.build {
 };
 ```
 
----
+______________________________________________________________________
 
 ## 渲染器速查表
 
@@ -104,7 +104,7 @@ g = diag.graph.build {
 | `toPipeSequenceMermaid` | Mermaid | 是 | 管道序列图 |
 | `toFleetDagMermaid` | Mermaid | 是 | 舰队 DAG 图 |
 
----
+______________________________________________________________________
 
 ## 过滤器速查表
 
@@ -133,7 +133,7 @@ g = diag.graph.build {
 | `simplified` | `filters/default.nix` | 简化的折叠 |
 | `fanMetrics` | `filters/default.nix` | 扇入/扇出指标 |
 
----
+______________________________________________________________________
 
 ## 主题系统
 
@@ -151,7 +151,7 @@ theme = diag.themeFromBase16 { scheme = "catppuccin-mocha"; };
 rendered = diag.toMermaidWith { theme = diag.defaultTheme; } graph;
 ```
 
----
+______________________________________________________________________
 
 ## 关联
 

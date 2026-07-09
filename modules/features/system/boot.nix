@@ -32,10 +32,20 @@
             plymouth = {
               enable = true;
               theme = "bgrt";
-              logo = builtins.fetchurl {
-                url = "https://brand.nixos.org/logos/nixos-logo-default-gradient-white-regular-horizontal-recommended.svg";
-                sha256 = "16hrday7y2jp1csj2akwyj8c94b0wn30lawfnazrp47abal0696c";
-              };
+              logo =
+                pkgs.runCommand "nixos-logo.png"
+                  {
+                    nativeBuildInputs = [ pkgs.librsvg ];
+                  }
+                  ''
+                    rsvg-convert -w 640 \
+                      ${
+                        builtins.fetchurl {
+                          url = "https://brand.nixos.org/logos/nixos-logo-default-gradient-white-regular-horizontal-recommended.svg";
+                          sha256 = "16hrday7y2jp1csj2akwyj8c94b0wn30lawfnazrp47abal0696c";
+                        }
+                      } > "$out"
+                  '';
             };
 
             consoleLogLevel = 3;
@@ -62,7 +72,6 @@
                 };
               in
               pkgs.cachyosKernels.linuxPackages-cachyos-bore-x86_64-v3;
-            # kernelPackages = pkgs.linuxPackages_latest;
           };
         };
     };

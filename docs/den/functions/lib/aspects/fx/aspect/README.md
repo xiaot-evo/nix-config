@@ -8,7 +8,7 @@
 
 与处理程序（handler）不同，这里的函数是纯数据变换——它们不直接操作管道状态，而是返回效果序列供处理程序发送。
 
----
+______________________________________________________________________
 
 ## 文件一览
 
@@ -19,11 +19,12 @@
 | `provide.nix` | 154 | `emitAspectPolicies` | 策略创建与自提供 |
 | `normalize.nix` | 116 | `wrapChild`, `isMeaningfulName` | 子节点规范化 |
 
----
+______________________________________________________________________
 
 ## `default.nix`
 
 ### 签名
+
 ```nix
 { lib, den }:
 { ctxFromHandlers }:
@@ -35,9 +36,11 @@
 ```
 
 ### 用途
+
 重新导出 `children.nix` 和 `provide.nix` 的公开函数。接收 `ctxFromHandlers` —— 一个从 `__scopeHandlers` attrset 构建上下文记录的函数，用于为 `emitAspectPolicies` 提供作用域上下文。
 
 ### 使用示例
+
 ```nix
 # 在 compile-static.nix 中使用
 inherit (import ../aspect { inherit lib den; } { inherit ctxFromHandlers; })
@@ -45,16 +48,18 @@ inherit (import ../aspect { inherit lib den; } { inherit ctxFromHandlers; })
   ;
 ```
 
----
+______________________________________________________________________
 
 ## `children.nix`
 
 ### 概述
+
 `emitIncludes` 遍历一个方面的 `includes` 列表，将每个子节点发送到 `resolve` 效果链中。`registerConstraints` 处理 `excludes` 和 `meta.handleWith`，向约束注册表注册约束。
 
 ### `emitIncludes`
 
 #### 签名
+
 ```nix
 emitIncludes : {
   __parentScopeHandlers? :: AttrSet,
@@ -107,6 +112,7 @@ dedupAndDispatch = child:
 ```
 
 #### 示例
+
 ```nix
 # 使用方式（来自 resolve-children.nix 或 emit-include handler）
 emitIncludes {
@@ -115,16 +121,18 @@ emitIncludes {
 } (aspect.includes or [ ])
 ```
 
----
+______________________________________________________________________
 
 ### `registerConstraints`
 
 #### 签名
+
 ```nix
 registerConstraints : Aspect -> Effects
 ```
 
 #### 用途
+
 处理 `aspect.meta.handleWith`（解析处理程序列表）和 `aspect.excludes`（便捷排除），归一化为标准约束记录，发送 `register-constraint` 效果。
 
 #### 约束归一化流程
@@ -148,29 +156,33 @@ excludeIdentity = ref:
 ```
 
 #### 示例
+
 ```nix
 # 来自 compile-static.nix
 registerConstraints tagged
 ```
 
----
+______________________________________________________________________
 
 ## `provide.nix`
 
 ### 概述
+
 `emitAspectPolicies` 从一个方面创建跨实体策略和自提供包含。将 `aspect.provides` 条目转换为 `register-aspect-policy` 效果（跨实体）或 `emit-include` 效果（自提供）。
 
 ### `emitAspectPolicies`
 
 #### 签名
+
 ```nix
 emitAspectPolicies : Aspect -> Effects
 ```
 
 #### 用途
+
 1. 遍历 `aspect.provides` 中的键
-2. 对于非方面名称键 → 创建跨实体策略（`to-hosts`、`to-users` 或按实体名称匹配）
-3. 对于方面名称键 → 创建自提供包含
+1. 对于非方面名称键 → 创建跨实体策略（`to-hosts`、`to-users` 或按实体名称匹配）
+1. 对于方面名称键 → 创建自提供包含
 
 #### 内部函数
 
@@ -214,6 +226,7 @@ else
 ```
 
 #### 示例
+
 ```nix
 # 方面定义
 den.aspects.example = {
@@ -234,16 +247,18 @@ den.aspects.example = {
 # - emit-include example/example（自提供包含）
 ```
 
----
+______________________________________________________________________
 
 ## `normalize.nix`
 
 ### 概述
+
 `wrapChild` 将原始包含输入强制转换为规范方面 attrset。处理多种输入格式：模块函数、`__functor` 子节点、裸函数、`__contentValues` 包装器。
 
 ### `wrapChild`
 
 #### 签名
+
 ```nix
 wrapChild : Any -> Aspect
 ```
@@ -262,6 +277,7 @@ wrapChild : Any -> Aspect
 **`normalizeModuleFn`**：通过 `aspectType.merge` 将 NixOS 模块函数合并为规范方面 attrset。
 
 **`wrapFunctorChild`**：处理 `__functor` 子节点：
+
 - 子模块函数 → 通过 `normalizeModuleFn`
 - 零参 functor 返回方面形状（有 `name` 和 `includes`） → 立即解析
 - 其他 → 包装为 `{ __fn, __args, includes }`
@@ -269,20 +285,23 @@ wrapChild : Any -> Aspect
 **`wrapBareFn`**：裸函数 → `{ name, meta, __fn, __args }`
 
 **`__contentValues` 处理**：当子节点有 `__contentValues` 但没有 `name` 时：
+
 - 从 `__provider` 推导名称（`last provider`）
 - 提取参数化函数（有非 `config`/`options` 参数的函数）移入 `includes`
 
 ### `isMeaningfulName`
 
 #### 签名
+
 ```nix
 isMeaningfulName : String -> Bool
 ```
 
 #### 用途
+
 判断一个名字是否"有意义"（不是 `<anon>`、`<includeIf>` 等自动生成的合成名称）。有意义的名称用于去重键生成，合成名称匿名总是通过。
 
----
+______________________________________________________________________
 
 ## 函数间交互
 
@@ -305,7 +324,7 @@ compile-static / compile-conditional / emit-include
           └── 发送 register-aspect-policy / emit-include 效果
 ```
 
----
+______________________________________________________________________
 
 ## 关联函数
 

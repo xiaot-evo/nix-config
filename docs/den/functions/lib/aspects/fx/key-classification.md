@@ -6,11 +6,12 @@
 
 键分类系统决定了方面 attrset 中每个非结构键的去向。当方面通过管道编译时，其键被分为三个类别：类键、嵌套键和管道键。这个分类决定了方面内容如何传递给下游消费者。
 
----
+______________________________________________________________________
 
 ## `classifyKeys`
 
 ### 签名
+
 ```nix
 classifyKeys : targetClass :: StringOrNull -> Aspect -> {
   classKeys :: [String],
@@ -21,6 +22,7 @@ classifyKeys : targetClass :: StringOrNull -> Aspect -> {
 ```
 
 ### 用途
+
 将方面 attrset 中的键分为三类。这是管道中 `classify` 效果的核心逻辑。
 
 ### 分类算法
@@ -35,10 +37,12 @@ classifyKeys : targetClass :: StringOrNull -> Aspect -> {
 ```
 
 ### 注册表
+
 - **`classRegistry`**：`den.classes or {}`——注册的类名（如 `nixos`、`darwin`、`homeManager`）
 - **`pipeRegistry`**：`den.quirks or {}`——注册的管道键（弯曲输出桶）
 
 ### 示例
+
 ```nix
 # 给定 den.classes = { nixos = {...}; homeManager = {...}; }
 # den.quirks = { myPipe = {...}; }
@@ -54,11 +58,12 @@ classifyKeys "nixos" {
 }
 ```
 
----
+______________________________________________________________________
 
 ## `structuralKeysSet`
 
 ### 定义
+
 ```nix
 structuralKeysSet = lib.genAttrs [
   "name" "description" "meta" "includes" "excludes"
@@ -73,11 +78,12 @@ structuralKeysSet = lib.genAttrs [
 
 这些键由管道本身处理，永远不会被分派为类或嵌套键。
 
----
+______________________________________________________________________
 
 ## 嵌套键检测
 
 ### `looksLikeClassContent`
+
 ```nix
 looksLikeClassContent = v:
   lib.isFunction v
@@ -90,6 +96,7 @@ looksLikeClassContent = v:
 确定一个值是否"像类内容"（模块或配置 attrset）而不是纯数据。拒绝恰好位于注册类名下的扁平标量 attrset。
 
 ### `hasRecognizedSubKeys`
+
 ```nix
 hasRecognizedSubKeys = depth: val:
   builtins.isAttrs val
@@ -103,6 +110,7 @@ hasRecognizedSubKeys = depth: val:
 递归检查（深度最多 3 层）值是否包含任何注册的类键作为子键。
 
 ### `isNestedKey`
+
 ```nix
 isNestedKey = aspect: k:
   hasRecognizedSubKeys 3 (
@@ -112,7 +120,7 @@ isNestedKey = aspect: k:
 
 如果键的值（在通过 `__contentValues` 展开后）包含深度最多 3 层的注册类子键，则该键被视为嵌套键。
 
----
+______________________________________________________________________
 
 ## 分类输出结构
 
@@ -125,7 +133,7 @@ isNestedKey = aspect: k:
 }
 ```
 
----
+______________________________________________________________________
 
 ## 键分类如何决定方面内容的去向
 
@@ -151,7 +159,7 @@ isNestedKey = aspect: k:
               └── 未注册类键 ──→ 作为类键发射（保守做法）
 ```
 
----
+______________________________________________________________________
 
 ## `pipeRegistry`
 
@@ -161,7 +169,7 @@ isNestedKey = aspect: k:
 pipeRegistry = den.quirks or { };
 ```
 
----
+______________________________________________________________________
 
 ## 与 provides 转发的交互
 
@@ -173,10 +181,11 @@ allKeys = builtins.filter (k: !(structuralKeysSet ? ${k}) && !(forwardedSet ? ${
 ```
 
 这确保：
+
 - `aspect.docker`（在顶层）→ 跳过分类（已通过 `provides.docker` 处理）
 - `aspect.nixos`（在顶层）→ 分类为类键 → 发射
 
----
+______________________________________________________________________
 
 ## 关联函数
 
@@ -188,5 +197,5 @@ allKeys = builtins.filter (k: !(structuralKeysSet ? ${k}) && !(forwardedSet ? ${
 
 ## 关联文档
 
-- [方面配置指南](../../../04-方面配置指南.md) — 类键、嵌套键、管道键的概念
-- [管道与 Quirks](../../../08-管道与quirks.md) — 管道键（pipeKeys）的分类和应用
+- [方面配置指南](../../../04-%E6%96%B9%E9%9D%A2%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97.md) — 类键、嵌套键、管道键的概念
+- [管道与 Quirks](../../../08-%E7%AE%A1%E9%81%93%E4%B8%8Equirks.md) — 管道键（pipeKeys）的分类和应用

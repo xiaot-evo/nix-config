@@ -12,7 +12,7 @@
 
 | 用户 | Shell | 说明 |
 |---|---|---|
-| `xiaot_evo` | bash | acer-swift 日常用户 |
+| `xiaot_evo` | fish | acer-swift 日常用户 |
 
 ## 快速开始
 
@@ -39,23 +39,20 @@ nix flake update den
 │   │       ├── acer-swift.nix              # 主配置（aspect 声明）
 │   │       ├── hardware.nix                # 硬件（btrfs 子卷、AMD CPU）
 │   │       └── xiaot_evo.nix               # xiaot_evo 用户 aspect
-│   ├── features/                           # 可复用功能模块，按领域分类
-│   │   ├── apps/                           # 用户应用
-│   │   ├── desktop/                        # 桌面环境
-│   │   ├── dev/                            # 开发环境
-│   │   ├── services/                       # 后台服务
-│   │   ├── system/                         # 系统级配置
-│   │   ├── preference/                     # （空）
-│   │   └── security/                       # （空）
-│   └── packages/                           # 自定义包声明（perSystem）
-│       ├── fish.nix                        # fish shell（含 starship init）
-│       ├── git.nix                         # git（含用户配置）
-│       ├── nh.nix                          # nh 构建支持
-│       ├── opencode.nix                    # OpenCode 自配置（含 nixos MCP server）
-│       └── starship.nix                    # starship prompt
+│   └── features/                           # 可复用功能模块，按领域分类
+│       ├── apps/                           # 用户应用
+│       ├── desktop/                        # 桌面环境
+│       ├── dev/                            # 开发环境
+│       ├── services/                       # 后台服务
+│       ├── system/                         # 系统级配置
+│       ├── preference/                     # 偏好设置（cursor-theme、icon-theme）
+│       └── security/                       # 安全（gnome-keyring）
 ├── .github/workflows/test.yml              # CI: nix flake check
-├── AGENTS.md                               # AI 助手指令
-└── docs/den/                               # Den 框架文档镜像
+├── AGENTS.md                               # AI 助手指令（单一起源参考）
+├── AGENTS_PROJECT.md                       # 项目专属信息
+├── README.md                               # 本文件
+├── docs/
+│   ├── den/                                # Den 框架文档
 ```
 
 ## 主机详情
@@ -88,6 +85,8 @@ nix flake update den
 | desktop | `wm.niri` | 滚动窗口管理器（niri） |
 | desktop | `shell.dms-shell` | DankMaterialShell 桌面 shell |
 | desktop | `budgie` | Budgie 桌面环境 |
+| dev | `editors.opencode` | OpenCode 编辑器（含 nixos MCP server） |
+| dev | `editors.pi-coding-agent` | Pi 编码 agent（13 插件 + 3 扩展 + 20 技能） |
 | dev | `editors.zed-editor` | Zed 编辑器（含 keymap/languages/settings） |
 | dev | `editors.helix` | Helix 编辑器（含 languages/settings） |
 | services | `dae` | 代理（dae + daed 面板） |
@@ -97,6 +96,9 @@ nix flake update den
 | services | `printing` | CUPS 打印支持 |
 | services | `kdeconnect` | KDE Connect 设备互联 |
 | services | `powermanagement` | 电源管理 |
+| preference | `cursor-theme` | 光标主题（Catppuccin Mocha）|
+| preference | `icon-theme` | 图标主题 |
+| security | `gnome-keyring` | GNOME Keyring 密钥管理 |
 | system | `boot` | systemd-boot、Plymouth、内核参数（含 zswap） |
 | system | `hardware.nvidia` | NVIDIA Prime（Offload 模式） |
 | system | `hardware.nbfc-linux` | 笔记本风扇控制 |
@@ -106,19 +108,11 @@ nix flake update den
 
 ### 未实现占位
 
-`preference/` 和 `security/` 目录为空，`desktop/wallpaper/` 有 `.gitkeep` 占位。
+`desktop/wallpaper/` 有 `.gitkeep` 占位。
 
 ## 自定义包
 
-`modules/packages/` 下的 `.nix` 文件通过 `perSystem` 声明自定义包：
-
-| 包名 | 用途 |
-|---|---|
-| `opencode` | 封装 OpenCode，集成 nixos MCP server |
-| `fish` | fish shell + starship + devenv 钩子 |
-| `starship` | starship prompt（plain-text-symbols 预设） |
-| `git` | git 用户配置（name/email） |
-| `nh` | nh 构建支持（导出主机和 home app） |
+Pi 通过 `llm-agents.nix`（`github:numtide/llm-agents.nix`）提供，其他包通过 Nixpkgs 直接安装。
 
 ## CI
 
@@ -130,5 +124,4 @@ CI 会自动创建 `modules/ci-runtime.nix`，可通过 `_module.args.CI` 条件
 
 - 无 formatter / linter / pre-commit / .envrc 配置
 - desktop/wallpaper/ 待实现
-- preference/ 和 security/ 模块待实现
-- dev/languages/ 和 dev/tools/ 模块待实现
+- dev/languages/ 和 dev/tools/ 模块待实现（当前无内容）

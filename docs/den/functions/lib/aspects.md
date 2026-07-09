@@ -8,7 +8,7 @@
 
 本模块提供了将方面树解析为模块的核心函数，以及身份路径查询工具。
 
----
+______________________________________________________________________
 
 ## den.lib.aspects.resolve
 
@@ -44,7 +44,7 @@ den.lib.aspects.resolve "nixos" myAspect
 
 内部调用 `normalizeRoot` 统一不同形式的输入（纯函数、functor、attrset），然后通过 `fx.pipeline.fxResolve` 执行完整的管道流程。
 
----
+______________________________________________________________________
 
 ## den.lib.aspects.resolveImports
 
@@ -81,7 +81,7 @@ den.lib.aspects.resolveImports "homeManager" hostTree
 
 与 `resolve` 共享相同的规范化逻辑，但使用 `fx.pipeline.fxResolveImports`，在管道中跳过实体实例化步骤。
 
----
+______________________________________________________________________
 
 ## den.lib.aspects.resolveWithState
 
@@ -98,6 +98,7 @@ den.lib.aspects.resolveImports "homeManager" hostTree
 ### 返回值说明
 
 返回包含完整管道结果和状态的 attrset：
+
 - `value` — 管道最终解析结果
 - `state` — 管道内部状态（pathSet 等）
 
@@ -117,7 +118,7 @@ in
 
 使用 `fx.pipeline.fxFullResolve`，返回 `{ value, state }` 结构（原始管道处理结果），不丢弃状态信息。
 
----
+______________________________________________________________________
 
 ## den.lib.aspects.normalizeRoot
 
@@ -134,6 +135,7 @@ in
 ### 返回值说明
 
 返回规范化的方面 attrset：
+
 - 纯函数 → `{ __fn, __args, name, meta }`
 - 模块函数（带 `lib`/`config`/`options` 参数）→ 通过类型合并转为标准方面
 - Functor attrset → 提取 `__functor`，保留 `includes`、`__scopeHandlers`
@@ -155,7 +157,7 @@ den.lib.aspects.normalizeRoot { nixos.hostName = "myhost"; }
 
 通过鸭子类型检测输入形状：检查 `isFunction`、`__functor`、`isSubmoduleFn`，然后路由到不同的规范化路径。
 
----
+______________________________________________________________________
 
 ## den.lib.aspects.hasAspectIn
 
@@ -190,7 +192,7 @@ den.lib.aspects.hasAspectIn {
 
 通过 `collectPathSet` 解析管道状态获取 `pathSet`，然后检查指定引用的身份键是否在集合中。
 
----
+______________________________________________________________________
 
 ## den.lib.aspects.collectPathSet
 
@@ -222,7 +224,7 @@ den.lib.aspects.collectPathSet {
 
 执行完整管道解析（`fxFullResolve`），从返回的 `state.pathSet` 中提取身份路径。
 
----
+______________________________________________________________________
 
 ## den.lib.aspects.mkEntityHasAspect
 
@@ -241,6 +243,7 @@ den.lib.aspects.collectPathSet {
 ### 返回值说明
 
 返回一个带 `__functor` 的函数对象，具有以下方法：
+
 - `__functor`: `(ref) → bool` — 在主类上查询
 - `forClass`: `(class, ref) → bool` — 在指定类上查询
 - `forAnyClass`: `(ref) → bool` — 在任意注册类上查询
@@ -266,7 +269,7 @@ in
 
 为每个类预计算 `pathSet`，然后生成带有闭包的查询函数。
 
----
+______________________________________________________________________
 
 ## 关联函数
 

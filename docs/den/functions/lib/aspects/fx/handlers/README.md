@@ -8,7 +8,7 @@
 
 每个处理程序文件导出一个带有效果键的处理程序值。处理程序接收 `{ param, state }`，返回 `{ resume, state }`，其中 `resume` 是下一个效果计算，`state` 是更新后的管道状态。
 
----
+______________________________________________________________________
 
 ## 处理程序分组
 
@@ -30,7 +30,7 @@ effect =
   else "compile-static";
 ```
 
----
+______________________________________________________________________
 
 ### 方面编译（4 个）
 
@@ -49,7 +49,7 @@ effect =
 
 **compile-conditional** 处理 `meta.guard` 方面。评估守卫函数，如果通过则发射子方面，否则通过 `defer-conditional` 延迟。
 
----
+______________________________________________________________________
 
 ### 门控与去重（3 个）
 
@@ -70,7 +70,7 @@ fx.bind (fx.send "check-dedup" aspect) ({ isDuplicate, dedupKey }:
 
 `gateAndTag` 被 `compile-static` 和 `compile-parametric` 共用。如果 `param.gated` 为 `true`（如参数化重新进入时）则跳过门控。
 
----
+______________________________________________________________________
 
 ### 键分类与发射（3 个）
 
@@ -86,7 +86,7 @@ fx.bind (fx.send "check-dedup" aspect) ({ isDuplicate, dedupKey }:
 
 `class-collector` 通过 `scopedClassImports` 和 `scopedEmittedLocs` 将类模块条目收集到按作用域分区的状态中。通过 `loc`（`${class}@${baseIdentity}`）去重。
 
----
+______________________________________________________________________
 
 ### 包含与子节点（2 个）
 
@@ -108,7 +108,7 @@ chainWrap chainIdentity (resolveChildSequence aspect)
   → resolve-complete (record path)
 ```
 
----
+______________________________________________________________________
 
 ### 延迟执行（3 个）
 
@@ -120,7 +120,7 @@ chainWrap chainIdentity (resolveChildSequence aspect)
 
 当参数化方面的所需参数在作用域中不可用时，`bind` 发送 `defer` 效果。`scope-widened` 在上下文丰富后重新检查。
 
----
+______________________________________________________________________
 
 ### 约束与策略（5 个）
 
@@ -143,7 +143,7 @@ lookupEntries: 精确匹配 + 路径前缀匹配
 filterByScope: 全局约束或包含祖先链中的子树约束
 ```
 
----
+______________________________________________________________________
 
 ### 路由与提供（3 个）
 
@@ -157,7 +157,7 @@ filterByScope: 全局约束或包含祖先链中的子树约束
 
 `propagate-routes.nix` 在实体解析后将根作用域的复杂路由复制到子作用域（仅复制子作用域有对应 class 的路由）。
 
----
+______________________________________________________________________
 
 ### 实例化（1 个）
 
@@ -165,7 +165,7 @@ filterByScope: 全局约束或包含祖先链中的子树约束
 |------|--------|------|
 | `instantiate.nix` | `register-instantiate` | 实例化规格注册（后处理中的实体创建） |
 
----
+______________________________________________________________________
 
 ### 管道效果（1 个）
 
@@ -173,7 +173,7 @@ filterByScope: 全局约束或包含祖先链中的子树约束
 |------|--------|------|
 | `register-pipe-effect.nix` | `register-pipe-effect` | 管道效果注册（弯曲/quirks 条目收集） |
 
----
+______________________________________________________________________
 
 ### 作用域管理（4 个）
 
@@ -193,7 +193,7 @@ push-scope → resolve-entity → merge includes → resolve entity aspect
   → drain deferred → walkDeferred → propagate-routes → restore-scope
 ```
 
----
+______________________________________________________________________
 
 ### 绑定与链追踪（3 个）
 
@@ -207,7 +207,7 @@ push-scope → resolve-entity → merge includes → resolve entity aspect
 
 `chain.nix` 管理 `scopedIncludesChain`——包含祖先链，用于约束中的作用域判断（`subtree` 范围）。
 
----
+______________________________________________________________________
 
 ### 状态工具（1 个）
 
@@ -215,7 +215,7 @@ push-scope → resolve-entity → merge includes → resolve entity aspect
 |------|------|
 | `state-util.nix` | 共享状态变更辅助函数：`scopedAppend`、`scopedAppendMany`、`scopedMerge` |
 
----
+______________________________________________________________________
 
 ## 处理程序组装
 
@@ -238,7 +238,7 @@ defaultHandlers = { class, ctx, ... }:
   constantHandler ... // ... // constraintRegistryHandler // ...
 ```
 
----
+______________________________________________________________________
 
 ## 管道流程与处理程序交互
 
@@ -272,7 +272,7 @@ resolve
   → propagate-routes（路由传播）
 ```
 
----
+______________________________________________________________________
 
 ## 关联函数
 

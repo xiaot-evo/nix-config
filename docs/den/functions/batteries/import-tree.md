@@ -67,6 +67,7 @@ den.batteries.import-tree.provides.home  <root-path>  # 自动拼接 /<home.name
 ```
 
 **规则**：
+
 - 只导入 `_` 开头的目录（`lib.hasPrefix "_"`）
 - 目录名去掉 `_` 前缀即为类名
 - 每个 `_<class>` 目录下的所有 `.nix` 文件被 `inputs.import-tree` 递归导入
@@ -165,9 +166,9 @@ den.batteries.import-tree.__functor = _: root:
 执行流程：
 
 1. **扫描目录**：`builtins.readDir rootStr` 读取根目录下的所有条目
-2. **过滤 `_<class>` 目录**：`lib.filterAttrs` 只保留以 `_` 开头且为目录的条目
-3. **生成方面**：`lib.mapAttrs'` 将每个 `_nixos` → `nixos` 映射为一个 impor ts 条目
-4. **递归导入**：`inputs.import-tree "${rootStr}/${dirName}"` 使用 import-tree 工具递归导入所有 `.nix` 文件
+1. **过滤 `_<class>` 目录**：`lib.filterAttrs` 只保留以 `_` 开头且为目录的条目
+1. **生成方面**：`lib.mapAttrs'` 将每个 `_nixos` → `nixos` 映射为一个 impor ts 条目
+1. **递归导入**：`inputs.import-tree "${rootStr}/${dirName}"` 使用 import-tree 工具递归导入所有 `.nix` 文件
 
 ### `.provides` 上下文感知变体
 
@@ -185,8 +186,8 @@ den.batteries.import-tree.provides = {
 每个变体都是返回一个方面函数的函数：
 
 1. `provides.host` 拼接 `<root>/<host.name>`——因此 `hosts/` 目录下需要按 `host.name` 分目录
-2. `provides.user` 同理，按用户名称分目录
-3. `provides.home` 同理，按 home 名称分目录
+1. `provides.user` 同理，按用户名称分目录
+1. `provides.home` 同理，按 home 名称分目录
 
 这些方面函数被放入对应 schema 的 `includes` 中，Den 在解析方面时会提供 `host`/`user`/`home` 上下文。
 

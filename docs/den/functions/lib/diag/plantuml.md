@@ -6,7 +6,7 @@
 
 将格式无关的图 IR 渲染为 PlantUML 字符串。发出 `skinparam` 指令以使输出的 SVG 与 Mermaid 和 DOT 使用相同的主题调色板。
 
----
+______________________________________________________________________
 
 ## toPlantUMLWith — 带主题配置的 PlantUML 渲染
 
@@ -24,7 +24,7 @@
 umlString = diag.toPlantUMLWith { inherit theme; } graph;
 ```
 
----
+______________________________________________________________________
 
 ## toPlantUML — 默认配置的 PlantUML 渲染
 
@@ -36,7 +36,7 @@ umlString = diag.toPlantUMLWith { inherit theme; } graph;
 umlString = diag.toPlantUML graph;
 ```
 
----
+______________________________________________________________________
 
 ## 输出特点
 
@@ -95,7 +95,7 @@ nodeLabel\n({ fnArgNames })
 
 PlantUML 将 `<` 和 `>` 解释为构造型标记，因此 `<anon>` 等标签被转义为 `&lt;anon&gt;`。
 
----
+______________________________________________________________________
 
 ## 样式细节
 
@@ -104,7 +104,7 @@ PlantUML 将 `<` 和 `>` 解释为构造型标记，因此 `<anon>` 等标签被
 - `skinparamFor` 工具函数生成 `skinparam` 指令块
 - 支持 `Rectangle`、`Hexagon`、`Card`、`Package`、`Note` 五种元素类型
 
----
+______________________________________________________________________
 
 ## 关联
 

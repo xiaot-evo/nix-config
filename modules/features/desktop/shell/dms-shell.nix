@@ -2,7 +2,16 @@
 {
   den.aspects.desktop.shell.dms-shell = {
     homeManager =
-      { lib, config, ... }:
+      {
+        lib,
+        config,
+        themePrefs,
+        ...
+      }:
+      let
+        # 从 theme.nix 的 quirk 获取统一主题配置
+        tp = if themePrefs != [ ] then builtins.head themePrefs else { };
+      in
       {
         imports = [
           inputs.dms.homeModules.dank-material-shell
@@ -11,72 +20,66 @@
         systemd.user.services.dms.Install = lib.mkForce {
           WantedBy = [ "niri.service" ];
         };
-        programs.dank-material-shell =
-          let
-            readjson = path: remove: lib.removeAttrs (builtins.fromJSON (lib.readFile path)) remove;
-          in
-          {
+        programs.dank-material-shell = {
+          enable = true;
+          # quickshell.package = inputs.quickshell.packages.${pkgs.hostPlatform.system}.default;
+
+          systemd = {
             enable = true;
-            # quickshell.package = inputs.quickshell.packages.${pkgs.hostPlatform.system}.default;
-
-            systemd = {
-              enable = true;
-              restartIfChanged = true;
-            };
-
-            # Core features
-            enableSystemMonitoring = true; # System monitoring widgets (dgop)
-            enableVPN = true; # VPN management widget
-            enableDynamicTheming = true; # Wallpaper-based theming (matugen)
-            enableAudioWavelength = true; # Audio visualizer (cava)
-            enableCalendarEvents = true; # Calendar integration (khal)
-            enableClipboardPaste = true; # Pasting items from the clipboard (wtype)
-
-            settings = readjson ./settings.json [
-              # "currentThemeName"
-              # "customThemeFile"
-              # "dockTransparency"
-              # "fontFamily"
-              # "popupTransparency"
-              # "theme"
-            ];
-            session = readjson ./session.json [
-              # "wallpaperPath"
-              # "wallpaperPathDark"
-              # "wallpaperPathLight"
-            ];
-            clipboardSettings = {
-              maxHistory = 25;
-              maxEntrySize = 5242880;
-              autoClearDays = 1;
-              clearAtStartup = true;
-              disabled = false;
-              disableHistory = false;
-              disablePersist = true;
-            };
-            # Auto-enabled when plugins have settings configured
-            managePluginSettings = true;
-            plugins = {
-              dankKDEConnect = {
-                enable = true;
-              };
-              dankGifSearch = {
-                enable = true;
-              };
-              dankLauncherKeys = {
-                enable = true;
-              };
-              dankStickerSearch = {
-                enable = true;
-              };
-              # somePlugin = {
-              #   enable = true;
-              #   settings = {
-              #     # Your plugin settings here
-              #   };
-              # };
-            };
+            restartIfChanged = true;
           };
+
+          # Core features
+          enableSystemMonitoring = true; # System monitoring widgets (dgop)
+          enableVPN = true; # VPN management widget
+          enableDynamicTheming = true; # Wallpaper-based theming (matugen)
+          enableAudioWavelength = true; # Audio visualizer (cava)
+          enableCalendarEvents = true; # Calendar integration (khal)
+          enableClipboardPaste = true; # Pasting items from the clipboard (wtype)
+
+          settings = lib.recursiveUpdate (builtins.fromJSON (lib.readFile ./settings.json)) {
+            # 全部从 theme.nix 的 quirk 引用，保持单一配置源
+            iconTheme = tp.iconTheme or "WhiteSur-light";
+            cursorSettings = {
+              size = tp.cursorSize or 24;
+              theme = tp.cursorTheme or "Bibata-Modern-Classic";
+            };
+            fontFamily = tp.fontFamily or "LXGW WenKai";
+            monoFontFamily = tp.monoFontFamily or "Maple Mono NF CN";
+          };
+          session = builtins.fromJSON (lib.readFile ./session.json);
+          clipboardSettings = {
+            maxHistory = 25;
+            maxEntrySize = 5242880;
+            autoClearDays = 1;
+            clearAtStartup = true;
+            disabled = false;
+            disableHistory = false;
+            disablePersist = true;
+          };
+          # Auto-enabled when plugins have settings configured
+          managePluginSettings = true;
+          plugins = {
+            dankKDEConnect = {
+              enable = true;
+            };
+            dankGifSearch = {
+              enable = true;
+            };
+            dankLauncherKeys = {
+              enable = true;
+            };
+            dankStickerSearch = {
+              enable = true;
+            };
+            # somePlugin = {
+            #   enable = true;
+            #   settings = {
+            #     # Your plugin settings here
+            #   };
+            # };
+          };
+        };
         wayland.windowManager.niri.settings = {
           include = [
             { _args = [ "dms/alttab.kdl" ]; }

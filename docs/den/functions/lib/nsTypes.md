@@ -6,11 +6,12 @@
 
 命名空间类型定义。定义了 `namespaceType`——`den.ful` 命名空间选项声明的类型。该类型创建了一个包含 `schema`（每种实体类型的自由形式延迟模块）、`classes`（导入时合并到 `den.classes` 的类声明）和自由形式方面条目的子模块结构。
 
----
+______________________________________________________________________
 
 ## `namespaceType`
 
 ### 签名
+
 ```nix
 namespaceType :: SubmoduleType
 ```
@@ -81,15 +82,15 @@ options.den.ful = lib.mkOption {
 ### 实现简析
 
 1. 使用 `lib.types.submodule` 创建子模块类型
-2. `schema` 选项使用 `freeformType = lib.types.lazyAttrsOf lib.types.deferredModule`——任何未声明的键都被视为延迟模块定义
-3. `classes` 选项使用 `lib.types.lazyAttrsOf lib.types.raw`——接受任意 attrset 值
-4. 自由形式类型通过 `mkAspectsType` 生成，`providerPrefix = [ name ]` 确保方面提供者路径以命名空间名称为前缀
+1. `schema` 选项使用 `freeformType = lib.types.lazyAttrsOf lib.types.deferredModule`——任何未声明的键都被视为延迟模块定义
+1. `classes` 选项使用 `lib.types.lazyAttrsOf lib.types.raw`——接受任意 attrset 值
+1. 自由形式类型通过 `mkAspectsType` 生成，`providerPrefix = [ name ]` 确保方面提供者路径以命名空间名称为前缀
 
 ### 为什么 schema 使用 deferredModule？
 
 `schema` 选项存储每种实体类型的模块定义。使用 `deferredModule` 而不是 `raw` 允许 schema 条目参与模块系统的类型检查和合并，同时保持惰性（仅在需要时评估）。
 
----
+______________________________________________________________________
 
 ## 关联函数
 

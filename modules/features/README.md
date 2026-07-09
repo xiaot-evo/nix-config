@@ -41,13 +41,13 @@ security/               安全
 
 Aspect 名 = 文件路径，点号分隔：
 
-| 路径                                  | Aspect                                     |
+| 路径 | Aspect |
 | ------------------------------------- | ------------------------------------------ |
-| `dev/editors/zed-editor.nix`          | `den.aspects.dev.editors.zed-editor`       |
-| `desktop/wm/niri.nix`                 | `den.aspects.desktop.wm.niri`              |
-| `system/hardware/nvidia.nix`          | `den.aspects.system.hardware.nvidia`       |
-| `apps/terminals/ghostty.nix`          | `den.aspects.apps.terminals.ghostty`       |
-| `apps/browsers/zen-browser.nix`       | `den.aspects.apps.browsers.zen-browser`    |
+| `dev/editors/zed-editor.nix` | `den.aspects.dev.editors.zed-editor` |
+| `desktop/wm/niri.nix` | `den.aspects.desktop.wm.niri` |
+| `system/hardware/nvidia.nix` | `den.aspects.system.hardware.nvidia` |
+| `apps/terminals/ghostty.nix` | `den.aspects.apps.terminals.ghostty` |
+| `apps/browsers/zen-browser.nix` | `den.aspects.apps.browsers.zen-browser` |
 
 ## Usage
 

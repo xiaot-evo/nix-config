@@ -50,7 +50,9 @@
   "pinnedApps": [],
   "barPinnedApps": [],
   "dockLauncherPosition": 0,
-  "hiddenTrayIds": ["KDE Connect 指示器::KDE Connect"],
+  "hiddenTrayIds": [
+    "KDE Connect 指示器::KDE Connect"
+  ],
   "trayItemOrder": [],
   "recentColors": [],
   "showThirdPartyPlugins": true,

@@ -18,11 +18,12 @@
 ## 返回值说明
 
 返回一个 NixOS 模块，该模块：
+
 1. 导入源模块（将外部 denful 数据注入 `config.den.ful.${name}`）
-2. 创建别名选项（`${name}` → `den.ful.${name}`）
-3. 如果 `sources` 中包含 `true`，将本地命名空间输出到 `flake.denful.${name}`
-4. 合并外部类的注册（`den.classes`）
-5. 将 `${name}` 注入 `_module.args` 以便在其他模块中直接使用
+1. 创建别名选项（`${name}` → `den.ful.${name}`）
+1. 如果 `sources` 中包含 `true`，将本地命名空间输出到 `flake.denful.${name}`
+1. 合并外部类的注册（`den.classes`）
+1. 将 `${name}` 注入 `_module.args` 以便在其他模块中直接使用
 
 ## 使用示例
 
@@ -59,17 +60,17 @@
 ## 实现简析
 
 1. 从每个源输入中提取 `denful.${name}`（使用 `lib.getAttrFromPath`）
-2. 去除 `_` 和 `__functor` 别名（防止重导入时重复）
-3. 创建别名选项模块（`${name}` → `den.ful.${name}`）
-4. 如果 `sources` 包含 `true`，创建输出模块将本地内容写入 `flake.denful.${name}`
-5. 合并外部命名空间的 `classes` 注册到 `den.classes`
-6. 将 `${name}` 注入 `_module.args` 实现直接访问
+1. 去除 `_` 和 `__functor` 别名（防止重导入时重复）
+1. 创建别名选项模块（`${name}` → `den.ful.${name}`）
+1. 如果 `sources` 包含 `true`，创建输出模块将本地内容写入 `flake.denful.${name}`
+1. 合并外部命名空间的 `classes` 注册到 `den.classes`
+1. 将 `${name}` 注入 `_module.args` 实现直接访问
 
 ### 为什么需要去除别名？
 
 外部 denful 的 `_` → `provides` 别名在重导入时会导致重复的 `includes`（因为 `listOf` 选项会合并重复条目）。去除别名后只保留 `provides` 作为规范键。
 
----
+______________________________________________________________________
 
 ## 关联函数
 

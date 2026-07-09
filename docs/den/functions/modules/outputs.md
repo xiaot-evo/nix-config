@@ -6,7 +6,7 @@
 
 Den 的 flake 输出系统通过方面管道解析配置，生成 `nixosConfigurations`、`homeConfigurations`、`darwinConfigurations` 等 flake 输出。支持 flake-parts 和标准 flake 两种形式。
 
----
+______________________________________________________________________
 
 ## flake 输出生成
 
@@ -67,16 +67,17 @@ in {
    → 包含 nixosConfigurations, homeConfigurations 等
 ```
 
----
+______________________________________________________________________
 
 ## nixosConfigurations
 
 由 `den.policies.system-to-os-outputs` 策略生成。每个主机触发：
 
 1. `resolve.to "host" { inherit host; }`
-2. `den.lib.policy.instantiate host`
+1. `den.lib.policy.instantiate host`
 
 `instantiate` 根据 `host.class` 调用对应函数：
+
 - `nixos` → `inputs.nixpkgs.lib.nixosSystem { modules = [ host.mainModule ]; }`
 - `darwin` → `inputs.darwin.lib.darwinSystem { modules = [ host.mainModule ]; }`
 
@@ -87,14 +88,14 @@ host.intoAttr = ["nixosConfigurations" "igloo"];
 # → flake.nixosConfigurations.igloo = nixosSystem { ... }
 ```
 
----
+______________________________________________________________________
 
 ## homeConfigurations
 
 由 `den.policies.system-to-hm-outputs` 策略生成。每个家庭触发：
 
 1. `resolve.to "home" { inherit home; }`
-2. `den.lib.policy.instantiate home`
+1. `den.lib.policy.instantiate home`
 
 `instantiate` 调用 `inputs.home-manager.lib.homeManagerConfiguration`。
 
@@ -105,7 +106,7 @@ home.intoAttr = ["homeConfigurations" "alice@igloo"];
 # → flake.homeConfigurations."alice@igloo" = homeManagerConfiguration { ... }
 ```
 
----
+______________________________________________________________________
 
 ## darwinConfigurations
 
@@ -116,7 +117,7 @@ host.intoAttr = ["darwinConfigurations" "my-mac"];
 # → flake.darwinConfigurations.my-mac = darwinSystem { ... }
 ```
 
----
+______________________________________________________________________
 
 ## 自定义输出路径
 
@@ -131,7 +132,7 @@ den.hosts."x86_64-linux".igloo = {
 
 `intoAttr` 是一个路径列表，`flake.<path>.<name>` 指向生成的配置。
 
----
+______________________________________________________________________
 
 ## flake-parts 输出
 
@@ -150,7 +151,7 @@ den.hosts."x86_64-linux".igloo = {
 
 通过 `den.policies.system-to-flake-parts` 和 `den.policies.packages-to-flake-parts` 将 flake 输出路由到 flake-parts 范围。
 
----
+______________________________________________________________________
 
 ## 自定义输出示例
 
@@ -174,7 +175,7 @@ den.homes."x86_64-linux"."bob" = {
 };
 ```
 
----
+______________________________________________________________________
 
 ## 关联
 

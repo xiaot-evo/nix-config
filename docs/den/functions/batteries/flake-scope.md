@@ -7,6 +7,7 @@
 向方面（aspect）管道函数暴露 flake 顶层作用域：`lib`、`inputs` 和 `den`。这使得在方面管道的策略函数（如 policy resolve）中可以直接使用这些值，无需通过模块系统间接引用。
 
 关键行为：
+
 - 使用 `collisionPolicy = "class-wins"`（通过 `pipelineOnly` 实现），确保模块系统原生值优先
 - 通过 `den-flake-scope` 策略以 `resolve` 方式注入值
 - 推荐通过 `den.default.includes` 全局启用
@@ -64,4 +65,4 @@ den.batteries.flake-scope = {
 
 ## 关联文档
 
-- [内置电池](../../../05-内置电池.md) — flake-scope 电池的快速参考
+- [内置电池](../../../05-%E5%86%85%E7%BD%AE%E7%94%B5%E6%B1%A0.md) — flake-scope 电池的快速参考

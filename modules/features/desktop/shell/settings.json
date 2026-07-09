@@ -240,7 +240,7 @@
   "useAutoLocation": false,
   "weatherEnabled": true,
   "networkPreference": "wifi",
-  "iconTheme": "WhiteSur",
+  "iconTheme": "WhiteSur-light",
   "cursorSettings": {
     "dwl": {
       "cursorHideTimeout": 0
@@ -300,12 +300,14 @@
   "brightnessDevicePins": {},
   "wifiNetworkPins": {},
   "bluetoothDevicePins": {
-    "preferredDevice": ["00:CA:E0:34:36:B6"]
+    "preferredDevice": [
+      "00:CA:E0:34:36:B6"
+    ]
   },
   "audioInputDevicePins": {},
   "audioOutputDevicePins": {},
-  "gtkThemingEnabled": false,
-  "qtThemingEnabled": false,
+  "gtkThemingEnabled": true,
+  "qtThemingEnabled": true,
   "syncModeWithPortal": true,
   "terminalsAlwaysDark": false,
   "muxType": "tmux",
@@ -464,7 +466,11 @@
       "gothCornersEnabled": true,
       "id": "default",
       "innerPadding": 4,
-      "leftWidgets": ["launcherButton", "workspaceSwitcher", "focusedWindow"],
+      "leftWidgets": [
+        "launcherButton",
+        "workspaceSwitcher",
+        "focusedWindow"
+      ],
       "maximizeWidgetIcons": false,
       "maximizeWidgetText": false,
       "name": "Main Bar",
@@ -509,7 +515,9 @@
           "showPrinterIcon": true
         }
       ],
-      "screenPreferences": ["all"],
+      "screenPreferences": [
+        "all"
+      ],
       "shadowColorMode": "text",
       "shadowIntensity": 25,
       "shadowOpacity": 40,
@@ -547,7 +555,9 @@
   "desktopClockY": -1,
   "desktopClockWidth": 280,
   "desktopClockHeight": 180,
-  "desktopClockDisplayPreferences": ["all"],
+  "desktopClockDisplayPreferences": [
+    "all"
+  ],
   "systemMonitorEnabled": false,
   "systemMonitorShowHeader": true,
   "systemMonitorTransparency": 0.8,
@@ -584,7 +594,9 @@
   "systemMonitorY": -1,
   "systemMonitorWidth": 320,
   "systemMonitorHeight": 480,
-  "systemMonitorDisplayPreferences": ["all"],
+  "systemMonitorDisplayPreferences": [
+    "all"
+  ],
   "systemMonitorVariants": [],
   "desktopWidgetPositions": {},
   "desktopWidgetGridSettings": {},
