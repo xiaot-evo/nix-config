@@ -152,6 +152,7 @@ ______________________________________________________________________
 | `dev.shell.fish` | `dev/shell/fish.nix` | ✅ |
 | `dev.shell.starship` | `dev/shell/starship.nix` | ✅ |
 | `dev.tools.fastfetch` | `dev/tools/fastfetch.nix` | ❌ |
+| `dev.tools.distrobox` | `dev/tools/distrobox.nix` | ✅ |
 | `dev.tools.git` | `dev/tools/git.nix` | ✅ |
 | `dev.tools.yazi` | `dev/tools/yazi.nix` | ✅ |
 
