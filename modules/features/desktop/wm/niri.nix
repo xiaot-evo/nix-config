@@ -9,6 +9,7 @@
           withXDG = true;
           useNautilus = true;
         };
+        services.gnome.gnome-keyring.enable = true;
       };
       homeManager =
         { pkgs, lib, ... }:
@@ -16,7 +17,7 @@
           # 窗口规则辅助函数：为应用添加毛玻璃效果
           blurredApp = appId: {
             match._props.app-id = appId;
-            opacity = 0.9;
+            opacity = 0.75;
             background-effect = {
               xray = true;
               blur = true;
@@ -94,7 +95,7 @@
                       is-active = false;
                     };
                   };
-                  opacity = 0.8;
+                  opacity = 0.75;
                   background-effect = {
                     xray = true;
                     blur = true;
