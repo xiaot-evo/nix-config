@@ -38,14 +38,30 @@ in
     fmt-check.exec = ''
       nix fmt -- --fail-on-change
     '';
+    # 自动 git add 所有未跟踪的 .nix 文件（packages/ 等）
+    pkg-sync.exec = ''
+      echo "同步 packages..."
+      git ls-files --others --exclude-standard -- "packages/*.nix" | while read -r f; do
+        echo "  + git add $f"
+        git add "$f"
+      done
+      echo "完成。"
+    '';
     check.exec = ''
+      git ls-files --others --exclude-standard -- "packages/*.nix" | xargs -r git add
       nix flake check
     '';
     build.exec = ''
+      git ls-files --others --exclude-standard -- "packages/*.nix" | xargs -r git add
       nix run .#${hostname} --impure
     '';
     build-switch.exec = ''
+      git ls-files --others --exclude-standard -- "packages/*.nix" | xargs -r git add
       nix run .#${hostname} -- switch --impure
+    '';
+    build-boot.exec = ''
+      git ls-files --others --exclude-standard -- "packages/*.nix" | xargs -r git add
+      nix run .#${hostname} -- boot --impure
     '';
   };
 
