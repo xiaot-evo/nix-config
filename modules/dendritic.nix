@@ -10,18 +10,17 @@
     description = "XiaoT_Evo's Nix Configuration with Den";
     nixConfig = {
       extra-substituters = [
+        "https://mirrors.ustc.edu.cn/nix-channels/store"
         "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
         "https://cache.nixos.org"
         "https://cache.numtide.com"
         "https://niri-nix.cachix.org"
-        "https://cache.garnix.io"
         "https://attic.xuyh0120.win/lantian"
         "https://noctalia.cachix.org"
       ];
       extra-trusted-public-keys = [
         "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
         "niri-nix.cachix.org-1:SvFtqpDcf7Sm1SMJdby1/+Y+6f3Yt3/3PMcSTKPJNJ0="
-        "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
         "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
         "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
       ];
