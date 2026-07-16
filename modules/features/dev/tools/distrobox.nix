@@ -7,11 +7,11 @@
         # 全局设置（所有容器继承）
         settings = {
           # 容器默认使用的主目录路径
-          # container_user_custom_home = "/home/xiaot_evo/.distrobox/custom_home";
+          container_user_custom_home = "/home/xiaot_evo/.distrobox/custom_home";
           # 额外的卷挂载
           # container_additional_volumes = "/home/xiaot_evo/projects:/projects:ro";
           # 始终拉取最新镜像
-          # container_always_pull = "1";
+          container_always_pull = "1";
         };
         # 容器定义（示例，按需取消注释）
         containers = {
