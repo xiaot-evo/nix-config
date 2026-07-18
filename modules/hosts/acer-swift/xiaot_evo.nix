@@ -18,7 +18,7 @@
         ])
       ])
       ++ (with den.aspects; [
-        services.dae
+        # services.dae
         services.ddns-updater
         services.ly
         services.udiskie
@@ -26,7 +26,7 @@
         # services.kdeconnect
         system.fonts
         desktop.wm.niri
-        desktop.shell.noctalia
+        desktop.shell.dms-shell
         desktop.input-method.fcitx5
         preference.theme
         dev.shell.fish

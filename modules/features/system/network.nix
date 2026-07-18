@@ -14,6 +14,7 @@
         443
         25565
       ];
+      allowedUDPPorts = [ 69 ];
       allowedUDPPortRanges = [
         {
           from = 4000;

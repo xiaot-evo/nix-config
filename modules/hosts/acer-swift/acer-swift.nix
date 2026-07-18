@@ -21,6 +21,7 @@
         system.sound
         system.virtualization
         services.powermanagement
+        services.atftpd
       ]);
     nixos =
       { pkgs, lib, ... }:

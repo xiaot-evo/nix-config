@@ -54,15 +54,21 @@
                   natural-scroll = [ ];
                 };
               };
+              debug = {
+                # 允许面板切换和窗口激活，DMS/Noctalia 等 Shell 需要
+                honor-xdg-activation-with-invalid-serial = true;
+              };
+
               layout = {
                 background-color = "transparent";
+                gaps = 8;
+                focus-ring.width = 2;
                 preset-column-widths._children = [
                   { proportion = 0.33333; }
                   { proportion = 0.5; }
                   { proportion = 0.66667; }
                   { proportion = 1.0; }
                 ];
-                # focus-ring.off = [ ];
               };
 
               hotkey-overlay = {
@@ -71,6 +77,18 @@
 
               screenshot-path = "/home/${user.userName}/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
               window-rule = [
+                # 通用窗口圆角
+                {
+                  geometry-corner-radius = 12;
+                  clip-to-geometry = true;
+                }
+                # 所有窗口启用模糊背景
+                {
+                  background-effect = {
+                    blur = true;
+                    xray = false;
+                  };
+                }
                 (maximizedBlurredApp "zen-beta")
                 (blurredApp "com.mitchellh.ghostty")
                 (blurredApp "tabby")

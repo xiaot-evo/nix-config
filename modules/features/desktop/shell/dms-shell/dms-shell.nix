@@ -17,16 +17,13 @@
           inputs.dms.homeModules.dank-material-shell
           inputs.dms-plugin-registry.homeModules.dms-plugin-registry
         ];
-        systemd.user.services.dms.Install = lib.mkForce {
-          WantedBy = [ "niri.service" ];
-        };
         programs.dank-material-shell = {
           enable = true;
-          # quickshell.package = inputs.quickshell.packages.${pkgs.hostPlatform.system}.default;
 
           systemd = {
             enable = true;
             restartIfChanged = true;
+            target = "niri.service";
           };
 
           # Core features
@@ -35,7 +32,6 @@
           enableDynamicTheming = true; # Wallpaper-based theming (matugen)
           enableAudioWavelength = true; # Audio visualizer (cava)
           enableCalendarEvents = true; # Calendar integration (khal)
-          enableClipboardPaste = true; # Pasting items from the clipboard (wtype)
 
           settings = lib.recursiveUpdate (builtins.fromJSON (lib.readFile ./settings.json)) {
             # 全部从 theme.nix 的 quirk 引用，保持单一配置源
