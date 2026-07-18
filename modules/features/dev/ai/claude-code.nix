@@ -34,7 +34,7 @@ in
       }:
       {
         home.packages = [
-          inputs'.llm-agents-nix.packages.cc-switch-cli
+          # inputs'.llm-agents-nix.packages.cc-switch-cli
           pkgs.python3
           pkgs.bun
           (pkgs.writeShellScriptBin "cc-ds" ''
