@@ -2,6 +2,7 @@
 {
   den.aspects.dev.tools.yazi = {
     homeManager = { pkgs, ... }: {
+      home.packages = [ pkgs.trash-cli ];
       programs.yazi = {
         enable = true;
         enableFishIntegration = true;

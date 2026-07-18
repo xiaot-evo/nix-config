@@ -62,7 +62,6 @@
             fastfetch
             devenv
             android-tools
-            trash-cli
 
             ## gui
             bilibili
