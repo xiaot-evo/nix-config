@@ -65,12 +65,15 @@
 
             ## gui
             bilibili
-            resources
-            marktext
             qq
             wechat
             telegram-desktop
-            # modrinth-app
+            # workaround: 新版 wrap-gapps-hook 按 output 追踪运行状态,
+            # 而 symlinkJoin 的 postBuild 手动调用 wrapGAppsHook 时 $output 未定义,
+            # 导致 "bad array subscript"。上游修复后可还原为 modrinth-app。
+            (modrinth-app.overrideAttrs (old: {
+              buildCommand = "output=out\n" + old.buildCommand;
+            }))
             # (modrinth-app.override {
             #   jdks =
             #     let
