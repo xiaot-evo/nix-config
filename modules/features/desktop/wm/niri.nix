@@ -61,8 +61,6 @@
 
               layout = {
                 background-color = "transparent";
-                gaps = 8;
-                focus-ring.width = 2;
                 preset-column-widths._children = [
                   { proportion = 0.33333; }
                   { proportion = 0.5; }
@@ -77,21 +75,12 @@
 
               screenshot-path = "/home/${user.userName}/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
               window-rule = [
-                # 通用窗口圆角
                 {
-                  geometry-corner-radius = 12;
-                  clip-to-geometry = true;
-                }
-                # 所有窗口启用模糊背景
-                {
-                  background-effect = {
-                    blur = true;
-                    xray = false;
-                  };
                 }
                 (maximizedBlurredApp "zen-beta")
                 (blurredApp "com.mitchellh.ghostty")
                 (blurredApp "tabby")
+                (blurredApp "com.danklinux.dms")
                 (maximizedBlurredApp "dev.zed.Zed")
                 (maximizedBlurredApp "obsidian")
                 {
@@ -102,6 +91,11 @@
                     proportion = 0.75;
                   };
                   clip-to-geometry = true;
+                  # 所有窗口启用模糊背景
+                  background-effect = {
+                    blur = true;
+                    xray = false;
+                  };
                 }
                 {
                   match._props.title = "^float$";
@@ -120,6 +114,7 @@
                   };
                 }
                 {
+                  opacity = 0.75;
                   match._props.is-floating = true;
                   background-effect = {
                     xray = false;
