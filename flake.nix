@@ -25,6 +25,14 @@
 
   inputs = {
     daeuniverse.url = "github:daeuniverse/flake.nix";
+    dankcalendar = {
+      url = "github:AvengeMedia/dankcalendar";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    danksearch = {
+      url = "github:AvengeMedia/danksearch";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     den.url = "github:denful/den";
     dms = {
       url = "github:AvengeMedia/DankMaterialShell/stable";

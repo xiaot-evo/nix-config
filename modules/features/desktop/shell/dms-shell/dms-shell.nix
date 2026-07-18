@@ -1,9 +1,11 @@
 { inputs, den, ... }:
 {
   den.aspects.desktop.shell.dms-shell = {
-    # niri 设置子 aspect（同目录下由 import-tree 自动发现）
+    # danklinux 生态实用工具 + niri 设置子 aspects（同目录下由 import-tree 自动发现）
     includes = [
       den.aspects.desktop.shell.dms-shell.niri-settings
+      den.aspects.desktop.shell.dms-shell.danksearch
+      den.aspects.desktop.shell.dms-shell.dankcalendar
     ];
     homeManager =
       {

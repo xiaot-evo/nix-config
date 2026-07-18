@@ -46,6 +46,16 @@
         url = "github:AvengeMedia/dms-plugin-registry";
         inputs.nixpkgs.follows = "nixpkgs";
       };
+      # danklinux 生态实用工具：索引文件搜索（集成 DMS 启动器）
+      danksearch = {
+        url = "github:AvengeMedia/danksearch";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
+      # danklinux 生态实用工具：桌面日历（DMS 日历组件原生集成）
+      dankcalendar = {
+        url = "github:AvengeMedia/dankcalendar";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
       # AI coding agent packages（pi, claude-code 等）
       llm-agents-nix = {
         url = "github:numtide/llm-agents.nix";
