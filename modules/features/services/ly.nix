@@ -105,6 +105,7 @@
             # 通用日志文件路径
             # 如果为 null，将改用 syslog
             ly_log = "/var/log/ly.log";
+            session_log = ".local/state/ly-session.log";
 
             # 按下重启键时执行的命令
             restart_cmd = "/run/current-system/systemd/bin/systemctl reboot";
