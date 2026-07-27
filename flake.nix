@@ -13,22 +13,18 @@
       "https://cache.numtide.com"
       "https://niri-nix.cachix.org"
       "https://attic.xuyh0120.win/lantian"
-      "https://noctalia.cachix.org"
+      "https://cache.garnix.io"
     ];
     extra-trusted-public-keys = [
       "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
       "niri-nix.cachix.org-1:SvFtqpDcf7Sm1SMJdby1/+Y+6f3Yt3/3PMcSTKPJNJ0="
       "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
-      "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
     ];
   };
 
   inputs = {
     daeuniverse.url = "github:daeuniverse/flake.nix";
-    dankcalendar = {
-      url = "github:AvengeMedia/dankcalendar";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     danksearch = {
       url = "github:AvengeMedia/danksearch";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -58,8 +54,8 @@
     };
     niri-nix.url = "git+https://codeberg.org/BANanaD3V/niri-nix";
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
+    nix-flatpak.url = "github:gmodena/nix-flatpak";
     nixpkgs.url = "https://channels.nixos.org/nixpkgs-unstable/nixexprs.tar.xz";
-    noctalia.url = "github:noctalia-dev/noctalia/cachix";
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";

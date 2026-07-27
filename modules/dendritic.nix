@@ -16,13 +16,13 @@
         "https://cache.numtide.com"
         "https://niri-nix.cachix.org"
         "https://attic.xuyh0120.win/lantian"
-        "https://noctalia.cachix.org"
+        "https://cache.garnix.io"
       ];
       extra-trusted-public-keys = [
         "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
         "niri-nix.cachix.org-1:SvFtqpDcf7Sm1SMJdby1/+Y+6f3Yt3/3PMcSTKPJNJ0="
         "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
-        "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+        "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
       ];
     };
     inputs = {
@@ -33,6 +33,7 @@
         inputs.nixpkgs.follows = "nixpkgs";
       };
       nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
+      nix-flatpak.url = "github:gmodena/nix-flatpak";
       # Do not override its nixpkgs input, otherwise there can be mismatch between patches and kernel version
       daeuniverse.url = "github:daeuniverse/flake.nix";
       niri-nix = {
@@ -51,11 +52,6 @@
         url = "github:AvengeMedia/danksearch";
         inputs.nixpkgs.follows = "nixpkgs";
       };
-      # danklinux 生态实用工具：桌面日历（DMS 日历组件原生集成）
-      dankcalendar = {
-        url = "github:AvengeMedia/dankcalendar";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
       # AI coding agent packages（pi, claude-code 等）
       llm-agents-nix = {
         url = "github:numtide/llm-agents.nix";
@@ -66,7 +62,6 @@
         url = "github:numtide/treefmt-nix";
         inputs.nixpkgs.follows = "nixpkgs";
       };
-
       zen-browser = {
         url = "github:0xc000022070/zen-browser-flake";
         inputs = {
@@ -74,13 +69,6 @@
           nixpkgs.follows = "nixpkgs";
           home-manager.follows = "home-manager";
         };
-      };
-
-      # Noctalia — Rust 编写的平铺桌面环境/Shell
-      # https://docs.noctalia.dev/
-      noctalia = {
-        url = "github:noctalia-dev/noctalia/cachix";
-        # 不 follow nixpkgs 以确保二进制缓存命中
       };
     };
   };
