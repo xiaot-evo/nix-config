@@ -16,14 +16,31 @@
           "modrinth-app"
           "modrinth-app-unwrapped"
         ])
+        (insecure [
+          "ventoy-1.1.12"
+        ])
       ])
       ++ (with den.aspects; [
-        # services.dae
+        services.dae
         services.ddns-updater
         services.ly
         services.udiskie
         services.printing
-        # services.kdeconnect
+        services.kdeconnect
+        (services.flathub {
+          packages = [
+            "io.github.flattool.Warehouse"
+            "com.usebottles.bottles"
+            "com.qq.QQ"
+            "org.telegram.desktop"
+          ];
+          "packages-x11" = [
+            "com.tencent.WeChat"
+            "com.dingtalk.DingTalk"
+            "cn.wps.wps_365"
+            "org.freecad.FreeCAD"
+          ];
+        })
         system.fonts
         desktop.wm.niri
         desktop.shell.dms-shell
@@ -33,13 +50,14 @@
         dev.shell.starship
         dev.tools.git
         dev.tools.yazi
-        dev.tools.distrobox
+        # dev.tools.distrobox
         dev.ai.ollama
         dev.ai.claude-code
         dev.ai.pi-coding-agent
         dev.editors.zed-editor
         dev.editors.helix
         apps.terminals.ghostty
+        apps.terminals.foot
         (apps.terminals.tabby (
           p: with p; [
             hidapi
@@ -48,7 +66,9 @@
         ))
         apps.browsers.zen-browser
         apps.notes.obsidian
-        apps.gaming.steam
+        # apps.gaming.steam
+        # apps.gaming.opengamepadui
+        # apps.gaming.lutris
         # apps.gaming.prismlauncher
       ]);
 
@@ -63,35 +83,10 @@
             devenv
             android-tools
 
-            ## gui
-            bilibili
-            qq
-            wechat
-            telegram-desktop
-            # workaround: 新版 wrap-gapps-hook 按 output 追踪运行状态,
-            # 而 symlinkJoin 的 postBuild 手动调用 wrapGAppsHook 时 $output 未定义,
-            # 导致 "bad array subscript"。上游修复后可还原为 modrinth-app。
-            (modrinth-app.overrideAttrs (old: {
-              buildCommand = "output=out\n" + old.buildCommand;
-            }))
-            # (modrinth-app.override {
-            #   jdks =
-            #     let
-            #       t = javaPackages.compiler.temurin-bin;
-            #     in
-            #     [
-            #       t."jdk-8"
-            #       t."jdk-17"
-            #       t."jdk-21"
-            #       t."jdk-25"
-            #     ];
-            # })
-            readest
-            wpsoffice-cn
             obs-studio
             remmina
-            # freecad
-            # ventoy
+            gopeed
+            ventoy
           ]
         );
       };

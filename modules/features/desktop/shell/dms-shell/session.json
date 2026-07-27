@@ -84,12 +84,17 @@
   "notepadLastMode": "",
   "launcherLastMode": "all",
   "launcherLastFileSearchType": "all",
-  "launcherLastQuery": "",
+  "launcherLastQuery": "zed",
   "launcherQueryHistory": [
-    "yazi",
     "zed",
-    "zen",
-    "qq"
+    "se",
+    "qq",
+    "obs",
+    "mod",
+    "lu",
+    "s",
+    "yazi",
+    "zen"
   ],
   "appDrawerLastMode": "apps",
   "niriOverviewLastMode": "apps",

@@ -320,24 +320,24 @@
   "weatherEnabled": true,
   "dashTabs": [
     {
-      "id": "overview",
-      "enabled": true
+      "enabled": true,
+      "id": "overview"
     },
     {
-      "id": "media",
-      "enabled": true
+      "enabled": true,
+      "id": "media"
     },
     {
-      "id": "wallpaper",
-      "enabled": true
+      "enabled": true,
+      "id": "wallpaper"
     },
     {
-      "id": "weather",
-      "enabled": true
+      "enabled": true,
+      "id": "weather"
     },
     {
-      "id": "settings",
-      "enabled": true
+      "enabled": true,
+      "id": "settings"
     }
   ],
   "networkPreference": "wifi",
@@ -606,16 +606,17 @@
   "displaySnapToEdge": true,
   "connectedFrameBarStyleBackups": {
     "default": {
-      "shadowIntensity": 25,
-      "squareCorners": true,
+      "borderEnabled": false,
       "gothCornersEnabled": true,
-      "borderEnabled": false
+      "shadowIntensity": 25,
+      "squareCorners": true
     }
   },
   "barConfigs": [
     {
       "autoHide": false,
       "autoHideDelay": 250,
+      "barInsetPadding": 8,
       "borderColor": "surfaceText",
       "borderEnabled": false,
       "borderOpacity": 1,
@@ -635,20 +636,22 @@
       "gothCornerRadiusOverride": true,
       "gothCornerRadiusValue": 20,
       "gothCornersEnabled": false,
+      "hoverPopouts": false,
       "id": "default",
       "innerPadding": 4,
       "leftWidgets": [
         "launcherButton",
         "workspaceSwitcher",
         {
-          "id": "runningApps",
           "enabled": true,
+          "id": "runningApps",
           "runningAppsCompactMode": true,
-          "runningAppsGroupByApp": false,
+          "runningAppsCurrentMonitor": false,
           "runningAppsCurrentWorkspace": true,
-          "runningAppsCurrentMonitor": false
+          "runningAppsGroupByApp": false
         }
       ],
+      "maximizeDetection": false,
       "maximizeWidgetIcons": false,
       "maximizeWidgetText": false,
       "name": "Main Bar",
@@ -664,12 +667,12 @@
           "id": "systemTray"
         },
         {
-          "id": "capsLockIndicator",
-          "enabled": true
+          "enabled": true,
+          "id": "capsLockIndicator"
         },
         {
-          "id": "privacyIndicator",
-          "enabled": true
+          "enabled": true,
+          "id": "privacyIndicator"
         },
         {
           "enabled": true,
@@ -710,10 +713,7 @@
       "visible": true,
       "widgetOutlineEnabled": false,
       "widgetPadding": 8,
-      "widgetTransparency": 1,
-      "barInsetPadding": 8,
-      "hoverPopouts": false,
-      "maximizeDetection": false
+      "widgetTransparency": 1
     }
   ],
   "desktopClockEnabled": false,
@@ -788,11 +788,11 @@
   "desktopWidgetInstances": [],
   "desktopWidgetGroups": [],
   "builtInPluginSettings": {
-    "dms_settings_search": {
-      "trigger": "?"
-    },
     "dms_clipboard_search": {
       "trigger": "cb"
+    },
+    "dms_settings_search": {
+      "trigger": "?"
     }
   },
   "clipboardClickToPaste": false,
@@ -824,6 +824,6 @@
   "frameMode": "connected",
   "barInsetPaddingShared": -1,
   "barInsetPaddingSyncAll": false,
-  "frameBarInsetPadding": -1,
+  "frameBarInsetPadding": 8,
   "configVersion": 12
 }

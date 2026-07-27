@@ -22,11 +22,11 @@
             init = true;
             unshare_all = true;
           };
-          # Ubuntu 容器（用于构建和测试）
-          ubuntu = {
-            image = "quay.io/toolbx/ubuntu-toolbox:26.04";
+          # Debian 容器（用于构建和测试）
+          debian = {
+            image = "debian:latest";
             additional_packages = "build-essential git curl";
-            init = false;
+            init = true;
           };
         };
         # 当容器配置变更时自动重建（定义容器后可设为 true）
