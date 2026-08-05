@@ -1,10 +1,19 @@
 { den, ... }:
 {
+  den.homes.x86_64-linux.xiaot_evo = {
+    classes = [
+      "homeManager"
+      "hjem"
+    ];
+    home-manager.enable = true;
+    hjem.enable = true;
+  };
   den.aspects.xiaot_evo = {
     includes =
       (with den.batteries; [
         define-user
         primary-user
+        inputs'
         (user-shell "fish")
         (unfree [
           "qq"
@@ -27,20 +36,6 @@
         services.udiskie
         services.printing
         services.kdeconnect
-        (services.flathub {
-          packages = [
-            "io.github.flattool.Warehouse"
-            "com.usebottles.bottles"
-            "com.qq.QQ"
-            "org.telegram.desktop"
-          ];
-          "packages-x11" = [
-            "com.tencent.WeChat"
-            "com.dingtalk.DingTalk"
-            "cn.wps.wps_365"
-            "org.freecad.FreeCAD"
-          ];
-        })
         system.fonts
         desktop.wm.niri
         desktop.shell.dms-shell
@@ -50,45 +45,58 @@
         dev.shell.starship
         dev.tools.git
         dev.tools.yazi
-        # dev.tools.distrobox
-        dev.ai.ollama
+        dev.tools.distrobox
+        # dev.ai.ollama
         dev.ai.claude-code
         dev.ai.pi-coding-agent
         dev.editors.zed-editor
         dev.editors.helix
         apps.terminals.ghostty
-        apps.terminals.foot
-        (apps.terminals.tabby (
-          p: with p; [
-            hidapi
-            maple-mono.NF-CN
-          ]
-        ))
         apps.browsers.zen-browser
         apps.notes.obsidian
-        # apps.gaming.steam
+        apps.gaming.steam
         # apps.gaming.opengamepadui
         # apps.gaming.lutris
-        # apps.gaming.prismlauncher
+        apps.gaming.prismlauncher
       ]);
 
     homeManager =
-      { pkgs, ... }:
+      { pkgs, inputs', ... }:
       {
-        home.packages = (
-          with pkgs;
-          [
+        home.packages =
+          (with pkgs; [
             ## cmd
-            fastfetch
             devenv
             android-tools
 
+            ## GUI
+            qq
+            wechat
+            bilibili
+            (modrinth-app.override {
+              jdks = with graalvmPackages; [
+                graalvm-ce # JDK 25 + Graal JIT — Minecraft 1.17+
+                zulu25
+                zulu21
+                zulu17 # fallback for older modpacks
+                zulu8 # pre-1.17 Minecraft
+              ];
+            })
+            mission-center
+            wpsoffice-cn
+            (bottles.override {
+              removeWarningPopup = true;
+              extraPkgs =
+                pkgs: with pkgs; [
+                  wineWow64Packages.stagingFull
+                ];
+              # extraLibraries = pkgs: with pkgs; [ dxvk ];
+            })
             obs-studio
-            remmina
             gopeed
             ventoy
-          ]
-        );
+          ])
+          ++ [ inputs'.llm-agents-nix.packages.reasonix ];
       };
 
     provides.to-hosts.nixos = {
