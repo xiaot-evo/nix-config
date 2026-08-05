@@ -8,6 +8,9 @@
         {
           virtualisation.libvirtd = {
             enable = true;
+            # libvirt 的 ssh drop-in（/nix/store/.../ssh_config.d/30-libvirt-ssh-proxy.conf）
+            # owner 为 nobody，导致 ssh 报 "Bad owner or permissions"，禁用该 Include
+            sshProxy = false;
             qemu.package = pkgs.qemu_kvm;
           };
           programs.virt-manager.enable = true;
