@@ -3,7 +3,8 @@
 {
   description = "XiaoT_Evo's Nix Configuration with Den";
 
-  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
+  outputs =
+    inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree [ ./modules ]);
 
   nixConfig = {
     extra-substituters = [
@@ -13,13 +14,11 @@
       "https://cache.numtide.com"
       "https://niri-nix.cachix.org"
       "https://attic.xuyh0120.win/lantian"
-      "https://cache.garnix.io"
     ];
     extra-trusted-public-keys = [
       "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
       "niri-nix.cachix.org-1:SvFtqpDcf7Sm1SMJdby1/+Y+6f3Yt3/3PMcSTKPJNJ0="
       "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
-      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
     ];
   };
 
@@ -43,6 +42,17 @@
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
+    hjem = {
+      url = "github:feel-co/hjem";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hjem-rum = {
+      url = "github:snugnug/hjem-rum";
+      inputs = {
+        hjem.follows = "hjem";
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -52,9 +62,11 @@
       url = "github:numtide/llm-agents.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    niri-nix.url = "git+https://codeberg.org/BANanaD3V/niri-nix";
+    niri-nix = {
+      url = "git+https://codeberg.org/BANanaD3V/niri-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
-    nix-flatpak.url = "github:gmodena/nix-flatpak";
     nixpkgs.url = "https://channels.nixos.org/nixpkgs-unstable/nixexprs.tar.xz";
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
