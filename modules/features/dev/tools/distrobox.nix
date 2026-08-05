@@ -22,12 +22,6 @@
             init = true;
             unshare_all = true;
           };
-          # Debian 容器（用于构建和测试）
-          debian = {
-            image = "debian:latest";
-            additional_packages = "build-essential git curl";
-            init = true;
-          };
         };
         # 当容器配置变更时自动重建（定义容器后可设为 true）
         enableSystemdUnit = true;

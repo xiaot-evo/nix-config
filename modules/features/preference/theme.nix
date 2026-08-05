@@ -83,7 +83,6 @@
         home.packages = with pkgs; [
           adw-gtk3
           adwaita-icon-theme # GNOME 应用及系统托盘图标回退依赖
-          gnome-icon-theme # 旧版 GTK 应用图标回退依赖
           kdePackages.breeze-icons # WhiteSur 图标主题的继承依赖（Inherits=breeze）
           hicolor-icon-theme # XDG 标准最终回退主题（Inherits=hicolor）
           libsForQt5.qt5ct
