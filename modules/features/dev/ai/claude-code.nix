@@ -138,6 +138,18 @@ in
             };
           };
 
+          # ── MCP 服务器 ────────────────────────────────
+          mcpServers = {
+            nixos = {
+              command = "nix";
+              args = [
+                "run"
+                "github:utensils/mcp-nixos"
+                "--"
+              ];
+            };
+          };
+
           # ── 全局上下文指令 ──────────────────────────
           context = ''
             请用中文回复。参考 AGENTS.md 了解项目结构、约定和完整技能表。
