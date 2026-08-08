@@ -16,10 +16,7 @@
         inputs'
         (user-shell "fish")
         (unfree [
-          "qq"
-          "wechat"
           "bilibili"
-          "wpsoffice-cn"
           "warp-terminal"
           "ventoy"
           "modrinth-app"
@@ -36,6 +33,19 @@
         services.udiskie
         services.printing
         services.kdeconnect
+        (services.flathub {
+          # Wayland 原生
+          packages = [
+            "com.qq.QQ"
+            "com.usebottles.bottles"
+          ];
+          # 不支持/不完整支持 Wayland，启用 X11 fallback
+          "packages-x11" = [
+            "com.dingtalk.DingTalk"
+            "com.tencent.WeChat"
+            "cn.wps.wps_365"
+          ];
+        })
         system.fonts
         desktop.wm.niri
         desktop.shell.dms-shell
@@ -70,8 +80,6 @@
             android-tools
 
             ## GUI
-            qq
-            wechat
             bilibili
             (modrinth-app.override {
               jdks = with graalvmPackages; [
@@ -82,16 +90,8 @@
                 zulu8 # pre-1.17 Minecraft
               ];
             })
+            telegram-desktop
             mission-center
-            wpsoffice-cn
-            (bottles.override {
-              removeWarningPopup = true;
-              extraPkgs =
-                pkgs: with pkgs; [
-                  wineWow64Packages.stagingFull
-                ];
-              # extraLibraries = pkgs: with pkgs; [ dxvk ];
-            })
             obs-studio
             gopeed
             ventoy
