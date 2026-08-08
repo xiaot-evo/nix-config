@@ -28,3 +28,6 @@ nixos.qcow2
 # Claude Code session data
 .claude/
 .mcp.json
+
+# ZCode session data
+.zcode/
