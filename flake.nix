@@ -67,6 +67,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
+    nix-flatpak.url = "github:gmodena/nix-flatpak/";
     nixpkgs.url = "https://channels.nixos.org/nixpkgs-unstable/nixexprs.tar.xz";
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";

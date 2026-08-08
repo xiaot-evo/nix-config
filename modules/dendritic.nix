@@ -75,6 +75,8 @@
         url = "github:numtide/llm-agents.nix";
         inputs.nixpkgs.follows = "nixpkgs";
       };
+      # 声明式 flatpak 管理（flathub.nix 依赖）
+      nix-flatpak.url = "github:gmodena/nix-flatpak/";
 
       treefmt-nix = {
         url = "github:numtide/treefmt-nix";
