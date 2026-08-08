@@ -160,6 +160,7 @@ ______________________________________________________________________
 | 给 Claude Code 加 MCP server | 在 `claude-code.nix` 用 `programs.claude-code.mcpServers` 声明，勿手改 `~/.claude.json` |
 | 给 Reasonix 装 MCP server | `install_source` 对 URL 源不支持 command 覆盖（报 "command is required"）——用临时 `.mcp.json` 导入全局 |
 | 查询包/选项 | 优先 `mcp__nixos__*` MCP 工具，再降级 nh search 技能，最后才翻上游源码 |
+| 修改 `AGENTS.md` | 无需同步 `CLAUDE.md` — 它是指向 AGENTS.md 的符号链接，自动跟随 |
 
 ______________________________________________________________________
 
@@ -190,6 +191,7 @@ ______________________________________________________________________
 ## 参考
 
 - [AGENTS_PROJECT.md](AGENTS_PROJECT.md) — 主机/用户/模块完整清单
-- [docs/den/](docs/den/) — Den 框架中文文档
-- [ROLLBACK.md](ROLLBACK.md) — 部署回滚步骤
+- [CLAUDE.md](CLAUDE.md) — Claude Code 专用入口（符号链接指向 AGENTS.md，无需单独维护）
+- [docs/den/](docs/den/) — Den 框架中文文档（排障先看 `13-常见问题.md`）
+- [ROLLBACK.md](ROLLBACK.md) — 部署回滚步骤（文件尚未创建，规划中）
 - <https://den.denful.dev> — Den 框架官网
