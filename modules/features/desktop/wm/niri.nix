@@ -213,6 +213,54 @@
                 "Mod+Alt+V".switch-focus-between-floating-and-tiling = [ ];
                 "Mod+Shift+V".toggle-window-floating = [ ];
 
+                # 方向键导航（HJKL 备用）
+                "Mod+Left".focus-column-left = [ ];
+                "Mod+Right".focus-column-right = [ ];
+                "Mod+Up".focus-window-or-workspace-up = [ ];
+                "Mod+Down".focus-window-or-workspace-down = [ ];
+
+                # 跨显示器导航
+                "Mod+Shift+H".focus-monitor-left = [ ];
+                "Mod+Shift+L".focus-monitor-right = [ ];
+                "Mod+Shift+K".focus-monitor-up = [ ];
+                "Mod+Shift+J".focus-monitor-down = [ ];
+
+                # 跨显示器移动列
+                "Mod+Shift+Ctrl+H".move-column-to-monitor-left = [ ];
+                "Mod+Shift+Ctrl+L".move-column-to-monitor-right = [ ];
+                "Mod+Shift+Ctrl+K".move-column-to-monitor-up = [ ];
+                "Mod+Shift+Ctrl+J".move-column-to-monitor-down = [ ];
+
+                # 工作区移动
+                "Mod+Shift+Page_Down".move-workspace-down = [ ];
+                "Mod+Shift+Page_Up".move-workspace-up = [ ];
+
+                # 列首/列尾导航
+                "Mod+Home".focus-column-first = [ ];
+                "Mod+End".focus-column-last = [ ];
+
+                # 窗口操作增强
+                "Mod+BracketLeft".consume-or-expel-window-left = [ ];
+                "Mod+BracketRight".consume-or-expel-window-right = [ ];
+                "Mod+Shift+R".switch-preset-column-width-back = [ ];
+                "Mod+Ctrl+R".reset-window-height = [ ];
+                "Mod+Ctrl+Shift+R".switch-preset-window-height = [ ];
+                "Mod+Ctrl+F".expand-column-to-available-width = [ ];
+                "Mod+Ctrl+C".center-visible-columns = [ ];
+                "Mod+W".toggle-column-tabbed-display = [ ];
+
+                # 系统功能
+                "Mod+O".toggle-overview = [ ];
+                "Mod+Escape".toggle-keyboard-shortcuts-inhibit = [ ];
+                "Ctrl+Alt+Delete".quit._props.skip-confirmation = true;
+                "Mod+Shift+P".power-off-monitors = [ ];
+
+                # 滚轮快捷键
+                "Mod+WheelScrollDown".focus-workspace-down = [ ];
+                "Mod+WheelScrollUp".focus-workspace-up = [ ];
+                "Mod+Ctrl+WheelScrollDown".move-column-to-workspace-down = [ ];
+                "Mod+Ctrl+WheelScrollUp".move-column-to-workspace-up = [ ];
+
                 "Print".screenshot._props.show-pointer = false;
                 "Ctrl+Print".screenshot-screen._props.show-pointer = false;
                 "Alt+Print".screenshot-window = [ ];

@@ -64,7 +64,6 @@ in
               allow = [
                 "Bash(nix *)"
                 "Bash(git *)"
-                "Bash(devenv *)"
                 "WebSearch"
                 "WebFetch"
                 "Read(./**)"

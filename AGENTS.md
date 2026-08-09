@@ -62,7 +62,9 @@ ______________________________________________________________________
 └── modules/
     ├── defaults.nix       # 全局默认值（stateVersion, strict schema）
     ├── dendritic.nix      # flake 输入声明 + flake-file 配置
-    ├── flake/treefmt.nix  # 多语言格式化（nixfmt + jsonfmt + mdformat + yamlfmt）
+    ├── flake/devshell.nix       # 开发环境（nix develop）
+    ├── flake/nh.nix             # nh 快捷命令（perSystem 输出）
+    ├── flake/treefmt.nix        # 多语言格式化（nixfmt + jsonfmt + mdformat + yamlfmt）
     ├── nixos/             # 主机/用户定义（aspect 组装点）：hosts/ + users/
     └── features/          # 可复用 aspect 模块（按领域分目录）
 ```
@@ -135,7 +137,7 @@ programs.claude-code.mcpServers.<name> = {
 | `nh os info` | 查看系统 generation 历史 |
 | `nh clean all --keep 5 --keep-since 7d` | 清理旧 generation |
 
-devenv shell 内还提供快捷别名：`flake-write`, `fmt`, `fmt-check`, `check`, `build`, `build-switch`（定义见 `devenv.nix`）。
+nix develop 内还提供快捷别名：`flake-write`, `fmt`, `fmt-check`, `check`, `build`, `build-switch`（定义见 `modules/flake/devshell.nix`）。
 
 ______________________________________________________________________
 

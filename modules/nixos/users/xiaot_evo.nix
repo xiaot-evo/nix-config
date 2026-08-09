@@ -56,7 +56,6 @@
         dev.tools.git
         dev.tools.yazi
         dev.tools.distrobox
-        # dev.ai.ollama
         dev.ai.claude-code
         dev.ai.pi-coding-agent
         dev.editors.zed-editor
@@ -65,8 +64,6 @@
         apps.browsers.zen-browser
         apps.notes.obsidian
         apps.gaming.steam
-        # apps.gaming.opengamepadui
-        # apps.gaming.lutris
         apps.gaming.prismlauncher
       ]);
 
@@ -76,7 +73,6 @@
         home.packages =
           (with pkgs; [
             ## cmd
-            devenv
             android-tools
 
             ## GUI

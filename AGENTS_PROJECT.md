@@ -40,6 +40,7 @@ system.network
 system.sound
 system.virtualization
 services.powermanagement
+services.atftpd
 ```
 
 ______________________________________________________________________
@@ -53,7 +54,7 @@ ______________________________________________________________________
 | WM | niri（XWayland Satellite） |
 | 桌面 Shell | DMS（DankMaterialShell） |
 | 显示管理器 | Ly |
-| 终端 | ghostty、tabby |
+| 终端 | ghostty |
 | 浏览器 | Zen Browser（beta） |
 | 输入法 | fcitx5（RIME + rime-ice） |
 | 代理 | dae / daed |
@@ -65,16 +66,13 @@ ______________________________________________________________________
 define-user
 primary-user
 user-shell "fish"
-unfree [...]       (qq, wechat, bilibili, wpsoffice-cn, warp-terminal, ventoy, modrinth-app)
-insecure [...]     (当前全部注释中)
+unfree [...]       (bilibili, warp-terminal, ventoy, modrinth-app, modrinth-app-unwrapped)
+insecure [...]     (ventoy-1.1.12)
 ```
 
 ### Feature aspects
 
 ```text
-# 安全
-security.gnome-keyring
-
 # 服务
 services.dae
 services.ddns-updater
@@ -82,6 +80,7 @@ services.ly
 services.udiskie
 services.printing
 services.kdeconnect
+services.flathub      (parametric — 含 QQ、WeChat、DingTalk、WPS Flatpak)
 
 # 系统
 system.fonts
@@ -92,15 +91,14 @@ desktop.shell.dms-shell
 desktop.input-method.fcitx5
 
 # 偏好
-preference.cursor-theme
-preference.icon-theme
+preference.theme      (含 iconTheme / cursorTheme / fontFamily)
 
 # 开发
 dev.shell.fish
 dev.shell.starship
 dev.tools.git
 dev.tools.yazi
-dev.ai.ollama
+dev.tools.distrobox
 dev.ai.claude-code
 dev.ai.pi-coding-agent
 dev.editors.zed-editor
@@ -108,11 +106,27 @@ dev.editors.helix
 
 # 应用
 apps.terminals.ghostty
-apps.terminals.tabby
 apps.browsers.zen-browser
 apps.notes.obsidian
 apps.gaming.steam
 apps.gaming.prismlauncher
+```
+
+### 已注释（保留备用）
+
+```text
+# 本地 AI 推理，当前未启用
+# dev.ai.ollama
+
+# 游戏控制器相关，当前未启用
+# apps.gaming.opengamepadui
+# apps.gaming.lutris
+
+# AI 编码辅助工具，当前未启用
+# dev.ai.antigravity-cli
+
+# 终端信息展示，当前未启用
+# dev.tools.fastfetch
 ```
 
 ______________________________________________________________________
@@ -125,19 +139,20 @@ ______________________________________________________________________
 |---|---|---|
 | `apps.browsers.zen-browser` | `apps/browsers/zen-browser.nix` | ✅ |
 | `apps.gaming.gamemode` | `apps/gaming/gamemode.nix` | ❌ |
+| `apps.gaming.lutris` | `apps/gaming/lutris.nix` | ❌（已注释） |
+| `apps.gaming.opengamepadui` | `apps/gaming/opengamepadui.nix` | ❌（已注释） |
 | `apps.gaming.prismlauncher` | `apps/gaming/prismlauncher.nix` | ✅ |
 | `apps.gaming.steam` | `apps/gaming/steam.nix` | ✅ |
 | `apps.notes.obsidian` | `apps/notes/obsidian.nix` | ✅ |
 | `apps.terminals.ghostty` | `apps/terminals/ghostty.nix` | ✅ |
-| `apps.terminals.tabby` | `apps/terminals/tabby.nix` | ✅ |
 
 ### 桌面
 
 | Aspect | 文件 | 已引入 |
 |---|---|---|
 | `desktop.input-method.fcitx5` | `desktop/input-method/fcitx5.nix` | ✅ |
-| `desktop.shell.dms-shell` | `desktop/shell/dms-shell.nix` | ✅ |
-| `desktop.shell.noctalia` | `desktop/shell/noctalia.nix` | ❌ |
+| `desktop.shell.dms-shell` | `desktop/shell/dms-shell/dms-shell.nix` | ✅ |
+| `desktop.shell.noctalia` | `desktop/shell/noctalia/noctalia.nix` | ❌ |
 | `desktop.wm.niri` | `desktop/wm/niri.nix` | ✅ |
 
 ### 开发
@@ -145,14 +160,14 @@ ______________________________________________________________________
 | Aspect | 文件 | 已引入 |
 |---|---|---|
 | `dev.ai.claude-code` | `dev/ai/claude-code.nix` | ✅ |
-| `dev.ai.ollama` | `dev/ai/ollama.nix` | ✅ |
-| `dev.ai.pi-coding-agent` | `dev/ai/pi-coding-agent/` | ✅ |
-| `dev.editors.helix` | `dev/editors/helix/` | ✅ |
-| `dev.editors.zed-editor` | `dev/editors/zed-editor/` | ✅ |
+| `dev.ai.ollama` | `dev/ai/ollama.nix` | ❌（已注释） |
+| `dev.ai.pi-coding-agent` | `dev/ai/pi-coding-agent/pi-coding-agent.nix` | ✅ |
+| `dev.editors.helix` | `dev/editors/helix/helix.nix` | ✅ |
+| `dev.editors.zed-editor` | `dev/editors/zed-editor/zed-editor.nix` | ✅ |
 | `dev.shell.fish` | `dev/shell/fish.nix` | ✅ |
 | `dev.shell.starship` | `dev/shell/starship.nix` | ✅ |
-| `dev.tools.fastfetch` | `dev/tools/fastfetch.nix` | ❌ |
 | `dev.tools.distrobox` | `dev/tools/distrobox.nix` | ✅ |
+| `dev.tools.fastfetch` | `dev/tools/fastfetch.nix` | ❌ |
 | `dev.tools.git` | `dev/tools/git.nix` | ✅ |
 | `dev.tools.yazi` | `dev/tools/yazi.nix` | ✅ |
 
@@ -160,21 +175,18 @@ ______________________________________________________________________
 
 | Aspect | 文件 | 已引入 |
 |---|---|---|
-| `preference.cursor-theme` | `preference/cursor-theme.nix` | ✅ |
-| `preference.icon-theme` | `preference/icon-theme.nix` | ✅ |
+| `preference.theme` | `preference/theme.nix` | ✅ |
 
-### 安全
-
-| Aspect | 文件 | 已引入 |
-|---|---|---|
-| `security.gnome-keyring` | `security/gnome-keyring.nix` | ✅ |
+> `preference.theme` 统一配置 iconTheme、cursorTheme、fontFamily 并通过 quirk 共享给 dms-shell 和 flathub 等消费者。
 
 ### 服务
 
 | Aspect | 文件 | 已引入 |
 |---|---|---|
+| `services.atftpd` | `services/atftpd.nix` | ✅ |
 | `services.dae` | `services/dae.nix` | ✅ |
 | `services.ddns-updater` | `services/ddns-updater.nix` | ✅ |
+| `services.flathub` | `services/flathub.nix` | ✅ |
 | `services.kdeconnect` | `services/kdeconnect.nix` | ✅ |
 | `services.ly` | `services/ly.nix` | ✅ |
 | `services.powermanagement` | `services/powermanagement.nix` | ✅ |
@@ -190,7 +202,8 @@ ______________________________________________________________________
 | `system.hardware.nbfc-linux` | `system/hardware/nbfc-linux.nix` | ✅ |
 | `system.hardware.nvidia` | `system/hardware/nvidia.nix` | ✅ |
 | `system.network` | `system/network.nix` | ✅ |
-| `system.nh` | `system/nh.nix` | ❌ |
 | `system.nix` | `system/nix.nix` | ✅ |
 | `system.sound` | `system/sound.nix` | ✅ |
 | `system.virtualization` | `system/virtualization.nix` | ✅ |
+
+> `system.nh` 已移至 `modules/flake/nh.nix`，属于 flake 级输出，不在 features 目录中。
