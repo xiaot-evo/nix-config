@@ -58,7 +58,7 @@ ______________________________________________________________________
 | 浏览器 | Zen Browser（Flatpak） |
 | 输入法 | fcitx5（RIME + rime-ice） |
 | 代理 | dae / daed |
-| 编辑器 | Claude Code、Pi、Zed、Helix |
+| 编辑器 | Claude Code、Zed、Helix |
 
 ### Batteries
 
@@ -100,7 +100,6 @@ dev.tools.git
 dev.tools.yazi
 dev.tools.distrobox
 dev.ai.claude-code
-dev.ai.pi-coding-agent
 dev.editors.zed-editor
 dev.editors.helix
 
@@ -158,7 +157,6 @@ ______________________________________________________________________
 |---|---|---|
 | `dev.ai.claude-code` | `dev/ai/claude-code.nix` | ✅ |
 | `dev.ai.ollama` | `dev/ai/ollama.nix` | ❌（已注释） |
-| `dev.ai.pi-coding-agent` | `dev/ai/pi-coding-agent/pi-coding-agent.nix` | ✅ |
 | `dev.editors.helix` | `dev/editors/helix/helix.nix` | ✅ |
 | `dev.editors.zed-editor` | `dev/editors/zed-editor/zed-editor.nix` | ✅ |
 | `dev.shell.fish` | `dev/shell/fish.nix` | ✅ |

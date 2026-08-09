@@ -61,7 +61,6 @@
         dev.tools.yazi
         dev.tools.distrobox
         dev.ai.claude-code
-        dev.ai.pi-coding-agent
         dev.editors.zed-editor
         dev.editors.helix
         apps.terminals.ghostty

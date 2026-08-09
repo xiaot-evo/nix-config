@@ -177,7 +177,7 @@ ______________________________________________________________________
 | `dms` + `dms-plugin-registry` | DankMaterialShell 桌面 |
 | `treefmt-nix` | 代码格式化 |
 | `daeuniverse` | dae 代理 |
-| `llm-agents-nix` | AI 编码 agent 包 + home-manager 模块（claude-code、pi 等） |
+| `llm-agents-nix` | AI 编码 agent 包 + home-manager 模块（claude-code 等） |
 | `hjem` + `hjem-rum` | Hjem 下一代 home 配置管理（hjem-rum 为其补充模块） |
 | `danksearch` | danklinux 生态实用工具：索引文件搜索（集成 DMS 启动器） |
 | `nix-flatpak` | 声明式 flatpak 管理 |
