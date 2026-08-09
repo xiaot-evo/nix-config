@@ -18,7 +18,16 @@
           # 启用图形支持（含 VA-API/VDPAU）
           hardware.graphics.enable = true;
 
-          # 纯 Wayland（niri + XWayland Satellite），无需 X server 视频驱动
+          # 注意：nixpkgs 的 hardware.nvidia 模块整体以 videoDrivers 含 "nvidia"
+          # 为启用条件（cfg.enable = elem "nvidia" ...），同时满足
+          # nvidia-container-toolkit 的驱动断言。虽为纯 Wayland（无 Xorg server），
+          # 此设置驱动整个 NVIDIA 用户态栈（nvidia-offload、nvidia-settings、
+          # EGL external platform、VAAPI 等），不可移除
+          services.xserver.videoDrivers = [
+            "amdgpu"
+            "nvidia"
+          ];
+
           hardware.nvidia = {
             modesetting.enable = true;
             powerManagement.enable = false;
