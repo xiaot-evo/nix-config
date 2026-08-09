@@ -18,12 +18,7 @@
           # 启用图形支持（含 VA-API/VDPAU）
           hardware.graphics.enable = true;
 
-          # 同时使用 amdgpu 和 nvidia 驱动
-          services.xserver.videoDrivers = [
-            "amdgpu"
-            "nvidia"
-          ];
-
+          # 纯 Wayland（niri + XWayland Satellite），无需 X server 视频驱动
           hardware.nvidia = {
             modesetting.enable = true;
             powerManagement.enable = false;

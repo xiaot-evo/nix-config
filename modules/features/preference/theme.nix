@@ -41,11 +41,6 @@
             name = "WhiteSur-light";
             package = pkgs.whitesur-icon-theme;
           };
-          cursorTheme = {
-            name = "Bibata-Modern-Classic";
-            package = pkgs.bibata-cursors;
-            size = 24;
-          };
           font = {
             name = "LXGW WenKai";
             size = 11;

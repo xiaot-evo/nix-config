@@ -137,7 +137,7 @@ programs.claude-code.mcpServers.<name> = {
 | `nh os info` | 查看系统 generation 历史 |
 | `nh clean all --keep 5 --keep-since 7d` | 清理旧 generation |
 
-nix develop 内还提供快捷别名：`flake-write`, `fmt`, `fmt-check`, `check`, `build`, `build-switch`（定义见 `modules/flake/devshell.nix`）。
+nix develop 内还提供快捷别名：`flake-write`, `fmt`, `fmt-check`, `check`, `build`, `build-switch`, `build-boot`（定义见 `modules/flake/devshell.nix`）。
 
 ______________________________________________________________________
 
@@ -179,6 +179,9 @@ ______________________________________________________________________
 | `zen-browser` | Zen 浏览器 |
 | `daeuniverse` | dae 代理 |
 | `llm-agents-nix` | AI 编码 agent 包 + home-manager 模块（claude-code、pi 等） |
+| `hjem` + `hjem-rum` | Hjem 下一代 home 配置管理（hjem-rum 为其补充模块） |
+| `danksearch` | danklinux 生态实用工具：索引文件搜索（集成 DMS 启动器） |
+| `nix-flatpak` | 声明式 flatpak 管理 |
 
 二进制缓存配置见 `modules/dendritic.nix`。
 
@@ -187,6 +190,7 @@ ______________________________________________________________________
 ## CI
 
 - **GitHub Actions** 在 `ubuntu-latest` / `macos-latest` 上跑 `nix flake check`，CI 下 `_module.args.CI = true`
+- **自动更新**：`.github/workflows/update-flake.yml` 每周一自动 `nix flake update`（全部输入）→ 本地 `flake check` 把关 → 直接提交并 push main（可 `workflow_dispatch` 手动触发）
 
 ______________________________________________________________________
 

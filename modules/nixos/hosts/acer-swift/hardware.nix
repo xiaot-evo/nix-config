@@ -55,6 +55,8 @@
         ];
 
         nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+        # 启用可再分发固件，使下方 updateMicrocode 生效（AMD CPU 微码更新）
+        hardware.enableRedistributableFirmware = true;
         hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
         networking.useDHCP = lib.mkDefault true;
       };

@@ -152,7 +152,6 @@ ______________________________________________________________________
 |---|---|---|
 | `desktop.input-method.fcitx5` | `desktop/input-method/fcitx5.nix` | ✅ |
 | `desktop.shell.dms-shell` | `desktop/shell/dms-shell/dms-shell.nix` | ✅ |
-| `desktop.shell.noctalia` | `desktop/shell/noctalia/noctalia.nix` | ❌ |
 | `desktop.wm.niri` | `desktop/wm/niri.nix` | ✅ |
 
 ### 开发

@@ -5,7 +5,6 @@
     includes = [
       den.aspects.desktop.shell.dms-shell.niri-settings
       den.aspects.desktop.shell.dms-shell.danksearch
-      # den.aspects.desktop.shell.dms-shell.dankcalendar
     ];
     homeManager =
       {

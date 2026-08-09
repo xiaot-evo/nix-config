@@ -14,7 +14,8 @@
             qemu.package = pkgs.qemu_kvm;
           };
           programs.virt-manager.enable = true;
-          users.groups.libvirtd.members = builtins.attrNames host.users;
+          # 仅授权本机用户管理虚拟机（原为全部主机用户，权限过宽）
+          users.groups.libvirtd.members = [ "xiaot_evo" ];
 
           # Podman — distrobox 依赖的容器运行时
           virtualisation.podman = {

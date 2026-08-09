@@ -75,8 +75,6 @@
 
               screenshot-path = "/home/${user.userName}/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
               window-rule = [
-                {
-                }
                 (maximizedBlurredApp "zen-beta")
                 (blurredApp "com.mitchellh.ghostty")
                 (blurredApp "tabby")

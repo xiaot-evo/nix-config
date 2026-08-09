@@ -22,31 +22,10 @@
           flake-write() { nix run .#write-flake; }
           fmt() { nix fmt; }
           fmt-check() { nix fmt -- --fail-on-change; }
-          # 自动 git add 所有未跟踪的 .nix 文件（packages/ 等）
-          pkg-sync() {
-            echo "同步 packages..."
-            git ls-files --others --exclude-standard -- "packages/*.nix" | while read -r f; do
-              echo "  + git add $f"
-              git add "$f"
-            done
-            echo "完成。"
-          }
-          check() {
-            git ls-files --others --exclude-standard -- "packages/*.nix" | xargs -r git add
-            nix flake check
-          }
-          build() {
-            git ls-files --others --exclude-standard -- "packages/*.nix" | xargs -r git add
-            nix run .#${hostname} --impure
-          }
-          build-switch() {
-            git ls-files --others --exclude-standard -- "packages/*.nix" | xargs -r git add
-            nix run .#${hostname} -- switch --impure
-          }
-          build-boot() {
-            git ls-files --others --exclude-standard -- "packages/*.nix" | xargs -r git add
-            nix run .#${hostname} -- boot --impure
-          }
+          check() { nix flake check; }
+          build() { nix run .#${hostname} --impure; }
+          build-switch() { nix run .#${hostname} -- switch --impure; }
+          build-boot() { nix run .#${hostname} -- boot --impure; }
         '';
       };
     };
