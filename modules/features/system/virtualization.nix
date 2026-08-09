@@ -29,7 +29,13 @@
           };
 
           # NVIDIA GPU 容器支持（CDI）
-          hardware.nvidia-container-toolkit.enable = true;
+          hardware.nvidia-container-toolkit = {
+            enable = true;
+            # 纯 Wayland（niri + XWayland Satellite）无 Xorg server，不设
+            # services.xserver.videoDrivers；NVIDIA 驱动由 hardware.nvidia
+            # （modesetting + prime offload）提供，抑制其驱动存在性断言
+            suppressNvidiaDriverAssertion = true;
+          };
         };
     };
 }
