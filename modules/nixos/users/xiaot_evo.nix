@@ -19,8 +19,6 @@
           "bilibili"
           "warp-terminal"
           "ventoy"
-          "modrinth-app"
-          "modrinth-app-unwrapped"
         ])
         (insecure [
           "ventoy-1.1.12"
@@ -42,6 +40,8 @@
             "app.zen_browser.zen"
             # 通讯（flatpak 版）
             "org.telegram.desktop"
+            # 游戏启动器（flatpak 版，沙箱内置 Java 运行时管理）
+            "com.modrinth.ModrinthApp"
           ];
           # 不支持/不完整支持 Wayland，启用 X11 fallback
           "packages-x11" = [
@@ -80,15 +80,6 @@
 
             ## GUI
             bilibili
-            (modrinth-app.override {
-              jdks = with graalvmPackages; [
-                graalvm-ce # JDK 25 + Graal JIT — Minecraft 1.17+
-                zulu25
-                zulu21
-                zulu17 # fallback for older modpacks
-                zulu8 # pre-1.17 Minecraft
-              ];
-            })
             mission-center
             obs-studio
             gopeed

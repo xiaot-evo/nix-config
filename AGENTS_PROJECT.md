@@ -66,7 +66,7 @@ ______________________________________________________________________
 define-user
 primary-user
 user-shell "fish"
-unfree [...]       (bilibili, warp-terminal, ventoy, modrinth-app, modrinth-app-unwrapped)
+unfree [...]       (bilibili, warp-terminal, ventoy)
 insecure [...]     (ventoy-1.1.12)
 ```
 
