@@ -38,6 +38,10 @@
           packages = [
             "com.qq.QQ"
             "com.usebottles.bottles"
+            # 浏览器（flatpak 版；zen-browser-flake 的上游资源不稳定，改用官方 flatpak）
+            "app.zen_browser.zen"
+            # 通讯（flatpak 版）
+            "org.telegram.desktop"
           ];
           # 不支持/不完整支持 Wayland，启用 X11 fallback
           "packages-x11" = [
@@ -61,7 +65,6 @@
         dev.editors.zed-editor
         dev.editors.helix
         apps.terminals.ghostty
-        apps.browsers.zen-browser
         apps.notes.obsidian
         apps.gaming.steam
         apps.gaming.prismlauncher
@@ -86,7 +89,6 @@
                 zulu8 # pre-1.17 Minecraft
               ];
             })
-            telegram-desktop
             mission-center
             obs-studio
             gopeed

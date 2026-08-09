@@ -176,7 +176,6 @@ ______________________________________________________________________
 | `niri-nix` | niri 滚动窗口管理器 |
 | `dms` + `dms-plugin-registry` | DankMaterialShell 桌面 |
 | `treefmt-nix` | 代码格式化 |
-| `zen-browser` | Zen 浏览器 |
 | `daeuniverse` | dae 代理 |
 | `llm-agents-nix` | AI 编码 agent 包 + home-manager 模块（claude-code、pi 等） |
 | `hjem` + `hjem-rum` | Hjem 下一代 home 配置管理（hjem-rum 为其补充模块） |

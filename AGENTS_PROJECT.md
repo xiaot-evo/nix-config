@@ -55,7 +55,7 @@ ______________________________________________________________________
 | 桌面 Shell | DMS（DankMaterialShell） |
 | 显示管理器 | Ly |
 | 终端 | ghostty |
-| 浏览器 | Zen Browser（beta） |
+| 浏览器 | Zen Browser（Flatpak） |
 | 输入法 | fcitx5（RIME + rime-ice） |
 | 代理 | dae / daed |
 | 编辑器 | Claude Code、Pi、Zed、Helix |
@@ -106,7 +106,6 @@ dev.editors.helix
 
 # 应用
 apps.terminals.ghostty
-apps.browsers.zen-browser
 apps.notes.obsidian
 apps.gaming.steam
 apps.gaming.prismlauncher
@@ -137,7 +136,6 @@ ______________________________________________________________________
 
 | Aspect | 文件 | 已引入 |
 |---|---|---|
-| `apps.browsers.zen-browser` | `apps/browsers/zen-browser.nix` | ✅ |
 | `apps.gaming.gamemode` | `apps/gaming/gamemode.nix` | ❌ |
 | `apps.gaming.lutris` | `apps/gaming/lutris.nix` | ❌（已注释） |
 | `apps.gaming.opengamepadui` | `apps/gaming/opengamepadui.nix` | ❌（已注释） |
