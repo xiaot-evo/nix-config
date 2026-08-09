@@ -1,0 +1,44 @@
+name: Update flake.lock
+on:
+  schedule:
+    - cron: "0 0 * * 1" # 每周一 00:00 UTC（北京 08:00）
+  workflow_dispatch: # 支持手动触发
+permissions:
+  contents: write
+concurrency:
+  group: flake-update
+  cancel-in-progress: false
+jobs:
+  update:
+    name: Update flake.lock and push
+    runs-on: ubuntu-latest
+    steps:
+      - uses: wimpysworld/nothing-but-nix@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: actions/checkout@v5
+      - name: 更新全部 flake 输入
+        run: nix flake update
+      - name: 检查是否有变更
+        run: |
+          if git diff --quiet -- flake.lock; then
+            echo "flake.lock 无变更，跳过"
+            exit 0
+          fi
+          git diff --stat -- flake.lock
+      - name: 同步自动生成的 flake.nix
+        run: nix run .#write-flake
+      - name: push 前把关（flake check）
+        run: |
+          cat <<-EOF > modules/ci-runtime.nix
+          {
+            _module.args.CI = true;
+          }
+          EOF
+          nix flake check
+      - name: 提交并推送到 main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add flake.nix flake.lock
+          git commit -m "chore: update flake.lock"
+          git push
