@@ -123,6 +123,19 @@
                   # 强制 GTK_THEME 会压过 portal 跟随导致主题异常
                 };
               };
+              # Warehouse 安装/管理应用需写宿主用户 flatpak 安装目录（~/.local/share/flatpak），
+              # 但其 manifest 只请求了该目录的只读访问（:ro）→ 授予 home 读写权限。
+              # nix-flatpak 会写入 overrides/io.github.flattool.Warehouse，每次 activation 保证存在
+              "io.github.flattool.Warehouse" = {
+                Context = {
+                  sockets = [
+                    "wayland"
+                    "!x11"
+                    "!fallback-x11"
+                  ];
+                  filesystems = [ "home" ];
+                };
+              };
             }
             # Apps that don't fully support Wayland — enable X11 fallback
             // (builtins.listToAttrs (
