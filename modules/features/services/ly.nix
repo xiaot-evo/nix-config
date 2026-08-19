@@ -24,8 +24,8 @@
             # 注意，如果你想使用终端的默认颜色值，可以使用特殊值 0x00000000。
             # 这意味着，如果你想使用黑色，*必须*使用样式选项 TB_HI_BLACK（使用此选项时 RGB 值将被忽略）。
 
-            # 是否允许空密码进行身份验证
-            allow_empty_password = true;
+            # 是否允许空密码进行身份验证（安全：禁止空密码登录）
+            allow_empty_password = false;
 
             # 活动的动画
             # none     -> 无
@@ -105,6 +105,7 @@
             # 通用日志文件路径
             # 如果为 null，将改用 syslog
             ly_log = "/var/log/ly.log";
+            session_log = ".local/state/ly-session.log";
 
             # 按下重启键时执行的命令
             restart_cmd = "/run/current-system/systemd/bin/systemctl reboot";

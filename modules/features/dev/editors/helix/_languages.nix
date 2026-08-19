@@ -17,27 +17,8 @@
     language-server = {
       nixd = {
         command = "${pkgs.nixd}/bin/nixd";
-        config = {
-          nixd = {
-            nixpkgs = {
-              expr = "import <nixpkgs> {}";
-            };
-            formatting = {
-              command = [ "nixfmt" ];
-            };
-            diagnostic = {
-              suppress = [ ];
-            };
-            options = {
-              nixos = {
-                expr = "(builtins.getFlake (builtins.toString ./.)).nixosConfigurations.acer-swift.options";
-              };
-              home-manager = {
-                expr = "(builtins.getFlake (builtins.toString ./.)).nixosConfigurations.acer-swift.options.home-manager.users.type.getSubOptions []";
-              };
-            };
-          };
-        };
+        # 共享 nixd 配置（hostname 等集中在 dev/_nixd-lsp.nix）
+        config = import ../../_nixd-lsp.nix { };
       };
       gopls = {
         command = "${pkgs.gopls}/bin/gopls";

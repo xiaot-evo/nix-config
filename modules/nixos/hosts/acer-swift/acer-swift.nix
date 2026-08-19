@@ -1,8 +1,9 @@
 { den, ... }:
 {
-  # xiaot_evo user at nixos host
-  den.hosts.x86_64-linux.acer-swift.users.xiaot_evo = { };
-
+  den.hosts.x86_64-linux.acer-swift = {
+    classes = [ "nixos" ];
+    users.xiaot_evo = { };
+  };
   den.aspects.acer-swift = {
     includes =
       (with den.batteries; [
@@ -21,6 +22,7 @@
         system.sound
         system.virtualization
         services.powermanagement
+        services.atftpd
       ]);
     nixos =
       { pkgs, lib, ... }:
@@ -30,6 +32,8 @@
         i18n.defaultLocale = "zh_CN.UTF-8";
 
         environment.systemPackages = with pkgs; [
+          wget
+          fastfetch
           pciutils
         ];
       };

@@ -9,6 +9,7 @@
           withXDG = true;
           useNautilus = true;
         };
+        services.gnome.gnome-keyring.enable = true;
       };
       homeManager =
         { pkgs, lib, ... }:
@@ -16,7 +17,7 @@
           # 窗口规则辅助函数：为应用添加毛玻璃效果
           blurredApp = appId: {
             match._props.app-id = appId;
-            opacity = 0.9;
+            opacity = 0.75;
             background-effect = {
               xray = true;
               blur = true;
@@ -53,6 +54,11 @@
                   natural-scroll = [ ];
                 };
               };
+              debug = {
+                # 允许面板切换和窗口激活，DMS/Noctalia 等 Shell 需要
+                honor-xdg-activation-with-invalid-serial = true;
+              };
+
               layout = {
                 background-color = "transparent";
                 preset-column-widths._children = [
@@ -61,7 +67,6 @@
                   { proportion = 0.66667; }
                   { proportion = 1.0; }
                 ];
-                # focus-ring.off = [ ];
               };
 
               hotkey-overlay = {
@@ -73,6 +78,7 @@
                 (maximizedBlurredApp "zen-beta")
                 (blurredApp "com.mitchellh.ghostty")
                 (blurredApp "tabby")
+                (blurredApp "com.danklinux.dms")
                 (maximizedBlurredApp "dev.zed.Zed")
                 (maximizedBlurredApp "obsidian")
                 {
@@ -83,6 +89,11 @@
                     proportion = 0.75;
                   };
                   clip-to-geometry = true;
+                  # 所有窗口启用模糊背景
+                  background-effect = {
+                    blur = true;
+                    xray = false;
+                  };
                 }
                 {
                   match._props.title = "^float$";
@@ -94,13 +105,14 @@
                       is-active = false;
                     };
                   };
-                  opacity = 0.8;
+                  opacity = 0.75;
                   background-effect = {
                     xray = true;
                     blur = true;
                   };
                 }
                 {
+                  opacity = 0.75;
                   match._props.is-floating = true;
                   background-effect = {
                     xray = false;
@@ -199,6 +211,54 @@
                 "Mod+Alt+V".switch-focus-between-floating-and-tiling = [ ];
                 "Mod+Shift+V".toggle-window-floating = [ ];
 
+                # 方向键导航（HJKL 备用）
+                "Mod+Left".focus-column-left = [ ];
+                "Mod+Right".focus-column-right = [ ];
+                "Mod+Up".focus-window-or-workspace-up = [ ];
+                "Mod+Down".focus-window-or-workspace-down = [ ];
+
+                # 跨显示器导航
+                "Mod+Shift+H".focus-monitor-left = [ ];
+                "Mod+Shift+L".focus-monitor-right = [ ];
+                "Mod+Shift+K".focus-monitor-up = [ ];
+                "Mod+Shift+J".focus-monitor-down = [ ];
+
+                # 跨显示器移动列
+                "Mod+Shift+Ctrl+H".move-column-to-monitor-left = [ ];
+                "Mod+Shift+Ctrl+L".move-column-to-monitor-right = [ ];
+                "Mod+Shift+Ctrl+K".move-column-to-monitor-up = [ ];
+                "Mod+Shift+Ctrl+J".move-column-to-monitor-down = [ ];
+
+                # 工作区移动
+                "Mod+Shift+Page_Down".move-workspace-down = [ ];
+                "Mod+Shift+Page_Up".move-workspace-up = [ ];
+
+                # 列首/列尾导航
+                "Mod+Home".focus-column-first = [ ];
+                "Mod+End".focus-column-last = [ ];
+
+                # 窗口操作增强
+                "Mod+BracketLeft".consume-or-expel-window-left = [ ];
+                "Mod+BracketRight".consume-or-expel-window-right = [ ];
+                "Mod+Shift+R".switch-preset-column-width-back = [ ];
+                "Mod+Ctrl+R".reset-window-height = [ ];
+                "Mod+Ctrl+Shift+R".switch-preset-window-height = [ ];
+                "Mod+Ctrl+F".expand-column-to-available-width = [ ];
+                "Mod+Ctrl+C".center-visible-columns = [ ];
+                "Mod+W".toggle-column-tabbed-display = [ ];
+
+                # 系统功能
+                "Mod+O".toggle-overview = [ ];
+                "Mod+Escape".toggle-keyboard-shortcuts-inhibit = [ ];
+                "Ctrl+Alt+Delete".quit._props.skip-confirmation = true;
+                "Mod+Shift+P".power-off-monitors = [ ];
+
+                # 滚轮快捷键
+                "Mod+WheelScrollDown".focus-workspace-down = [ ];
+                "Mod+WheelScrollUp".focus-workspace-up = [ ];
+                "Mod+Ctrl+WheelScrollDown".move-column-to-workspace-down = [ ];
+                "Mod+Ctrl+WheelScrollUp".move-column-to-workspace-up = [ ];
+
                 "Print".screenshot._props.show-pointer = false;
                 "Ctrl+Print".screenshot-screen._props.show-pointer = false;
                 "Alt+Print".screenshot-window = [ ];
@@ -207,11 +267,10 @@
                 NIXOS_OZONE_WL = "1";
                 ELECTRON_OZONE_PLATFORM_HINT = "auto";
                 EDITOR = "hx";
-                GTK_IM_MODULE = "fcitx5";
                 QT_IM_MODULE = "fcitx5";
                 XMODIFIERS = "@im=fcitx5";
                 SDL_IM_MODULE = "fcitx5";
-                GLFW_IM_MODULE = "ibus";
+                GLFW_IM_MODULE = "fcitx5";
               };
               spawn-sh-at-startup = [
                 [ "${pkgs.fcitx5}/usr/bin/fcitx5 -d" ]

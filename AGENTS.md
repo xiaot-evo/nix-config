@@ -12,7 +12,7 @@ ______________________________________________________________________
 
 - `flake.nix` **自动生成**，由 `modules/dendritic.nix` 驱动，通过 `nix run .#write-flake` 重新生成
 - 配置单元是 **aspect**（`den.aspects.<domain>.<name>`），定义在 `modules/features/` 下
-- 主机和用户在 `modules/hosts/` 中通过 `includes` 列表组装所需 aspects
+- 主机和用户在 `modules/nixos/hosts/`、`modules/nixos/users/` 中通过 `includes` 列表组装所需 aspects
 - 新建 `.nix` 文件后必须 `git add`，否则 flake 评估看不到（import-tree 依赖 git 跟踪）
 
 详细主机/用户/模块清单见 [AGENTS_PROJECT.md](AGENTS_PROJECT.md)。
@@ -46,7 +46,7 @@ user (homeManager) ──includes──→ dev, desktop, apps...
 
 1. 在 `modules/features/<domain>/` 下创建 `<name>.nix`
 1. 定义 `den.aspects.<domain>.<name>`（含 `nixos` 和/或 `homeManager` 属性）
-1. 在 `modules/hosts/` 对应主机/用户的 `includes` 中添加引用
+1. 在 `modules/nixos/hosts/<host>/` 或 `modules/nixos/users/<user>.nix` 的 `includes` 中添加引用
 1. 如需新 flake 输入，修改 `dendritic.nix` 后运行 `nix run .#write-flake`
 1. import-tree 自动发现新文件，无需手动注册
 
@@ -62,8 +62,10 @@ ______________________________________________________________________
 └── modules/
     ├── defaults.nix       # 全局默认值（stateVersion, strict schema）
     ├── dendritic.nix      # flake 输入声明 + flake-file 配置
-    ├── treefmt.nix        # 多语言格式化（nixfmt + jsonfmt + mdformat + yamlfmt）
-    ├── hosts/             # 主机和用户定义（aspect 组装点）
+    ├── flake/devshell.nix       # 开发环境（nix develop）
+    ├── flake/nh.nix             # nh 快捷命令（perSystem 输出）
+    ├── flake/treefmt.nix        # 多语言格式化（nixfmt + jsonfmt + mdformat + yamlfmt）
+    ├── nixos/             # 主机/用户定义（aspect 组装点）：hosts/ + users/
     └── features/          # 可复用 aspect 模块（按领域分目录）
 ```
 
@@ -98,29 +100,33 @@ nix flake check --no-build          # 只评估不构建
 nix eval .#nixosConfigurations.<host>.config.<path>  # 查询 NixOS 配置值（调试用）
 ```
 
-### 包搜索
+### MCP 服务器查询（首选）
 
-智能体在查找 nixpkgs 包时**必须使用 nh search 验证包是否存在**，不要凭记忆猜测包名和版本。
+Reasonix 全局已配置 [mcp-nixos](https://github.com/utensils/mcp-nixos) MCP server（`~/.reasonix/config.toml` 的 `[[plugins]]`，`nix run github:utensils/mcp-nixos --`）。查包、查选项**优先用 MCP 工具**，不要翻上游源码：
 
-三个专用搜索技能覆盖不同场景：
+| 工具 | 用途 |
+| ---- | --------------------------------------------- |
+| `mcp__nixos__nix` | 统一查询：包/选项搜索与 info、browse、channel、flakehub、wiki、nix.dev、二进制缓存 |
+| `mcp__nixos__nix_versions` | 包版本历史（含 nixpkgs commit hash） |
 
-| 技能 | 用途 |
-| ---------------------- | --------------------------------------------- |
-| `nix-package-search` | 关键词模糊搜索 nixpkgs 包，发现正确的 attr path |
-| `nix-package-info` | 查看已知包的详细元数据（版本、license、平台等） |
-| `nix-option-search` | 搜索 NixOS/home-manager 配置选项（非包搜索） |
+常用参数：`action`（search/info/browse/stats/cache）、`query`、`source`（nixos/home-manager/darwin/nixvim/nvf/flakehub/wiki/nix-dev）、`type`（packages/options）、`channel`（unstable/stable）。
 
-**快速命令（当技能脚本需直接调用时）：**
+> 索引已覆盖 llm-agents-nix 等第三方 home-manager 模块选项（如 `programs.claude-code.*`），可放心查询。
 
-| 命令 | 用途 |
-| ------------------------------------------------------------------------- | ------------------------- |
-| `.claude/skills/nix-package-search/scripts/nix-pkg-search <关键词>` | 精炼包搜索（AI 友好输出） |
-| `.claude/skills/nix-package-info/scripts/nix-pkg-info <attr-path>` | 包详情查询 |
-| `.claude/skills/nix-package-info/scripts/nix-pkg-info --compare <pkg>` | 跨 channel 版本对比 |
-| `.claude/skills/nix-option-search/scripts/nix-opt-lookup <option-path>` | 本地 option 查询 |
-| `nh search --channel nixos-24.11 <关键词>` | 指定 stable channel |
+### Claude Code 声明式配置 MCP
 
-> 三个技能详情见 `.claude/skills/nix-package-search/SKILL.md`、`nix-package-info/SKILL.md`、`nix-option-search/SKILL.md`。
+Claude Code 的 MCP server 在 `modules/features/dev/ai/claude-code.nix` 用 home-manager 声明式注册：
+
+```nix
+programs.claude-code.mcpServers.<name> = {
+  command = "nix";
+  args = [ "run" "github:utensils/mcp-nixos" "--" ];
+};
+```
+
+- 部署后自动写入 `~/.claude.json`，无需手工 `claude mcp add`
+- 验证：`nix eval .#nixosConfigurations.acer-swift.config.home-manager.users.xiaot_evo.programs.claude-code.mcpServers --json`
+- 仅改 `claude-code.nix` 不涉及 `dendritic.nix`，无需 `write-flake`
 
 ### 其他
 
@@ -131,7 +137,7 @@ nix eval .#nixosConfigurations.<host>.config.<path>  # 查询 NixOS 配置值（
 | `nh os info` | 查看系统 generation 历史 |
 | `nh clean all --keep 5 --keep-since 7d` | 清理旧 generation |
 
-devenv shell 内还提供快捷别名：`flake-write`, `fmt`, `fmt-check`, `check`, `build`, `build-switch`（定义见 `devenv.nix`）。
+nix develop 内还提供快捷别名：`flake-write`, `fmt`, `fmt-check`, `check`, `build`, `build-switch`, `build-boot`（定义见 `modules/flake/devshell.nix`）。
 
 ______________________________________________________________________
 
@@ -153,6 +159,10 @@ ______________________________________________________________________
 | 修改 `dendritic.nix` | 运行 `nix run .#write-flake` |
 | 新增 flake 输入 | 在 `dendritic.nix` 的 `flake-file.inputs` 中添加 → `write-flake` |
 | 直接编辑 `flake.nix` | **禁止** — 修改 dendritic.nix 后运行 write-flake |
+| 给 Claude Code 加 MCP server | 在 `claude-code.nix` 用 `programs.claude-code.mcpServers` 声明，勿手改 `~/.claude.json` |
+| 给 Reasonix 装 MCP server | `install_source` 对 URL 源不支持 command 覆盖（报 "command is required"）——用临时 `.mcp.json` 导入全局 |
+| 查询包/选项 | 优先 `mcp__nixos__*` MCP 工具，再降级 nh search 技能，最后才翻上游源码 |
+| 修改 `AGENTS.md` | 无需同步 `CLAUDE.md` — 它是指向 AGENTS.md 的符号链接，自动跟随 |
 
 ______________________________________________________________________
 
@@ -166,8 +176,11 @@ ______________________________________________________________________
 | `niri-nix` | niri 滚动窗口管理器 |
 | `dms` + `dms-plugin-registry` | DankMaterialShell 桌面 |
 | `treefmt-nix` | 代码格式化 |
-| `zen-browser` | Zen 浏览器 |
 | `daeuniverse` | dae 代理 |
+| `llm-agents-nix` | AI 编码 agent 包 + home-manager 模块（claude-code 等） |
+| `hjem` + `hjem-rum` | Hjem 下一代 home 配置管理（hjem-rum 为其补充模块） |
+| `danksearch` | danklinux 生态实用工具：索引文件搜索（集成 DMS 启动器） |
+| `nix-flatpak` | 声明式 flatpak 管理 |
 
 二进制缓存配置见 `modules/dendritic.nix`。
 
@@ -176,12 +189,14 @@ ______________________________________________________________________
 ## CI
 
 - **GitHub Actions** 在 `ubuntu-latest` / `macos-latest` 上跑 `nix flake check`，CI 下 `_module.args.CI = true`
+- **自动更新**：`.github/workflows/update-flake.yml` 每周一自动 `nix flake update`（全部输入）→ 本地 `flake check` 把关 → 直接提交并 push main（可 `workflow_dispatch` 手动触发）
 
 ______________________________________________________________________
 
 ## 参考
 
 - [AGENTS_PROJECT.md](AGENTS_PROJECT.md) — 主机/用户/模块完整清单
-- [docs/den/](docs/den/) — Den 框架中文文档
-- [ROLLBACK.md](ROLLBACK.md) — 部署回滚步骤
+- [CLAUDE.md](CLAUDE.md) — Claude Code 专用入口（符号链接指向 AGENTS.md，无需单独维护）
+- [docs/den/](docs/den/) — Den 框架中文文档（排障先看 `13-常见问题.md`）
+- [ROLLBACK.md](ROLLBACK.md) — 部署回滚步骤（文件尚未创建，规划中）
 - <https://den.denful.dev> — Den 框架官网

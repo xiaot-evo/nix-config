@@ -8,7 +8,6 @@ aspect that can be conditionally included by hosts and users.
 ```
 apps/                   用户应用（GUI / 面向用户）
 ├── terminals/          ghostty
-├── browsers/           zen-browser
 └── gaming/             steam
 
 desktop/                桌面环境组件
@@ -47,7 +46,6 @@ Aspect 名 = 文件路径，点号分隔：
 | `desktop/wm/niri.nix` | `den.aspects.desktop.wm.niri` |
 | `system/hardware/nvidia.nix` | `den.aspects.system.hardware.nvidia` |
 | `apps/terminals/ghostty.nix` | `den.aspects.apps.terminals.ghostty` |
-| `apps/browsers/zen-browser.nix` | `den.aspects.apps.browsers.zen-browser` |
 
 ## Usage
 

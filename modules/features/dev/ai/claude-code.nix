@@ -34,8 +34,7 @@ in
       }:
       {
         home.packages = [
-          inputs'.llm-agents-nix.packages.cc-switch-cli
-          pkgs.python3
+          # inputs'.llm-agents-nix.packages.cc-switch-cli
           pkgs.bun
           (pkgs.writeShellScriptBin "cc-ds" ''
             export ANTHROPIC_BASE_URL="https://api.deepseek.com/anthropic"
@@ -64,7 +63,6 @@ in
               allow = [
                 "Bash(nix *)"
                 "Bash(git *)"
-                "Bash(devenv *)"
                 "WebSearch"
                 "WebFetch"
                 "Read(./**)"
@@ -105,36 +103,28 @@ in
             statusLine = {
               type = "command";
               command = ''
-                bash -c 'cols=''${COLUMNS:-}; case "''${cols}" in ""|*[!0-9]*) cols=$(stty size </dev/tty 2>/dev/null | awk '"'"'{print $2}'"'"');; esac; case "''${cols}" in ""|*[!0-9]*) cols=120;; esac; export COLUMNS=$(( cols > 4 ? cols - 4 : 1 )); runtime=$(command -v bun 2>/dev/null); if [ -z "''${runtime}" ]; then runtime="/nix/store/r3k0n7fx6qjw9k9v2yy2h55lpl4kg0sd-bun-1.3.13/bin/bun"; fi; plugin_dir=$(ls -d "''${CLAUDE_CONFIG_DIR:-$HOME/.claude}"/plugins/cache/*/claude-hud/*/ 2>/dev/null | awk -F/ '"'"'{ print $(NF-1) "\t" $0 }'"'"' | grep -E '"'"'^[0-9]+\.[0-9]+\.[0-9]+[[:space:]]'"'"' | sort -t. -k1,1n -k2,2n -k3,3n -k4,4n | tail -1 | cut -f2-); if [ -z "''${plugin_dir}" ]; then plugin_dir="/nix/store/8qpw2h1riddi40f2ncjz14hk57m53qgf-source/"; fi; exec "''${runtime}" --env-file /dev/null "''${plugin_dir}src/index.ts"'
+                bash -c 'cols=''${COLUMNS:-}; case "''${cols}" in ""|*[!0-9]*) cols=$(stty size </dev/tty 2>/dev/null | awk '"'"'{print $2}'"'"');; esac; case "''${cols}" in ""|*[!0-9]*) cols=120;; esac; export COLUMNS=$(( cols > 4 ? cols - 4 : 1 )); runtime=$(command -v bun 2>/dev/null); if [ -z "''${runtime}" ]; then runtime="${pkgs.bun}/bin/bun"; fi; plugin_dir=$(ls -d "''${CLAUDE_CONFIG_DIR:-$HOME/.claude}"/plugins/cache/*/claude-hud/*/ 2>/dev/null | awk -F/ '"'"'{ print $(NF-1) "\t" $0 }'"'"' | grep -E '"'"'^[0-9]+\.[0-9]+\.[0-9]+[[:space:]]'"'"' | sort -t. -k1,1n -k2,2n -k3,3n -k4,4n | tail -1 | cut -f2-); if [ -z "''${plugin_dir}" ]; then plugin_dir="/nix/store/8qpw2h1riddi40f2ncjz14hk57m53qgf-source/"; fi; exec "''${runtime}" --env-file /dev/null "''${plugin_dir}src/index.ts"'
               '';
             };
           };
 
-          # ── LSP 服务器 ────────────────────────────────
+          # ── LSP 服务器（nixd 共享配置见 dev/_nixd-lsp.nix） ─
           lspServers = {
             nix = {
               command = "${pkgs.nixd}/bin/nixd";
-              settings = {
-                nixd = {
-                  nixpkgs = {
-                    expr = "import <nixpkgs> {}";
-                  };
-                  formatting = {
-                    command = [ "nixfmt" ];
-                  };
-                  diagnostic = {
-                    suppress = [ ];
-                  };
-                  options = {
-                    nixos = {
-                      expr = "(builtins.getFlake (builtins.toString ./.)).nixosConfigurations.acer-swift.options";
-                    };
-                    home-manager = {
-                      expr = "(builtins.getFlake (builtins.toString ./.)).nixosConfigurations.acer-swift.options.home-manager.users.type.getSubOptions []";
-                    };
-                  };
-                };
-              };
+              settings = import ../_nixd-lsp.nix { };
+            };
+          };
+
+          # ── MCP 服务器 ────────────────────────────────
+          mcpServers = {
+            nixos = {
+              command = "nix";
+              args = [
+                "run"
+                "github:utensils/mcp-nixos"
+                "--"
+              ];
             };
           };
 
